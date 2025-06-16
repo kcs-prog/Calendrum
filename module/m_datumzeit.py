@@ -15,31 +15,19 @@ Datumzeit
 + systemzeit(): None
 + wochentag(): str
 
-def wochentag(d, m, y) -> str:
-    # Monat anpassen: Januar und Februar als Monate 13 und 14 des Vorjahres
-    if m < 3:
-        m += 12
-        y -= 1
-
-    # Zeller-Formel
-    h = (d + ((13 * (m + 1)) // 5) + y + (y // 4) - (y // 100) + (y // 400)) % 7
-
-    # Zuordnung des Wochentags
-    tage = ["Samstag", "Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag"]
-    return tage[h]
-
 """
 from logging import exception
 
 
 class Datumzeit():
     def __init__(self, J:int,M:int,D:int,h:int,m:int,s:int):
-        self.jahr:int = J
-        self.monat:int = M
-        self.tag:int = D
-        self.stunde:int = h
-        self.minute:int = m
-        self.sekunde:int = s
+        self.jahr = J
+        self.monat = M
+        self.tag = D
+        self.stunde = h
+        self.minute = m
+        self.sekunde = s
+        self.wochentag = self.__gen_wochentag()
 
     def get_jahr(self):
         return self.__jahr if self.__chk_jahr(self.__jahr) else None
@@ -119,7 +107,21 @@ class Datumzeit():
             return True
     sekunde = property(get_sekunde, set_sekunde)
 
-dz = Datumzeit(1960,5,14,6,35,00)
+    def __gen_wochentag(self)->str:
+        y = self.jahr
+        m = self.monat
+        d = self.tag
+        # Monat anpassen: Januar und Februar als Monate 13 und 14 des Vorjahres
+        if m < 3:
+            m += 12
+            y -= 1
+        # Zeller-Formel
+        h = (d + ((13 * (m + 1)) // 5) + y + (y // 4) - (y // 100) + (y // 400)) % 7
+        # Zuordnung des Wochentags
+        return ["Samstag", "Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag"][h]
+
+dz = Datumzeit(2025,6,17,6,35,00)
 print(dz.minute)
 dz.minute = 6
 print(dz.minute)
+print(dz.wochentag)
