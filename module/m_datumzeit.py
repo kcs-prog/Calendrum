@@ -8,7 +8,7 @@ Datumzeit
 +minute:int
 +sekunde:int
 ————————————
-+inti(J, M, D, h, m, s)
++inti(J, M, D, h, m, s) # jo wieso ist das Jahr Monat Day ?
 +jump(dz:Datumzeit, [richtung:int=+1]):None
 +maxTage(Monat:int):int
 +istSchaltjahr(Jahr:int):bool
