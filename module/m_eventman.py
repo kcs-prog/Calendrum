@@ -3,7 +3,9 @@ from time import localtime
 from logging import exception
 
 class Event_Manager:
-    """Event-Manager-Klasse der Calendrum-App"""
+    """Event-Manager-Klasse der Calendrum-App.
+    Verwaltet Events (erstellen, löschen, bearbeiten, anzeigen).
+    """
     def __init__(self) -> None:
         self._system_zeit = localtime() # Echtzeit zum Abgleich mit Event-Zeiten
         #print(self._system_zeit) # debug
