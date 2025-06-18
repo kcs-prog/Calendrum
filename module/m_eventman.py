@@ -49,7 +49,9 @@ class Event_Manager:
 if __name__ == "__main__":
     EM:Event_Manager = Event_Manager()
     EM.event_erstellen(EM.zeit_stempel,"klingeln","test1") # debug
-    for item in EM._event_liste.values():
-        print(f"{item[0]}\n") #zeitstempel des beispielevents
-        print(f"{item[1]}\n") #aktion des beispielevents
-        print(f"{item[2]}\n") #name des beispielevents
+    for key in EM._event_liste.keys():
+        print(f"EventID:{key}") # ID des beispielevents
+    for value in EM._event_liste.values():
+        print(f"Eventzeit:{value[0]}\n") #zeitstempel des beispielevents
+        print(f"Aktion:{value[1]}\n") #aktion des beispielevents
+        print(f"Name:{value[2]}\n") #name des beispielevents
