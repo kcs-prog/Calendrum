@@ -8,9 +8,9 @@ Eventman
 #Event-Aktion:str
 #Event-Name:str
 ————————————
--init()
-+event_erstellen(event_zeit:dict{str:int}, event_aktion:str, event_name:str)
-+()
+-init() -> None
++event_erstellen(event_zeit:dict{str:int}, event_aktion:str, event_name:str) -> None
++event_aufrufen(event_id:int) -> list[list[dict[str:int],str,str]] (Any laut IDE) | None
 +()
 +()
 
