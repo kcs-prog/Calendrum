@@ -2,11 +2,11 @@
 Event_Manager
 ————————————
 +Event-Liste:dict{EventID:Event} #noch im code integriert, wird später lokal von einer Datei geholt wenn vorhanden.
--EventID:int
--Event:list[Zeitstempel,Event-Aktion,Event-Name]
--Zeitstempel:dict{str:int}
--Event-Aktion:str
--Event-Name:str
+#EventID:int
+#Event:list[Zeitstempel,Event-Aktion,Event-Name]
+#Zeitstempel:dict{str:int}
+#Event-Aktion:str
+#Event-Name:str
 ————————————
 #init()
 +event_erstellen(event_zeit:dict{str:int}, event_aktion:str, event_name:str)
