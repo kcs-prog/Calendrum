@@ -34,6 +34,7 @@ class Event_Manager:
         print(type(event_zeit), event_zeit)
 
     def __chk_event_zeit(self,event_zeit:dict[str:int]) -> bool:
+        """Überprüft die angegebene Event-Zeit auf das richtige Format für die Event-Manager-Methoden."""
         for key in event_zeit.keys():
             if key not in ["J","M","T","h","m","s"]:
                 raise exception("Datum und Uhrzeit des Events unvollständig.\n")
