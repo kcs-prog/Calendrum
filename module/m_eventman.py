@@ -15,6 +15,7 @@ Eventman
 +()
 
 """
+from typing import Any
 from m_datumzeit import Datumzeit
 from time import localtime
 from logging import exception
