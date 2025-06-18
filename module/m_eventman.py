@@ -16,3 +16,5 @@ class Event_Manager:
             return self.event_liste[event] if self.__chk_event(event) else None
         return None
 
+    def event_erstellen(self,zeit:list[int],aktion:str) -> None:
+        pass
