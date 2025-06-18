@@ -19,7 +19,7 @@ class Event_Manager:
             "m":self._system_zeit.tm_min,
             "s":self._system_zeit.tm_sec
         }
-        self._event_liste:dict[int:list[list[int]],str,str] = {} # platzhalter, event-liste muss ausgelagert werden.
+        self._event_liste:dict[int:list[dict[str,int]],str,str] = {} # platzhalter, event-liste muss ausgelagert werden.
         self._action_liste:list[str] = ["klingeln","erinnern","email","sms"]
         #print(len(self._event_liste)) # debug
 
