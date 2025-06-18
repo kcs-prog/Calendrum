@@ -1,4 +1,5 @@
 from m_datumzeit import Datumzeit
+from time import localtime
 from logging import exception
 
 Datumzeit(2025,6,18,13,20,30)
