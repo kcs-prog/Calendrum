@@ -8,7 +8,7 @@ Event_Manager
 #Event-Aktion:str
 #Event-Name:str
 ————————————
-#init()
+-init()
 +event_erstellen(event_zeit:dict{str:int}, event_aktion:str, event_name:str)
 +()
 +()
