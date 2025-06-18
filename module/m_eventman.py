@@ -18,3 +18,13 @@ class Event_Manager:
 
     def event_erstellen(self,zeit:list[int],aktion:str) -> None:
         pass
+
+    def __chk_event(self, event):
+        if type(event) != list[list[int]]|str:
+            raise exception("Format der Eventzeit ist falsch.\n Format: [[J,M,T,h,m,s],'aktion'")
+
+
+if __name__ == "__main__":
+    EM = Event_Manager()
+    print(Event_Manager.get_event_liste(EM))
+    print(len(EM.event_liste))
