@@ -40,9 +40,6 @@ class Event_Manager:
                 raise exception("Falsches Zeichen für Zeit-Format.\nNur ganze Nummern.\n")
         return True
 
-    def __chk_event(self, event):
-        if type(event) != list[list[int]]|str:
-            raise exception("Format der Eventzeit ist falsch.\n Format: [[J,M,T,h,m,s],'aktion'")
 
 
 if __name__ == "__main__":
