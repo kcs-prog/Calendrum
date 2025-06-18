@@ -5,6 +5,9 @@ from logging import exception
 class Event_Manager:
     """Event-Manager-Klasse der Calendrum-App.
     Verwaltet Events (erstellen, löschen, bearbeiten, anzeigen).
+    Events sind dict-type-Objekte im Format:\n
+    {EventID:int: list[list[Zeitstempel], Event-Aktion: str , Event-Name: str]} \n
+    im dict gespeichert.
     """
     def __init__(self) -> None:
         self._system_zeit = localtime() # Echtzeit zum Abgleich mit Event-Zeiten
