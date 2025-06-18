@@ -27,7 +27,7 @@ class Event_Manager:
         Dem Event wird eine ID zugeteilt und es wird in der 'Event_Manager._event_liste' gespeichert."""
         if not self.__chk_event_zeit(event_zeit):
             raise exception("Zeiten für das Event sind im falschen Format.\n")
-        if type(event_akt) != str or event_akt not in ["klingeln","erinnern","email","sms"]:
+        if type(event_akt) != str or event_akt not in self._action_liste:
             raise exception("Ungültige Event-Aktion.\n")
         if type(event_name) != str:
             raise exception("Ungültige Zeichen für Event-Namen\n")
