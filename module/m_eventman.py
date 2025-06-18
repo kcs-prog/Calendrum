@@ -3,7 +3,7 @@ from time import localtime
 from logging import exception
 
 class Event_Manager:
-    """"""
+    """Event-Manager-Klasse der Calendrum-App"""
     def __init__(self) -> None:
         self.event_liste:dict[int : list[list[int]],str,str] = {
             #beispiel event der event_liste:
