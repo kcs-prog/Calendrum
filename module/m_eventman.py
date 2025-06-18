@@ -15,6 +15,8 @@ class Event_Manager:
             "m":self._system_zeit.tm_min,
             "s":self._system_zeit.tm_sec
         }
+        self._event_liste:dict[int:list[list[int]],str,str] = {} # platzhalter, event-liste muss ausgelagert werden.
+        #print(len(self._event_liste)) # debug
 
     def get_event_liste(self) -> list[list[int]|str] or None:
         for event in self.event_liste:
