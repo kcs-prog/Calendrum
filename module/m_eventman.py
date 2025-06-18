@@ -1,5 +1,3 @@
-from itertools import count
-
 from m_datumzeit import Datumzeit
 from logging import exception
 
