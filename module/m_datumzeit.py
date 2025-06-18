@@ -19,7 +19,7 @@ Datumzeit
 from logging import exception
 
 
-class Datumzeit():
+class Datumzeit:
     def __init__(self, J:int,M:int,D:int,h:int,m:int,s:int):
         self.jahr = J
         self.monat = M
