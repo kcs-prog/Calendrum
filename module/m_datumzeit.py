@@ -120,8 +120,9 @@ class Datumzeit():
         # Zuordnung des Wochentags
         return ["Samstag", "Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag"][h]
 
-dz = Datumzeit(2025,6,17,6,35,00)
-print(dz.minute)
-dz.minute = 6
-print(dz.minute)
-print(dz.wochentag)
+if __name__ == "__main__":
+    dz = Datumzeit(2025,6,17,6,35,00)
+    print(dz.minute)
+    dz.minute = 6
+    print(dz.minute)
+    print(dz.wochentag)
