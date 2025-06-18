@@ -1,5 +1,5 @@
 """
-Event_Manager
+Eventman
 ————————————
 +Event-Liste:dict{EventID:Event} #noch im code integriert, wird später lokal von einer Datei geholt wenn vorhanden.
 #EventID:int
@@ -19,7 +19,7 @@ from m_datumzeit import Datumzeit
 from time import localtime
 from logging import exception
 
-class Event_Manager:
+class Eventman:
     """Event-Manager-Klasse der Calendrum-App.
     Verwaltet Events (erstellen, löschen, bearbeiten, anzeigen).
     Events sind dict-type-Objekte im Format:\n
@@ -43,7 +43,7 @@ class Event_Manager:
     def event_erstellen(self,event_zeit:dict[str:int],event_akt:str,event_name:str="") -> None:
         """Fügt ein Event der Liste hinzu. benötigt eine event-zeit (vorher festgelegt),
         eine event-aktion (aus einer vorgegebenen Liste), und einen event-namen.
-        Dem Event wird eine ID zugeteilt und es wird in der 'Event_Manager.event_liste' gespeichert.
+        Dem Event wird eine ID zugeteilt und es wird in der 'Eventman.event_liste' gespeichert.
         Event-Liste ist zurzeit in der Klasse also gespeichert, muss später lokal in einer Datei gespeichert werden."""
         if not self.__chk_event_zeit(event_zeit):
             raise exception("Zeiten für das Event sind im falschen Format.\n")
@@ -66,7 +66,7 @@ class Event_Manager:
 
 
 if __name__ == "__main__":
-    EM:Event_Manager = Event_Manager()
+    EM:Eventman = Eventman()
     EM.event_erstellen(EM.zeit_stempel,"klingeln","test1") # debug
     for key in EM.event_liste.keys():
         print(f"EventID:{key}\n") # ID des beispielevents
