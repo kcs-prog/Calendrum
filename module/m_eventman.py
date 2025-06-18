@@ -54,6 +54,21 @@ class Eventman:
         self.event_liste.update({len(self.event_liste):[[event_zeit],event_akt,event_name]})
         #print(event_zeit) #debug
 
+    def event_aufrufen(self, event_id:int) -> Any | None:
+        """Methode zum Aufrufen eines Events anhand der Event-ID.
+        Gibt Events im Format zurück:\n
+        list[list[dict[str:int],str,str]
+        """
+        event_keys = self.event_liste.keys()
+        event_values = self.event_liste.values()
+        #print(event_keys,event_values) #debug
+        if event_id not in event_keys:
+            raise exception("Es existiert kein Event mit dieser ID.\n")
+        for k in event_keys:
+            if k == event_id:
+                return self.event_liste[k]
+        return None
+
     def __chk_event_zeit(self,event_zeit:dict[str:int]) -> bool:
         """Überprüft die angegebene Event-Zeit auf das richtige Format für die Event-Manager-Methoden."""
         for k in event_zeit.keys():
