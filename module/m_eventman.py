@@ -45,5 +45,5 @@ class Event_Manager:
 
 
 if __name__ == "__main__":
-    EM = Event_Manager()
+    EM:Event_Manager = Event_Manager()
     EM.event_erstellen(EM.system_zeit,"klingeln","test1") # debug
