@@ -26,7 +26,8 @@ class Event_Manager:
     def event_erstellen(self,event_zeit:dict[str:int],event_akt:str,event_name:str="") -> None:
         """Fügt ein Event der Liste hinzu. benötigt eine event-zeit (vorher festgelegt),
         eine event-aktion (aus einer vorgegebenen Liste), und einen event-namen.
-        Dem Event wird eine ID zugeteilt und es wird in der 'Event_Manager._event_liste' gespeichert."""
+        Dem Event wird eine ID zugeteilt und es wird in der 'Event_Manager._event_liste' gespeichert.
+        Event-Liste ist zurzeit in der Klasse also gespeichert, muss später lokal in einer Datei gespeichert werden."""
         if not self.__chk_event_zeit(event_zeit):
             raise exception("Zeiten für das Event sind im falschen Format.\n")
         if type(event_akt) != str or event_akt not in self._action_liste:
@@ -45,7 +46,6 @@ class Event_Manager:
             if type(value) != int:
                 raise exception("Falsches Zeichen für Zeit-Format.\nNur ganze Nummern.\n")
         return True
-
 
 
 if __name__ == "__main__":
