@@ -4,11 +4,7 @@ from logging import exception
 Datumzeit(2025,6,18,13,20,30)
 
 class Event_Manager:
-    """Event-Manager der Calendrum-App. Events brauchen das Datumzeit-format in einer Liste,
-    einen Namen im String-format, sowie ein Funktionsname im String-format,
-     die beim Eintreten des Events aufgerufen werden. z.B.:\n
-      eventID: [[2025, 6, 15, 18, 55, 0], "Eventname", "Aktion"
-    """
+    """"""
     def __init__(self) -> None:
         self.event_liste:dict[int : list[list[int]],str,str] = {
             #beispiel event der event_liste:
