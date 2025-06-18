@@ -32,7 +32,7 @@ class Event_Manager:
         if type(event_name) != str:
             raise exception("Ungültige Zeichen für Event-Namen\n")
         self._event_liste.update({len(self._event_liste):[[event_zeit],event_akt,event_name]})
-        print(type(event_zeit), event_zeit)
+        #print(event_zeit) #debug
 
     def __chk_event_zeit(self,event_zeit:dict[str:int]) -> bool:
         """Überprüft die angegebene Event-Zeit auf das richtige Format für die Event-Manager-Methoden."""
