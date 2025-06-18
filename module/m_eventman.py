@@ -9,7 +9,7 @@ class Event_Manager:
     def __init__(self) -> None:
         self._system_zeit = localtime() # Echtzeit zum Abgleich mit Event-Zeiten
         #print(self._system_zeit) # debug
-        self.system_zeit:dict[str:int] = {
+        self.zeit_stempel:dict[str:int] = { # platzhalter dict für das Event-Zeit-Format
             "J":self._system_zeit.tm_year,
             "M":self._system_zeit.tm_mon,
             "T":self._system_zeit.tm_mday,
