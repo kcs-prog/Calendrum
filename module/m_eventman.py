@@ -31,8 +31,14 @@ class Event_Manager:
         self._event_liste.update({len(self._event_liste):[[event_zeit],event_akt,event_name]})
         print(type(event_zeit), event_zeit)
 
-    def event_erstellen(self,zeit:list[int],aktion:str) -> None:
-        pass
+    def __chk_event_zeit(self,event_zeit:dict[str:int]) -> bool:
+        for key in event_zeit.keys():
+            if key not in ["J","M","T","h","m","s"]:
+                raise exception("Datum und Uhrzeit des Events unvollständig.\n")
+        for value in event_zeit.values():
+            if type(value) != int:
+                raise exception("Falsches Zeichen für Zeit-Format.\nNur ganze Nummern.\n")
+        return True
 
     def __chk_event(self, event):
         if type(event) != list[list[int]]|str:
