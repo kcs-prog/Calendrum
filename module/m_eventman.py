@@ -36,14 +36,14 @@ class Event_Manager:
             "m":self._system_zeit.tm_min,
             "s":self._system_zeit.tm_sec
         }
-        self._event_liste:dict[int:list[dict[str,int]],str,str] = {} # platzhalter, event-liste muss ausgelagert werden.
+        self.event_liste:dict[int:list[dict[str,int]],str,str] = {} # platzhalter, event-liste muss ausgelagert werden.
         self._action_liste:list[str] = ["klingeln","erinnern","email","sms"] # für die Prüfung und ausführung von Klassenspezifischen Methoden
-        #print(len(self._event_liste)) # debug
+        #print(len(self.event_liste)) # debug
 
     def event_erstellen(self,event_zeit:dict[str:int],event_akt:str,event_name:str="") -> None:
         """Fügt ein Event der Liste hinzu. benötigt eine event-zeit (vorher festgelegt),
         eine event-aktion (aus einer vorgegebenen Liste), und einen event-namen.
-        Dem Event wird eine ID zugeteilt und es wird in der 'Event_Manager._event_liste' gespeichert.
+        Dem Event wird eine ID zugeteilt und es wird in der 'Event_Manager.event_liste' gespeichert.
         Event-Liste ist zurzeit in der Klasse also gespeichert, muss später lokal in einer Datei gespeichert werden."""
         if not self.__chk_event_zeit(event_zeit):
             raise exception("Zeiten für das Event sind im falschen Format.\n")
@@ -51,7 +51,7 @@ class Event_Manager:
             raise exception("Ungültige Event-Aktion.\n")
         if type(event_name) != str:
             raise exception("Ungültige Zeichen für Event-Namen\n")
-        self._event_liste.update({len(self._event_liste):[[event_zeit],event_akt,event_name]})
+        self.event_liste.update({len(self.event_liste):[[event_zeit],event_akt,event_name]})
         #print(event_zeit) #debug
 
     def __chk_event_zeit(self,event_zeit:dict[str:int]) -> bool:
@@ -68,9 +68,9 @@ class Event_Manager:
 if __name__ == "__main__":
     EM:Event_Manager = Event_Manager()
     EM.event_erstellen(EM.zeit_stempel,"klingeln","test1") # debug
-    for key in EM._event_liste.keys():
+    for key in EM.event_liste.keys():
         print(f"EventID:{key}\n") # ID des beispielevents
-    for value in EM._event_liste.values():
+    for value in EM.event_liste.values():
         print(f"Eventzeit:{value[0]}\n") #zeitstempel des beispielevents
         print(f"Aktion:{value[1]}\n") #aktion des beispielevents
         print(f"Name:{value[2]}\n") #name des beispielevents
