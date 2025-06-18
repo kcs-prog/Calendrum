@@ -5,10 +5,15 @@ from logging import exception
 class Event_Manager:
     """Event-Manager-Klasse der Calendrum-App"""
     def __init__(self) -> None:
-        self.event_liste:dict[int : list[list[int]],str,str] = {
-            #beispiel event der event_liste:
-        # ID: [ [Datumzeit]  , event-Name, event-aktion]
-            0:[[2025,6,18,13,20,30], "Alarm", "klingeln"]
+        self._system_zeit = localtime() # Echtzeit zum Abgleich mit Event-Zeiten
+        #print(self._system_zeit) # debug
+        self.system_zeit:dict[str:int] = {
+            "J":self._system_zeit.tm_year,
+            "M":self._system_zeit.tm_mon,
+            "T":self._system_zeit.tm_mday,
+            "h":self._system_zeit.tm_hour,
+            "m":self._system_zeit.tm_min,
+            "s":self._system_zeit.tm_sec
         }
 
     def get_event_liste(self) -> list[list[int]|str] or None:
