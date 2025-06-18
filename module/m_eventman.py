@@ -1,3 +1,21 @@
+"""
+Event_Manager
+————————————
+Event:dict{EventID:Event}
+-EventID:int
+-Event:list[Zeitstempel,Event-Aktion,Event-Name]
+-Zeitstempel:dict{str:int}
+-Event-Aktion:str
+-Event-Name:str
+————————————
+#init()
++event_erstellen(event_zeit:dict{str:int}, event_aktion:str, event_name:str)
++()
++()
++()
+
+"""
+
 from m_datumzeit import Datumzeit
 from time import localtime
 from logging import exception
