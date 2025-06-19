@@ -85,7 +85,7 @@ class Eventman:
     def event_liste(self, new_event_liste:dict[int:list[dict[str,int]],str,str]) -> None:
         """Setzt eine neue Event-Liste und speichert sie in CSV.
         :param new_event_liste:dict[int:list[dict[str:int]],str,str] #Neue Event-Liste im Format {EventID:int: list[dict{Zeitstempel:str:int}, Event-Aktion: str , Event-Name: str]}
-        :raises exception: Bei falschem Typ der neuen Event-Liste.
+        :raises exception: Bei falschem Typ der neuen Event-Liste oder Fehler beim Schreiben der CSV-Datei.
         """
         if type(new_event_liste) != dict:
             raise exception("Neue Event-Liste muss vom Typ 'dict' sein.\n")
