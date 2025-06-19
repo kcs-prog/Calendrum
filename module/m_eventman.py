@@ -53,6 +53,7 @@ class Eventman:
     def event_aufrufen(self, event_id:int) -> Any | None:
         """Methode zum Aufrufen eines Events anhand der Event-ID.
         :param event_id:int # ID-Nummer des Events
+        :return:Any | None # Gibt das Event-Objekt zurück, wenn es existiert, sonst None.
         """
         event_keys = self.event_liste.keys()
         #print(event_keys) #debug
