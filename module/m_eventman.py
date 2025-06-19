@@ -6,8 +6,8 @@ Eventman
 #Event-Aktionen:list[str] #Liste der verfügbaren Event-Aktionen.
 ————————————
 -init() -> None
-#events_laden() -> None
-#events_speichern() -> None
+-events_laden() -> None
+-events_speichern() -> None
 +event_erstellen(event_zeit: dict[str:int], event_akt: str, event_name: str = "") -> None
 +event_aufrufen(event_id: int) -> Any | None
 +event_entfernen(event_id: int) -> None
