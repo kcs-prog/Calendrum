@@ -15,7 +15,7 @@ Eventman
 from time import localtime
 from logging import exception
 from typing import Any
-
+from csv import writer
 
 class Eventman:
     """Event-Manager-Klasse der Calendrum-App.
