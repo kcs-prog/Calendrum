@@ -108,7 +108,7 @@ class Eventman:
         :raises exception: Bei leerer Event-Aktionsliste.
         """
         if not self._event_aktionen:
-            raise exception("Event-Aktionsliste ist leer.\n")
+            raise Exception("Event-Aktionsliste ist leer.\n")
         return self._event_aktionen
 
     @event_aktionen.setter
