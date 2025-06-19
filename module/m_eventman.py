@@ -24,11 +24,25 @@ class Eventman:
     Events sind dict-type-Objekte im Format:\n
     {EventID:int: list[dict{Zeitstempel:str:int}, Event-Aktion: str , Event-Name: str]} \n
     """
-    def __init__(self, event_liste:dict[int:list[dict[str,int]],str,str]) -> None:
-        self._system_zeit = localtime() # Echtzeit zum Abgleich mit Event-Zeiten
-        #print(self._system_zeit) # debug
-        self._event_liste:dict[int:list[dict[str,int]],str,str] = event_liste # platzhalter, event-liste muss ausgelagert werden.
-        self._event_aktionen:list[str] = ["klingeln","erinnern","email","sms"] # für die Prüfung und ausführung von Klassenspezifischen Methoden
+    def __init__(self) -> None:
+        self._system_zeit = localtime()  # Echtzeit zum Abgleich mit Event-Zeiten
+        self._event_liste: dict[int:list[dict[str, int]], str, str] = {}  # Wird aus events.csv geladen
+        self._event_aktionen: list[str] = ["klingeln", "erinnern", "email", "sms"]
+        # Event-Liste aus CSV laden
+        try:
+            with open('events.csv', 'r', encoding='utf-8') as f:
+                csv_reader = reader(f)
+                next(csv_reader)  # Skip header
+                self._event_liste = {
+                    int(row[0]): [ast.literal_eval(row[1]), row[2], row[3].strip()]
+                    for row in csv_reader if row
+                }
+        except FileNotFoundError:
+            # Wenn keine CSV existiert, erstelle eine neue mit Header
+            with open('events.csv', 'w', newline='', encoding='utf-8') as f:
+                from csv import writer
+                csv_writer = writer(f)
+                csv_writer.writerow(['EventID', 'Zeitstempel', 'Aktion', 'Name'])
         #print(len(self.event_liste)) # debug
 
     @property
