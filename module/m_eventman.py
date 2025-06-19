@@ -78,17 +78,6 @@ class Eventman:
         self._event_aktionen = new_event_aktionen
 
     @staticmethod
-    def __chk_event_zeit(event_zeit: datetime) -> bool:
-        """Überprüft die angegebene Event-Zeit auf das richtige Format für die Event-Manager-Methoden.
-        :param event_zeit:datetime #datetime-objekt.
-        :return:bool #True, wenn das Format korrekt ist, sonst False.
-        :raises exception: Bei unvollständigem oder falschem Format der Event-Zeit.
-        """
-        if not isinstance(event_zeit, datetime):
-            raise Exception("Event-Zeit muss ein datetime-Objekt sein.\n")
-        return True
-
-    @staticmethod
     def __parse_event_row(row) -> list:
         """Hilfsmethode zum Parsen einer Zeile aus der CSV-Datei.
         :param row: list[str]"""
