@@ -78,6 +78,22 @@ class Eventman:
         raise exception("Event konnte nicht entfernt werden.\n")
 
     @property
+    def event_liste(self) -> dict[int:list[dict[str,int]],str,str]:
+        """Gibt die Event-Liste zurück.
+        :return:dict[int:list[dict[str:int]],str,str] #Event-Liste im Format {EventID:int: list[dict{Zeitstempel:str:int}, Event-Aktion: str , Event-Name: str]}
+        """
+        return self._event_liste
+
+    @event_liste.setter
+    def event_liste(self, new_event_liste:dict[int:list[dict[str,int]],str,str]) -> None:
+        """Setzt eine neue Event-Liste.
+        :param new_event_liste:dict[int:list[dict[str:int]],str,str] #Neue Event-Liste im Format {EventID:int: list[dict{Zeitstempel:str:int}, Event-Aktion: str , Event-Name: str]}
+        """
+        if type(new_event_liste) != dict:
+            raise exception("Neue Event-Liste muss vom Typ 'dict' sein.\n")
+        self._event_liste = new_event_liste
+
+    @property
     def system_zeit(self) -> dict[str:int]:
         """Gibt die aktuelle Systemzeit zurück.
         :return:dict[str: int] #Aktuelle Systemzeit im Format {Jahr, Monat, Tag, Stunde, Minute, Sekunde}
