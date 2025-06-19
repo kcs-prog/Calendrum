@@ -18,10 +18,9 @@ from typing import Any
 from csv import writer, reader
 
 class Eventman:
-    """Event-Manager-Klasse der Calendrum-App.
-    Verwaltet Events (erstellen, löschen, bearbeiten, anzeigen).
-    Events sind dict-type-Objekte im Format:\n
-    {EventID:int: list[dict{Zeitstempel:str:int}, Event-Aktion: str , Event-Name: str]} \n
+    """Eventman-Klasse zur Verwaltung von Events.
+    Diese Klasse ermöglicht das Erstellen, Aufrufen und Entfernen von Events.
+    Die Events werden in einer CSV-Datei gespeichert und können über eine Event-ID verwaltet werden.
     """
     def __init__(self) -> None:
         self._system_zeit = localtime()  # Echtzeit zum Abgleich mit Event-Zeiten
