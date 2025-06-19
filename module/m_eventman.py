@@ -97,6 +97,15 @@ class Eventman:
         """
         return self._action_liste
 
+    @action_liste.setter
+    def action_liste(self, new_action_liste:list[str]) -> None:
+        """Setzt eine neue Liste von Event-Aktionen.
+        :param new_action_liste:list[str] #Neue Liste der verfügbaren Event-Aktionen.
+        """
+        if type(new_action_liste) != list:
+            raise exception("Neue Event-Aktionsliste muss vom Typ 'list' sein.\nElemente der Liste müssen vom Typ 'str' sein.\n")
+        self._action_liste = new_action_liste
+
     @staticmethod
     def __chk_event_zeit(event_zeit: dict[str:int]) -> bool:
         """Überprüft die angegebene Event-Zeit auf das richtige Format für die Event-Manager-Methoden.
