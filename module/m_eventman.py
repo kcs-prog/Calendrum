@@ -7,6 +7,7 @@ Eventman
 ————————————
 -init() -> None
 #load_events() -> None
+#save_events() -> None
 +event_erstellen(event_zeit:dict{str:int}, event_aktion:str, event_name:str) -> None
 +event_aufrufen(event_id:int) -> list[dict[str:int],str,str] -> ('Any' laut IDE) | None
 +event_entfernen(event_id:int) -> None
@@ -24,25 +25,37 @@ class Eventman:
     Die Events werden in einer CSV-Datei gespeichert und können über eine Event-ID verwaltet werden.
     """
     def __init__(self) -> None:
-        self._system_zeit = localtime()  # Echtzeit zum Abgleich mit Event-Zeiten
-        self._event_liste: dict[int:list[dict[str, int]], str, str] = {}  # Wird aus events.csv geladen
-        self._event_aktionen: list[str] = ["klingeln", "erinnern", "email", "sms"]
-        # Event-Liste aus CSV laden
-        try:
+        """Initialisiert die Eventman-Klasse und lädt die Events aus der CSV-Datei."""
+        self._system_zeit = localtime() # Aktuelle Systemzeit
+        self._event_liste: dict[int: list[dict[str, int]], str, str] = {} # Event-Liste im Format {EventID:int: list[dict{Zeitstempel:str:int}, Event-Aktion: str, Event-Name: str]}
+        self._event_aktionen: list[str] = ["klingeln", "erinnern", "email", "sms", "anruf", "alarm", "benachrichtigen","test"] # Liste der verfügbaren Event-Aktionen
+        self._load_events() # Lädt die Events aus der CSV-Datei
+
+    def _load_events(self) -> None:
+        """Lädt die Events aus der CSV-Datei in die Event-Liste.
+        :raises exception: Bei Fehlern beim Lesen der CSV-Datei oder wenn die Datei nicht gefunden wird."""
+        try:# Versucht, die Events aus der CSV-Datei zu laden
             with open('events.csv', 'r', encoding='utf-8') as f:
                 csv_reader = reader(f)
-                next(csv_reader)  # Skip header
-                self._event_liste = {
+                next(csv_reader)
+                self._event_liste = {# Erstellt ein Dictionary aus der CSV-Datei
                     int(row[0]): [ast.literal_eval(row[1]), row[2], row[3].strip()]
                     for row in csv_reader if row
                 }
-        except FileNotFoundError:
-            # Wenn keine CSV existiert, erstelle eine neue mit Header
+        except FileNotFoundError:# Wenn die Datei nicht existiert, wird eine leere Event-Liste erstellt
             with open('events.csv', 'w', newline='', encoding='utf-8') as f:
-                from csv import writer
                 csv_writer = writer(f)
                 csv_writer.writerow(['EventID', 'Zeitstempel', 'Aktion', 'Name'])
-        #print(len(self.event_liste)) # debug
+
+    def _events_speichern(self) -> None:
+        """Speichert die aktuelle Event-Liste in der CSV-Datei.
+        :raises exception: Bei Fehlern beim Schreiben der CSV-Datei."""
+        with open('events.csv', 'w', newline='', encoding='utf-8') as f:
+            csv_writer = writer(f)
+            csv_writer.writerow(['EventID', 'Zeitstempel', 'Aktion', 'Name'])
+            for event_id, event_data in self._event_liste.items():
+                csv_writer.writerow([event_id, event_data[0], event_data[1], event_data[2]])
+    #print(len(self.event_liste)) # debug
 
     @property
     def system_zeit(self) -> dict[str:int]:
@@ -213,7 +226,7 @@ if __name__ == "__main__":
         print(f"Eventzeit:{value[0]}\n") #zeitstempel des beispielevents
         print(f"Aktion:{value[1]}\n") #aktion des beispielevents
         print(f"Name:{value[2]}\n") #name des beispielevents
-    print(f"Event-Objekt aufgerufen mit Event-ID '0':\n{EM.event_aufrufen(1),f"\n"}\n") # event anhand einer ID aufrufen
+    print(f"Event-Objekt aufgerufen mit Event-ID '0':\n{EM.event_aufrufen(3),f"\n"}\n") # event anhand einer ID aufrufen
     print(f"Eventliste vor dem Entfernen eines Events:\n{EM.event_liste}")
-    EM.event_entfernen(1) # event anhand einer ID entfernen
+    EM.event_entfernen(3) # event anhand einer ID entfernen
     print(f"Eventliste nach dem Entfernen eines Events:\n{EM.event_liste}")
