@@ -90,6 +90,16 @@ class Eventman:
         if type(new_event_liste) != dict:
             raise Exception("Neue Event-Liste muss vom Typ 'dict' sein.\n")
         self._event_liste = new_event_liste
+        try:
+            with open('events.csv', 'r', encoding='utf-8') as f:
+                csv_reader = reader(f)
+                next(csv_reader)  # Skip header
+                self._event_liste = {
+                    int(row[0]): [ast.literal_eval(row[1]), row[2], row[3].strip()]
+                    for row in csv_reader if row
+                }
+        except Exception as e:
+            raise Exception(f"Fehler beim Speichern der Event-Liste: {str(e)}\n")
 
     @property
     def event_aktionen(self) -> list[str]:
