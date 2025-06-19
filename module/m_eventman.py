@@ -192,14 +192,13 @@ class Eventman:
 if __name__ == "__main__":
     """Testcode für die Eventman-Klasse"""
     EM:Eventman = Eventman() # Beispiel-Event-Liste
-    EM.event_erstellen(EM.system_zeit,"test","Test-Event Event erstellen") # debug
-    for key in EM.event_liste.keys():
-        print(f"EventID:{key}\n") # ID des beispielevents
-    for value in EM.event_liste.values(): #values sind die events
-        print(f"Eventzeit:{value[0]}\n") #zeitstempel des beispielevents
-        print(f"Aktion:{value[1]}\n") #aktion des beispielevents
-        print(f"Name:{value[2]}\n") #name des beispielevents
-    print(f"Event-Objekt aufgerufen mit Event-ID :\n{EM.event_aufrufen(max(EM.event_liste.keys())),f"\n"}\n") # event anhand einer ID aufrufen
-    print(f"Eventliste vor dem Entfernen eines Events:\n{EM.event_liste}")
-    EM.event_entfernen(max(EM.event_liste.keys())) # event anhand einer ID entfernen
-    print(f"Eventliste nach dem Entfernen eines Events:\n{EM.event_liste}")
+    EM.event_erstellen(EM.system_zeit,"test","Test-Event - Event erstellen") #test event erstellen
+    letztes_event_id = max(EM.event_liste.keys())
+    letztes_event = EM.event_aufrufen(letztes_event_id)
+    print(f"Event-Objekt aufgerufen mit Event-ID '{letztes_event_id}' :\n{letztes_event}\n")
+    print(f"Eventzeit des Events:\n{letztes_event[0]}\n")
+    print(f"Eventaktion des Events:\n{letztes_event[1]}\n")
+    print(f"Eventname des Events:\n{letztes_event[2]}\n")
+    print(f"Eventliste vor dem Entfernen eines Events:\n{EM.event_liste}\n")
+    EM.event_entfernen(letztes_event_id)
+    print(f"Eventliste nach dem Entfernen eines Events:\n{EM.event_liste}\n")
