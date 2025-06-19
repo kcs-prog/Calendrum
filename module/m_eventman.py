@@ -90,7 +90,7 @@ class Eventman:
     @staticmethod
     def __chk_event_zeit(event_zeit: dict[str:int]) -> bool:
         """Überprüft die angegebene Event-Zeit auf das richtige Format für die Event-Manager-Methoden.
-        :param event_zeit:dict[str:int] #Datumzeit-Format.
+        :param event_zeit:dict[str: int] #Datumzeit-Format.
         """
         for k in event_zeit.keys():
             if k not in ["J","M","T","h","m","s"]:
