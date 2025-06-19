@@ -116,7 +116,7 @@ class Eventman:
         self.event_liste.update({len(self.event_liste):[[event_zeit],event_akt,event_name]})
         #print(event_zeit) #debug
 
-    def event_aufrufen(self, event_id:int) -> list[dict[str:int],str , str] | None:
+    def event_aufrufen(self, event_id:int) -> Any | None: #In der IDE steht 'Any', aber es ist ein list-Objekt: list[dict[str:int],str , str]
         """Methode zum Aufrufen eines Events anhand der Event-ID.
         :param event_id:int # ID-Nummer des Events
         :return:Any | None # Gibt das Event-Objekt zurück, wenn es existiert, sonst None.
