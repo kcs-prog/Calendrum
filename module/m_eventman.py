@@ -21,10 +21,10 @@ class Eventman:
     Events sind dict-type-Objekte im Format:\n
     {EventID:int: list[dict{Zeitstempel:str:int}, Event-Aktion: str , Event-Name: str]} \n
     """
-    def __init__(self) -> None:
+    def __init__(self, event_liste:dict[int:list[dict[str,int]],str,str]) -> None:
         self._system_zeit = localtime() # Echtzeit zum Abgleich mit Event-Zeiten
         #print(self._system_zeit) # debug
-        self._event_liste:dict[int:list[dict[str,int]],str,str] = {} # platzhalter, event-liste muss ausgelagert werden.
+        self._event_liste:dict[int:list[dict[str,int]],str,str] = event_liste # platzhalter, event-liste muss ausgelagert werden.
         self._event_aktionen:list[str] = ["klingeln","erinnern","email","sms"] # für die Prüfung und ausführung von Klassenspezifischen Methoden
         #print(len(self.event_liste)) # debug
 
@@ -46,13 +46,17 @@ class Eventman:
     def event_liste(self) -> dict[int:list[dict[str,int]],str,str]:
         """Gibt die Event-Liste zurück.
         :return:dict[int:list[dict[str:int]],str,str] #Event-Liste im Format {EventID:int: list[dict{Zeitstempel:str:int}, Event-Aktion: str , Event-Name: str]}
+        :raises exception: Bei leerer Event-Liste.
         """
+        if not self._event_liste:
+            raise exception("Event-Liste ist leer.\n")
         return self._event_liste
 
     @event_liste.setter
     def event_liste(self, new_event_liste:dict[int:list[dict[str,int]],str,str]) -> None:
         """Setzt eine neue Event-Liste.
         :param new_event_liste:dict[int:list[dict[str:int]],str,str] #Neue Event-Liste im Format {EventID:int: list[dict{Zeitstempel:str:int}, Event-Aktion: str , Event-Name: str]}
+        :raises exception: Bei falschem Typ der neuen Event-Liste.
         """
         if type(new_event_liste) != dict:
             raise exception("Neue Event-Liste muss vom Typ 'dict' sein.\n")
@@ -62,13 +66,17 @@ class Eventman:
     def event_aktionen(self) -> list[str]:
         """Gibt die Liste der verfügbaren Event-Aktionen zurück.
         :return:list[str] #Liste der verfügbaren Event-Aktionen.
+        :raises exception: Bei leerer Event-Aktionsliste.
         """
+        if not self._event_aktionen:
+            raise exception("Event-Aktionsliste ist leer.\n")
         return self._event_aktionen
 
     @event_aktionen.setter
     def event_aktionen(self, new_event_aktionen:list[str]) -> None:
         """Setzt eine neue Liste von Event-Aktionen.
         :param new_event_aktionen:list[str] #Neue Liste der verfügbaren Event-Aktionen.
+        :raises exception: Bei falschem Typ der neuen Event-Aktionsliste.
         """
         if type(new_event_aktionen) != list:
             raise exception("Neue Event-Aktionsliste muss vom Typ 'list' sein.\nElemente der Liste müssen vom Typ 'str' sein.\n")
@@ -78,6 +86,8 @@ class Eventman:
     def __chk_event_zeit(event_zeit: dict[str:int]) -> bool:
         """Überprüft die angegebene Event-Zeit auf das richtige Format für die Event-Manager-Methoden.
         :param event_zeit:dict[str: int] #Datumzeit-Format.
+        :return:bool #True, wenn das Format korrekt ist, sonst False.
+        :raises exception: Bei unvollständigem oder falschem Format der Event-Zeit.
         """
         for k in event_zeit.keys():
             if k not in ["J","M","T","h","m","s"]:
@@ -110,7 +120,7 @@ class Eventman:
         """Methode zum Aufrufen eines Events anhand der Event-ID.
         :param event_id:int # ID-Nummer des Events
         :return:Any | None # Gibt das Event-Objekt zurück, wenn es existiert, sonst None.
-        :raises exception: Wenn die Event-ID nicht existiert.
+        :raises exception: Bei ungültiger Event-ID oder wenn das Event nicht gefunden wird.
         """
         event_keys = self.event_liste.keys()
         #print(event_keys) #debug
@@ -124,6 +134,7 @@ class Eventman:
     def event_entfernen(self, event_id:int) -> None:
         """Entfernt ein Event anhand der Event-ID aus der Event-Liste.
         :param event_id:int # ID-Nummer des Events
+        raises exception: Bei ungültiger Event-ID oder wenn das Event nicht gefunden wird.
         """
         event_keys = self.event_liste.keys()
         if event_id not in event_keys:
@@ -136,15 +147,15 @@ class Eventman:
 
 if __name__ == "__main__":
     """Testcode für die Eventman-Klasse"""
-    EM:Eventman = Eventman()
-    EM.event_erstellen(EM.system_zeit,"klingeln","test event erstellt") # debug
+    EM:Eventman = Eventman({0:[[{"J":2023,"M":10,"T":1,"h":12,"m":0,"s":0}],"klingeln","Test-Event Instanziierung der Klasse"]}) # Beispiel-Event-Liste
+    EM.event_erstellen(EM.system_zeit,"klingeln","Test-Event Event erstellen") # debug
     for key in EM.event_liste.keys():
         print(f"EventID:{key}\n") # ID des beispielevents
     for value in EM.event_liste.values():
         print(f"Eventzeit:{value[0]}\n") #zeitstempel des beispielevents
         print(f"Aktion:{value[1]}\n") #aktion des beispielevents
         print(f"Name:{value[2]}\n") #name des beispielevents
-    print(f"Event-Objekt aufgerufen mit Event-ID '0':\n{EM.event_aufrufen(0)}\n") # event anhand einer ID aufrufen
+    print(f"Event-Objekt aufgerufen mit Event-ID '0':\n{EM.event_aufrufen(0),f"\n"}\n") # event anhand einer ID aufrufen
     print(f"Eventliste vor dem Entfernen eines Events:\n{EM.event_liste}")
     EM.event_entfernen(0) # event anhand einer ID entfernen
     print(f"Eventliste nach dem Entfernen eines Events:\n{EM.event_liste}")
