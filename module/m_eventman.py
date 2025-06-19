@@ -31,7 +31,7 @@ class Eventman:
     def __init__(self) -> None:
         """Initialisiert die Eventman-Klasse und lädt die Events aus der CSV-Datei."""
         self._system_zeit = datetime.now() # Aktuelle Systemzeit
-        self._event_liste: dict[int: list[datetime, str, str]] = {} # Event-Liste im Format {EventID:int: list[dict{datetime:str:int}, Event-Aktion: str, Event-Name: str]}
+        self._event_liste: dict[int: list[datetime, str, str]] = {} # Event-Liste im Format {EventID:int: list[datetime, Event-Aktion: str, Event-Name: str]}
         self._event_aktionen: list[str] = ["klingeln", "email", "sms", "anruf", "alarm", "test"] # Liste der verfügbaren Event-Aktionen
         self.__events_laden() # Lädt die Events aus der CSV-Datei
 
@@ -50,7 +50,7 @@ class Eventman:
     @event_liste.setter
     def event_liste(self, new_event_liste:dict[int:list[datetime,str,str]]) -> None:
         """Setzt eine neue Event-Liste und speichert sie in CSV.
-        :param new_event_liste:dict[int:list[datetime,str,str]] #Neue Event-Liste im Format {EventID:int: list[dict{datetime:str:int}, Event-Aktion: str, Event-Name: str]}
+        :param new_event_liste:dict[int:list[datetime,str,str]] #Neue Event-Liste im Format {EventID:int: list[datetime, Event-Aktion: str, Event-Name: str]}
         :raises exception: Bei falschem Typ der neuen Event-Liste.
         """
         if not isinstance(new_event_liste, dict):
@@ -143,13 +143,13 @@ class Eventman:
         :raises exception: Bei ungültiger Event-Zeit, Aktion oder Name.
         """
         if not self.__chk_event_zeit(event_zeit):
-            raise Exception("Event time is in the wrong format.\n")
+            raise Exception("Event-Zeit muss ein datetime-Objekt sein.\n")
         if not isinstance(event_akt, str) or event_akt not in self._event_aktionen:
-            raise Exception("Invalid event action.\n")
+            raise Exception("Ungültige Event-Aktion.\n")
         if not isinstance(event_name, str):
-            raise Exception("Invalid characters for event name.\n")
+            raise Exception("Event-Name muss aus String bestehen.\n")
         if event_name.strip() == "":
-            raise Exception("Event name cannot be empty.\n")
+            raise Exception("Event-Name darf nicht leer sein.\n")
         if self._event_liste:
             new_event_id = max(self._event_liste.keys()) + 1 # Neue Event-ID basierend auf der höchsten vorhandenen ID
         else:
@@ -197,7 +197,7 @@ class Eventman:
             raise Exception(f"Fehler beim Entfernen des Events aus der CSV: {str(e)}\n")
 
 if __name__ == "__main__":
-    """Testcode für die Eventman-Klasse"""
+    """Testcode für die Eventman-Klasse."""
     EM:Eventman = Eventman() # Beispiel-Event-Liste
     EM.event_erstellen(EM.system_zeit, "test", "Test-Event - Event erstellen")
     letztes_event_id = max(EM.event_liste.keys())
