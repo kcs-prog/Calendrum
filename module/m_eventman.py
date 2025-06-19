@@ -62,8 +62,8 @@ class Eventman:
     @property
     def event_liste(self) -> dict[int:list[dict[str,int]],str,str]:
         """Gibt die Event-Liste zurück.
-        :return:dict[int:list[dict[str:int]],str,str] #Event-Liste im Format {EventID:int: list[dict{Zeitstempel:str:int}, Event-Aktion: str , Event-Name: str]}
-        :raises exception: Bei leerer Event-Liste.
+        :return:dict[int: list[dict[str: int]], str, str] #Event-Liste aus CSV im Format {EventID:int: list[dict{Zeitstempel:str:int}, Event-Aktion: str, Event-Name: str]}
+        :raises exception: Bei leerer Event-Liste oder Fehler beim Lesen der CSV-Datei.
         """
         if not self._event_liste:
             raise exception("Event-Liste ist leer.\n")
