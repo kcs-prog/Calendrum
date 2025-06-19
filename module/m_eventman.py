@@ -16,7 +16,6 @@ Eventman
 +()
 
 """
-import ast
 from time import localtime, sleep
 from datetime import datetime
 from typing import Any
