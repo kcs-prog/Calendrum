@@ -10,15 +10,13 @@ Eventman
 -events_laden() -> None
 -events_speichern() -> None
 +event_erstellen(event_zeit: datetime, event_akt: str, event_name: str = "") -> None
-+event_aufrufen(event_id: int) -> Any | None
++event_aufrufen(event_id: int) -> list[datetime, str, str] | None
 +event_entfernen(event_id: int) -> None
 #trigger_event(event_zeit: datetime, event_akt: str) -> str
-+()
 
 """
 from time import sleep
-from datetime import datetime
-from typing import Any
+from datetime import datetime, timedelta
 from csv import writer, reader
 
 class Eventman:
@@ -30,9 +28,11 @@ class Eventman:
     def __init__(self) -> None:
         """Initialisiert die Eventman-Klasse und lädt die Events aus der CSV-Datei."""
         self._system_zeit = datetime.now() # Aktuelle Systemzeit
-        self._event_liste: dict[int: list[datetime, str, str]] = {} # Event-Liste im Format {EventID:int: list[datetime, Event-Aktion: str, Event-Name: str]}
+        self._event_liste: dict[int: list] = {} # Event-Liste im Format {EventID:int: list[datetime, Event-Aktion: str, Event-Name: str]}
         self._event_aktionen: list[str] = ["klingeln", "email", "sms", "anruf", "alarm", "test"] # Liste der verfügbaren Event-Aktionen
         self.__events_laden() # Lädt die Events aus der CSV-Datei
+        for event in self._event_liste.values():
+            self._event_trigger(event[0], event[1])  # Überprüft, ob die Events bereits ausgelöst werden sollten
 
     @property
     def system_zeit(self) -> datetime:
@@ -42,14 +42,14 @@ class Eventman:
         return datetime.now()
 
     @property
-    def event_liste(self) -> dict[int:list[datetime,str,str]]:
+    def event_liste(self) -> dict[int:list]:
         """Gibt die Event-Liste zurück."""
         return self._event_liste
 
     @event_liste.setter
-    def event_liste(self, new_event_liste:dict[int:list[datetime,str,str]]) -> None:
+    def event_liste(self, new_event_liste:dict[int:list]) -> None:
         """Setzt eine neue Event-Liste und speichert sie in CSV.
-        :param new_event_liste:dict[int:list[datetime,str,str]] #Neue Event-Liste im Format {EventID:int: list[datetime, Event-Aktion: str, Event-Name: str]}
+        :param new_event_liste:dict[int: list[datetime, str, str]] #Neue Event-Liste im Format {EventID:int: list[datetime, Event-Aktion: str, Event-Name: str]}
         :raises exception: Bei falschem Typ der neuen Event-Liste.
         """
         if not isinstance(new_event_liste, dict):
@@ -89,7 +89,7 @@ class Eventman:
         return True
 
     @staticmethod
-    def __parse_event_row(row) -> list[Any]:
+    def __parse_event_row(row) -> list:
         """Hilfsmethode zum Parsen einer Zeile aus der CSV-Datei.
         :param row: list[str]"""
         return [datetime.fromisoformat(row[1]), row[2], row[3].strip()]  # Zeitstempel als datetime, Event-Aktion als String, Event-Name als String
@@ -134,7 +134,7 @@ class Eventman:
                 return event_akt
             sleep(0.5)
 
-    def event_erstellen(self, event_zeit: datetime, event_akt: str, event_name: str = "") -> None:
+    def event_erstellen(self, event_zeit: datetime, event_akt: str, event_name: str) -> None:
         """Fügt ein Event der Liste hinzu und speichert es in der CSV-Datei.
         :param event_zeit:datetime #Zeitstempel des Events.
         :param event_akt:str #Aktion, die mit dem Event verknüpft werden soll, aus vordefinierter Liste.
@@ -143,6 +143,8 @@ class Eventman:
         """
         if not self.__chk_event_zeit(event_zeit):
             raise Exception("Event-Zeit muss ein datetime-Objekt sein.\n")
+        if event_zeit < self.system_zeit - timedelta(seconds=30):
+            raise Exception("Event-Zeit darf nicht in der Vergangenheit liegen.\n")
         if not isinstance(event_akt, str) or event_akt not in self._event_aktionen:
             raise Exception("Ungültige Event-Aktion.\n")
         if not isinstance(event_name, str):
@@ -161,11 +163,10 @@ class Eventman:
             del self._event_liste[new_event_id]
             raise Exception(f"Fehler beim Speichern des Events: {str(e)}\n")
 
-    def event_aufrufen(self, event_id: int) -> Any | None:
+    def event_aufrufen(self, event_id: int) -> list:
         """Methode zum Aufrufen eines Events anhand der Event-ID.
-        IDE sagt Any, Event-Objekt ist aber immer eine Liste mit [datetime, str, str].
         :param event_id:int # ID-Nummer des Events
-        :return:Any | None # Gibt das Event-Objekt zurück, wenn es existiert, sonst None.
+        :return:list[datetime, str, str] # Gibt das Event-Objekt zurück, wenn es existiert, sonst None.
         :raises exception: Bei ungültiger Event-ID oder wenn das Event nicht gefunden wird.
         """
         try:
@@ -189,13 +190,12 @@ class Eventman:
         """
         if event_id not in self._event_liste:
             raise Exception("Es existiert kein Event mit dieser ID.\n")
-        # Event aus dem Cache entfernen
         del self._event_liste[event_id]
+        print(f"Event mit ID {event_id} wurde entfernt.\n")
         try:
-            # CSV neu schreiben ohne das gelöschte Event
             self.__events_speichern()
         except Exception as e:
-            raise Exception(f"Fehler beim Entfernen des Events aus der CSV: {str(e)}\n")
+            raise Exception(f"Fehler beim speichern der Event-Liste: {str(e)}\n")
 
 if __name__ == "__main__":
     """Testcode für die Eventman-Klasse."""
@@ -210,4 +210,3 @@ if __name__ == "__main__":
     print(f"Eventliste vor dem Entfernen eines Events:\n{EM.event_liste}\n")
     EM.event_entfernen(letztes_event_id)
     print(f"Eventliste nach dem Entfernen eines Events:\n{EM.event_liste}\n")
-    print(f"Trigger eines Events (bei erfolgreichem Trigger erscheint nächste Zeile 'test'):\n{EM._event_trigger(letztes_event[0], letztes_event[1])}\n")
