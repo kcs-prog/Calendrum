@@ -101,7 +101,7 @@ class Eventman:
     def _parse_event_row(row) -> list[Any]:
         """Hilfsmethode zum Parsen einer Zeile aus der CSV-Datei.
         :param row: list[str]"""
-        return [ast.literal_eval(row[1]), row[2],
+        return [ast.literal_eval(row[1]), row[2], #literal_eval wandelt den Zeitstempel-String in ein Dictionary um
                 row[3].strip()]  # Zeitstempel als Dictionary, Event-Aktion als String, Event-Name als String
 
     def __events_laden(self) -> None:
