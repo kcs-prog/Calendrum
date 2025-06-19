@@ -162,6 +162,7 @@ class Eventman:
 
     def event_aufrufen(self, event_id: int) -> Any | None:
         """Methode zum Aufrufen eines Events anhand der Event-ID.
+        IDE sagt Any, Event-Objekt ist aber immer eine Liste mit [datetime, str, str].
         :param event_id:int # ID-Nummer des Events
         :return:Any | None # Gibt das Event-Objekt zurück, wenn es existiert, sonst None.
         :raises exception: Bei ungültiger Event-ID oder wenn das Event nicht gefunden wird.
