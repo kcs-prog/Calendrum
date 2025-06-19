@@ -6,6 +6,7 @@ Eventman
 #Event-Aktionen:list[str] #Liste der verfügbaren Event-Aktionen.
 ————————————
 -init() -> None
+#load_events() -> None
 +event_erstellen(event_zeit:dict{str:int}, event_aktion:str, event_name:str) -> None
 +event_aufrufen(event_id:int) -> list[dict[str:int],str,str] -> ('Any' laut IDE) | None
 +event_entfernen(event_id:int) -> None
