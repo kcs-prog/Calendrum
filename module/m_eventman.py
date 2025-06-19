@@ -98,4 +98,4 @@ if __name__ == "__main__":
         print(f"Eventzeit:{value[0]}\n") #zeitstempel des beispielevents
         print(f"Aktion:{value[1]}\n") #aktion des beispielevents
         print(f"Name:{value[2]}\n") #name des beispielevents
-    print(f"Event-Objekt aufgerufen mit Event-ID:{EM.event_aufrufen(0)}\n") # event anhand einer ID aufrufen
+    print(f"Event-Objekt aufgerufen mit Event-ID '0':\n{EM.event_aufrufen(0)}\n") # event anhand einer ID aufrufen
