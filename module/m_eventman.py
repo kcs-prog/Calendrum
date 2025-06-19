@@ -112,3 +112,5 @@ if __name__ == "__main__":
         print(f"Aktion:{value[1]}\n") #aktion des beispielevents
         print(f"Name:{value[2]}\n") #name des beispielevents
     print(f"Event-Objekt aufgerufen mit Event-ID '0':\n{EM.event_aufrufen(0)}\n") # event anhand einer ID aufrufen
+    EM.event_entfernen(0) # event anhand einer ID entfernen
+    print(f"Eventliste nach dem Entfernen eines Events:\n{EM.event_liste}")
