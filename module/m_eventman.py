@@ -130,7 +130,7 @@ class Eventman:
         """
         for k in event_zeit.keys():
             if k not in ["J","M","T","h","m","s"]:
-                raise exception("Datum und Uhrzeit des Events unvollständig.\n")
+                raise Exception("Datum und Uhrzeit des Events unvollständig.\n")
         for v in event_zeit.values():
             if type(v) != int:
                 raise exception("Falsches Zeichen für Zeit-Format.\nNur ganze Nummern.\n")
