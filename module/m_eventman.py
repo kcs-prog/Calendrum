@@ -106,6 +106,7 @@ class Eventman:
             "m":self._system_zeit.tm_min,
             "s":self._system_zeit.tm_sec
         }
+    
     @property
     def action_liste(self) -> list[str]:
         """Gibt die Liste der verfügbaren Event-Aktionen zurück.
