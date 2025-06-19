@@ -2,17 +2,17 @@
 Eventman
 ————————————
 #Event-Liste:dict{EventID:Event} #noch im code integriert, wird später lokal von einer Datei geholt wenn vorhanden.
-#System-Zeit:dict{str:int}
+#System-Zeit:datetime #Aktuelle Systemzeit.
 #Event-Aktionen:list[str] #Liste der verfügbaren Event-Aktionen.
 ————————————
 -init() -> None
 -parse_event_row(row) -> list[Any]
 -events_laden() -> None
 -events_speichern() -> None
-+event_erstellen(event_zeit: dict[str:int], event_akt: str, event_name: str = "") -> None
++event_erstellen(event_zeit: datetime, event_akt: str, event_name: str = "") -> None
 +event_aufrufen(event_id: int) -> Any | None
 +event_entfernen(event_id: int) -> None
-#trigger_event(event_zeit: dict[str:int], event_akt: str) -> str
+#trigger_event(event_zeit: datetime, event_akt: str) -> str
 +()
 
 """
@@ -30,37 +30,30 @@ class Eventman:
     EVENTS_CSV = 'events.csv'  # Pfad zur CSV-Datei, in der die Events gespeichert werden
     def __init__(self) -> None:
         """Initialisiert die Eventman-Klasse und lädt die Events aus der CSV-Datei."""
-        self._system_zeit = localtime() # Aktuelle Systemzeit
-        self._event_liste: dict[int: list[dict[str, int]], str, str] = {} # Event-Liste im Format {EventID:int: list[dict{Zeitstempel:str:int}, Event-Aktion: str, Event-Name: str]}
+        self._system_zeit = datetime.now() # Aktuelle Systemzeit
+        self._event_liste: dict[int: list[datetime, str, str]] = {} # Event-Liste im Format {EventID:int: list[dict{datetime:str:int}, Event-Aktion: str, Event-Name: str]}
         self._event_aktionen: list[str] = ["klingeln", "email", "sms", "anruf", "alarm", "test"] # Liste der verfügbaren Event-Aktionen
         self.__events_laden() # Lädt die Events aus der CSV-Datei
 
     @property
-    def system_zeit(self) -> dict[str:int]:
+    def system_zeit(self) -> datetime:
         """Gibt die aktuelle Systemzeit zurück.
-        :return:dict[str: int] #Aktuelle Systemzeit im Format {Jahr, Monat, Tag, Stunde, Minute, Sekunde}
+        :return:datetime # Aktuelle Systemzeit als datetime-Objekt.
         """
-        return {# Aktuelle Systemzeit im Format {Jahr, Monat, Tag, Stunde, Minute, Sekunde}
-            "J":self._system_zeit.tm_year,
-            "M":self._system_zeit.tm_mon,
-            "T":self._system_zeit.tm_mday,
-            "h":self._system_zeit.tm_hour,
-            "m":self._system_zeit.tm_min,
-            "s":self._system_zeit.tm_sec
-        }
+        return datetime.now()
 
     @property
-    def event_liste(self) -> dict[int:list[dict[str,int]],str,str]:
+    def event_liste(self) -> dict[int:list[datetime,str,str]]:
         """Gibt die Event-Liste zurück."""
         return self._event_liste
 
     @event_liste.setter
-    def event_liste(self, new_event_liste:dict[int:list[dict[str,int]],str,str]) -> None:
+    def event_liste(self, new_event_liste:dict[int:list[datetime,str,str]]) -> None:
         """Setzt eine neue Event-Liste und speichert sie in CSV.
-        :param new_event_liste:dict[int:list[dict[str,int]],str,str] #Neue Event-Liste im Format {EventID:int: list[dict{Zeitstempel:str:int}, Event-Aktion: str, Event-Name: str]}
+        :param new_event_liste:dict[int:list[datetime,str,str]] #Neue Event-Liste im Format {EventID:int: list[dict{datetime:str:int}, Event-Aktion: str, Event-Name: str]}
         :raises exception: Bei falschem Typ der neuen Event-Liste.
         """
-        if not isinstance(new_event_liste, dict):# Überprüft, ob die neue Event-Liste ein Dictionary ist
+        if not isinstance(new_event_liste, dict):
             raise Exception("Neue Event-Liste muss vom Typ 'dict' sein.\n")
         self._event_liste = new_event_liste
         self.__events_speichern()
@@ -86,26 +79,21 @@ class Eventman:
         self._event_aktionen = new_event_aktionen
 
     @staticmethod
-    def __chk_event_zeit(event_zeit: dict[str:int]) -> bool:
+    def __chk_event_zeit(event_zeit: datetime) -> bool:
         """Überprüft die angegebene Event-Zeit auf das richtige Format für die Event-Manager-Methoden.
-        :param event_zeit:dict[str: int] #Datumzeit-Format.
+        :param event_zeit:datetime #datetime-objekt.
         :return:bool #True, wenn das Format korrekt ist, sonst False.
         :raises exception: Bei unvollständigem oder falschem Format der Event-Zeit.
         """
-        required_keys = {"J", "M", "T", "h", "m", "s"}
-        if set(event_zeit.keys()) != required_keys:
-            raise Exception("Datum und Uhrzeit des Events unvollständig oder enthält ungültige Schlüssel.\n")
-        for v in event_zeit.values():
-            if not isinstance(v, int):
-                raise Exception("Falsches Zeichen für Zeit-Format.\nNur ganze Nummern.\n")
+        if not isinstance(event_zeit, datetime):
+            raise Exception("Event-Zeit muss ein datetime-Objekt sein.\n")
         return True
 
     @staticmethod
     def __parse_event_row(row) -> list[Any]:
         """Hilfsmethode zum Parsen einer Zeile aus der CSV-Datei.
         :param row: list[str]"""
-        return [ast.literal_eval(row[1]), row[2], #literal_eval wandelt den Zeitstempel-String in ein Dictionary um
-                row[3].strip()]  # Zeitstempel als Dictionary, Event-Aktion als String, Event-Name als String
+        return [datetime.fromisoformat(row[1]), row[2], row[3].strip()]  # Zeitstempel als datetime, Event-Aktion als String, Event-Name als String
 
     def __events_laden(self) -> None:
         """Lädt die Events aus der CSV-Datei in die Event-Liste."""
@@ -128,32 +116,28 @@ class Eventman:
             csv_writer = writer(f)
             csv_writer.writerow(['EventID', 'Zeitstempel', 'Aktion', 'Name'])
             for event_id, event_data in self._event_liste.items():
-                csv_writer.writerow([event_id, event_data[0], event_data[1], event_data[2]])
+                csv_writer.writerow([event_id, event_data[0].isoformat(), event_data[1], event_data[2]])
 
-    def _event_trigger(self, event_zeit: dict[str, int], event_akt: str) -> str:
+    def _event_trigger(self, event_zeit: datetime, event_akt: str) -> str:
         """Diese Methode überprüft, ob die aktuelle Zeit die Event-Zeit erreicht hat
          und gibt die zugehörige Aktion als String zurück.
-        :param event_zeit:dict[str: int] #Datumzeit-Format.
+        :param event_zeit:datetime #Zeitstempel des Events, der erreicht werden muss.
         :param event_akt:str #Aktion, die mit dem Event verknüpft werden soll, aus vordefinierter Liste.
         :return:str #Gibt die Aktion des Events zurück, wenn die Zeit erreicht ist.
         :raises exception: Bei ungültiger Event-Zeit oder Aktion."""
         if not self.__chk_event_zeit(event_zeit):
-            raise Exception("Event time is in the wrong format.\n")
+            raise Exception("Event-Zeit ist kein datetime-Objekt.\n")
         if not isinstance(event_akt, str) or event_akt not in self._event_aktionen:
-            raise Exception("Invalid event action.\n")
-        event_zeit = datetime( # Wandelt die Event-Zeit in ein datetime-Objekt um
-            event_zeit["J"], event_zeit["M"], event_zeit["T"],
-            event_zeit["h"], event_zeit["m"], event_zeit["s"]
-        )
+            raise Exception("Keine gültige Aktion.\n")
         while True:
             jetzt = datetime.now()
-            if jetzt >= event_zeit:# Überprüft, ob die aktuelle Zeit die Event-Zeit erreicht hat
+            if jetzt >= event_zeit:
                 return event_akt
-            sleep(0.5)# Kurze Pause, um die CPU nicht zu überlasten
+            sleep(0.5)
 
-    def event_erstellen(self, event_zeit: dict[str:int], event_akt: str, event_name: str = "") -> None:
+    def event_erstellen(self, event_zeit: datetime, event_akt: str, event_name: str = "") -> None:
         """Fügt ein Event der Liste hinzu und speichert es in der CSV-Datei.
-        :param event_zeit:dict[str: int] #Datumzeit-Format.
+        :param event_zeit:datetime #Zeitstempel des Events.
         :param event_akt:str #Aktion, die mit dem Event verknüpft werden soll, aus vordefinierter Liste.
         :param event_name:str #Name des Events zur Darstellung im UI.
         :raises exception: Bei ungültiger Event-Zeit, Aktion oder Name.
