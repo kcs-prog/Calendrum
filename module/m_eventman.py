@@ -28,7 +28,7 @@ class Eventman:
     def __init__(self) -> None:
         self._system_zeit = localtime() # Echtzeit zum Abgleich mit Event-Zeiten
         #print(self._system_zeit) # debug
-        self.event_liste:dict[int:list[dict[str,int]],str,str] = {} # platzhalter, event-liste muss ausgelagert werden.
+        self._event_liste:dict[int:list[dict[str,int]],str,str] = {} # platzhalter, event-liste muss ausgelagert werden.
         self._action_liste:list[str] = ["klingeln","erinnern","email","sms"] # für die Prüfung und ausführung von Klassenspezifischen Methoden
         #print(len(self.event_liste)) # debug
 
