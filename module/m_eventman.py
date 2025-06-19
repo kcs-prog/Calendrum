@@ -102,6 +102,7 @@ class Eventman:
 
 
 if __name__ == "__main__":
+    """Testcode für die Eventman-Klasse"""
     EM:Eventman = Eventman()
     EM.event_erstellen(EM.zeit_stempel,"klingeln","test event erstellt") # debug
     for key in EM.event_liste.keys():
