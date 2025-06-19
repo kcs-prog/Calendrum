@@ -90,6 +90,12 @@ class Eventman:
             "m":self._system_zeit.tm_min,
             "s":self._system_zeit.tm_sec
         }
+    @property
+    def action_liste(self) -> list[str]:
+        """Gibt die Liste der verfügbaren Event-Aktionen zurück.
+        :return:list[str] #Liste der verfügbaren Event-Aktionen.
+        """
+        return self._action_liste
 
     @staticmethod
     def __chk_event_zeit(event_zeit: dict[str:int]) -> bool:
