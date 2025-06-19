@@ -67,7 +67,7 @@ class Eventman:
         :param event_id:int # ID-Nummer des Events
         """
         event_keys = self.event_liste.keys()
-        #print(event_keys,event_values) #debug
+        #print(event_keys) #debug
         if event_id not in event_keys:
             raise exception("Es existiert kein Event mit dieser ID.\n")
         for k in event_keys:
