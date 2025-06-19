@@ -136,57 +136,77 @@ class Eventman:
                 raise Exception("Falsches Zeichen für Zeit-Format.\nNur ganze Nummern.\n")
         return True
 
-    def event_erstellen(self,event_zeit:dict[str:int],event_akt:str,event_name:str="") -> None:
-        """Fügt ein Event der Liste hinzu. benötigt eine event-zeit (vorher festgelegt),
-        eine event-aktion (aus einer vorgegebenen Liste), und einen event-namen.
-        Dem Event wird eine ID zugeteilt und es wird in der 'Eventman.event_liste' gespeichert.
-        Event-Liste ist zurzeit in der Klasse also gespeichert, muss später lokal in einer Datei gespeichert werden.
+    def event_erstellen(self, event_zeit: dict[str:int], event_akt: str, event_name: str = "") -> None:
+        """Fügt ein Event der Liste hinzu und speichert es in der CSV-Datei.
         :param event_zeit:dict[str: int] #Datumzeit-Format.
         :param event_akt:str #Aktion, die mit dem Event verknüpft werden soll, aus vordefinierter Liste.
         :param event_name:str #Name des Events zur Darstellung im UI.
         :raises exception: Wenn die Event-Zeit im falschen Format ist, die Event-Aktion ungültig ist oder der Event-Name ungültige Zeichen enthält.
         """
         if not self.__chk_event_zeit(event_zeit):
-            raise exception("Zeiten für das Event sind im falschen Format.\n")
+            raise Exception("Zeiten für das Event sind im falschen Format.\n")
         if type(event_akt) != str or event_akt not in self._event_aktionen:
-            raise exception("Ungültige Event-Aktion.\n")
+            raise Exception("Ungültige Event-Aktion.\n")
         if type(event_name) != str:
-            raise exception("Ungültige Zeichen für Event-Namen\n")
-        self.event_liste.update({len(self.event_liste):[[event_zeit],event_akt,event_name]})
-        #print(event_zeit) #debug
+            raise Exception("Ungültige Zeichen für Event-Namen\n")
+        if self._event_liste:
+            new_event_id = max(self._event_liste.keys()) + 1
+        else:
+            new_event_id = 1
+        self._event_liste[new_event_id] = [event_zeit, event_akt, event_name]
+        try:
+            with open('events.csv', 'a', newline='', encoding='utf-8') as f:
+                csv_writer = writer(f)
+                csv_writer.writerow([new_event_id, event_zeit, event_akt, event_name])
+        except Exception as e:
+            del self._event_liste[new_event_id]
+            raise Exception(f"Fehler beim Speichern des Events: {str(e)}\n")
 
-    def event_aufrufen(self, event_id:int) -> Any | None: #In der IDE steht 'Any', aber es ist ein list-Objekt: list[dict[str:int],str , str]
+    def event_aufrufen(self, event_id: int) -> Any | None:
         """Methode zum Aufrufen eines Events anhand der Event-ID.
         :param event_id:int # ID-Nummer des Events
         :return:Any | None # Gibt das Event-Objekt zurück, wenn es existiert, sonst None.
         :raises exception: Bei ungültiger Event-ID oder wenn das Event nicht gefunden wird.
         """
-        event_keys = self.event_liste.keys()
-        #print(event_keys) #debug
-        if event_id not in event_keys:
-            raise exception("Es existiert kein Event mit dieser ID.\n")
-        for k in event_keys:
-            if k == event_id:
-                return self.event_liste[k]
-        raise exception("Event konnte nicht aufgerufen werden.\n")
+        try:
+            if event_id in self._event_liste:
+                return self._event_liste[event_id]
+            # Wenn nicht im Cache, dann aus CSV laden
+            with open('events.csv', 'r', encoding='utf-8') as f:
+                import ast
+                lines = f.readlines()[1:]  # Skip header
+                for line in lines:
+                    current_id = int(line.split(',')[0])
+                    if current_id == event_id:
+                        return [ast.literal_eval(line.split(',')[1]),
+                                line.split(',')[2],
+                                line.split(',')[3].strip()]
+            raise Exception("Es existiert kein Event mit dieser ID.\n")
+        except Exception as e:
+            raise Exception(f"Event konnte nicht aufgerufen werden: {str(e)}\n")
 
-    def event_entfernen(self, event_id:int) -> None:
-        """Entfernt ein Event anhand der Event-ID aus der Event-Liste.
+    def event_entfernen(self, event_id: int) -> None:
+        """Entfernt ein Event anhand der Event-ID aus der Event-Liste und CSV-Datei.
         :param event_id:int # ID-Nummer des Events
-        raises exception: Bei ungültiger Event-ID oder wenn das Event nicht gefunden wird.
+        :raises exception: bei ungültiger Event-ID oder wenn das Event nicht gefunden wird.
         """
-        event_keys = self.event_liste.keys()
-        if event_id not in event_keys:
-            raise exception("Es existiert kein Event mit dieser ID.\n")
-        for k in event_keys:
-            if k == event_id:
-                del self.event_liste[k]
-                return None
-        raise exception("Event konnte nicht entfernt werden.\n")
+        if event_id not in self._event_liste:
+            raise Exception("Es existiert kein Event mit dieser ID.\n")
+        # Event aus dem Cache entfernen
+        del self._event_liste[event_id]
+        try:
+            # CSV neu schreiben ohne das gelöschte Event
+            with open('events.csv', 'w', newline='', encoding='utf-8') as f:
+                csv_writer = writer(f)
+                csv_writer.writerow(['EventID', 'Zeitstempel', 'Aktion', 'Name'])
+                for event_id, event_data in self._event_liste.items():
+                    csv_writer.writerow([event_id, event_data[0], event_data[1], event_data[2]])
+        except Exception as e:
+            raise Exception(f"Fehler beim Entfernen des Events aus der CSV: {str(e)}\n")
 
 if __name__ == "__main__":
     """Testcode für die Eventman-Klasse"""
-    EM:Eventman = Eventman({0:[[{"J":2023,"M":10,"T":1,"h":12,"m":0,"s":0}],"klingeln","Test-Event Instanziierung der Klasse"]}) # Beispiel-Event-Liste
+    EM:Eventman = Eventman() # Beispiel-Event-Liste
     EM.event_erstellen(EM.system_zeit,"klingeln","Test-Event Event erstellen") # debug
     for key in EM.event_liste.keys():
         print(f"EventID:{key}\n") # ID des beispielevents
@@ -194,7 +214,7 @@ if __name__ == "__main__":
         print(f"Eventzeit:{value[0]}\n") #zeitstempel des beispielevents
         print(f"Aktion:{value[1]}\n") #aktion des beispielevents
         print(f"Name:{value[2]}\n") #name des beispielevents
-    print(f"Event-Objekt aufgerufen mit Event-ID '0':\n{EM.event_aufrufen(0),f"\n"}\n") # event anhand einer ID aufrufen
+    print(f"Event-Objekt aufgerufen mit Event-ID '0':\n{EM.event_aufrufen(1),f"\n"}\n") # event anhand einer ID aufrufen
     print(f"Eventliste vor dem Entfernen eines Events:\n{EM.event_liste}")
-    EM.event_entfernen(0) # event anhand einer ID entfernen
+    EM.event_entfernen(1) # event anhand einer ID entfernen
     print(f"Eventliste nach dem Entfernen eines Events:\n{EM.event_liste}")
