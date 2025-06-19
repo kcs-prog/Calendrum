@@ -45,7 +45,7 @@ class Eventman:
         eine event-aktion (aus einer vorgegebenen Liste), und einen event-namen.
         Dem Event wird eine ID zugeteilt und es wird in der 'Eventman.event_liste' gespeichert.
         Event-Liste ist zurzeit in der Klasse also gespeichert, muss später lokal in einer Datei gespeichert werden.
-        :param event_zeit:dict[str:int] #Datumzeit-Format.
+        :param event_zeit:dict[str: int] #Datumzeit-Format.
         :param event_akt:str #Aktion, die mit dem Event verknüpft werden soll, aus vordefinierter Liste.
         :param event_name:str #Name des Events zur Darstellung im UI.
         """
