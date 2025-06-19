@@ -63,6 +63,7 @@ class Eventman:
         """Methode zum Aufrufen eines Events anhand der Event-ID.
         Gibt Events im Format zurück:\n
         list[list[dict[str:int],str,str]] (IDE erkennt es als Any an)
+        :param event_id:int # ID-Nummer des Events
         """
         event_keys = self.event_liste.keys()
         event_values = self.event_liste.values()
