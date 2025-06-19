@@ -87,6 +87,20 @@ class Eventman:
                 return None
         raise exception("Event konnte nicht entfernt werden.\n")
 
+    @property
+    def system_zeit(self) -> dict[str:int]:
+        """Gibt die aktuelle Systemzeit zurück.
+        :return:dict[str: int] #Aktuelle Systemzeit im Format {Jahr, Monat, Tag, Stunde, Minute, Sekunde}
+        """
+        return {
+            "J":self._system_zeit.tm_year,
+            "M":self._system_zeit.tm_mon,
+            "T":self._system_zeit.tm_mday,
+            "h":self._system_zeit.tm_hour,
+            "m":self._system_zeit.tm_min,
+            "s":self._system_zeit.tm_sec
+        }
+
     @staticmethod
     def __chk_event_zeit(event_zeit: dict[str:int]) -> bool:
         """Überprüft die angegebene Event-Zeit auf das richtige Format für die Event-Manager-Methoden.
