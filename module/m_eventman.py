@@ -76,7 +76,9 @@ class Eventman:
         return None
 
     def __chk_event_zeit(self,event_zeit:dict[str:int]) -> bool:
-        """Überprüft die angegebene Event-Zeit auf das richtige Format für die Event-Manager-Methoden."""
+        """Überprüft die angegebene Event-Zeit auf das richtige Format für die Event-Manager-Methoden.
+        :param event_zeit:dict[str:int] #Datumzeit-Format.
+        """
         for k in event_zeit.keys():
             if k not in ["J","M","T","h","m","s"]:
                 raise exception("Datum und Uhrzeit des Events unvollständig.\n")
