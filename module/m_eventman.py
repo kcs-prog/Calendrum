@@ -12,7 +12,6 @@ Eventman
 +()
 
 """
-from typing import Any
 from time import localtime
 from logging import exception
 
