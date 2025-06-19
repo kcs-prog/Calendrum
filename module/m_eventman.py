@@ -6,8 +6,8 @@ Eventman
 #Event-Aktionen:list[str] #Liste der verfügbaren Event-Aktionen.
 ————————————
 -init() -> None
-#load_events() -> None
-#save_events() -> None
+#events_laden() -> None
+#events_speichern() -> None
 +event_erstellen(event_zeit: dict[str:int], event_akt: str, event_name: str = "") -> None
 +event_aufrufen(event_id: int) -> Any | None
 +event_entfernen(event_id: int) -> None
@@ -29,9 +29,9 @@ class Eventman:
         self._system_zeit = localtime() # Aktuelle Systemzeit
         self._event_liste: dict[int: list[dict[str, int]], str, str] = {} # Event-Liste im Format {EventID:int: list[dict{Zeitstempel:str:int}, Event-Aktion: str, Event-Name: str]}
         self._event_aktionen: list[str] = ["klingeln", "erinnern", "email", "sms", "anruf", "alarm", "benachrichtigen","test"] # Liste der verfügbaren Event-Aktionen
-        self._load_events() # Lädt die Events aus der CSV-Datei
+        self._events_laden() # Lädt die Events aus der CSV-Datei
 
-    def _load_events(self) -> None:
+    def _events_laden(self) -> None:
         """Lädt die Events aus der CSV-Datei in die Event-Liste.
         :raises exception: Bei Fehlern beim Lesen der CSV-Datei oder wenn die Datei nicht gefunden wird."""
         try:# Versucht, die Events aus der CSV-Datei zu laden
@@ -225,7 +225,7 @@ if __name__ == "__main__":
         print(f"Eventzeit:{value[0]}\n") #zeitstempel des beispielevents
         print(f"Aktion:{value[1]}\n") #aktion des beispielevents
         print(f"Name:{value[2]}\n") #name des beispielevents
-    print(f"Event-Objekt aufgerufen mit Event-ID '0':\n{EM.event_aufrufen(3),f"\n"}\n") # event anhand einer ID aufrufen
+    print(f"Event-Objekt aufgerufen mit Event-ID :\n{EM.event_aufrufen(max(EM.event_liste.keys)),f"\n"}\n") # event anhand einer ID aufrufen
     print(f"Eventliste vor dem Entfernen eines Events:\n{EM.event_liste}")
-    EM.event_entfernen(3) # event anhand einer ID entfernen
+    EM.event_entfernen(max(EM.event_liste.keys)) # event anhand einer ID entfernen
     print(f"Eventliste nach dem Entfernen eines Events:\n{EM.event_liste}")
