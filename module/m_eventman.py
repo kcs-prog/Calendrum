@@ -55,7 +55,6 @@ class Eventman:
             csv_writer.writerow(['EventID', 'Zeitstempel', 'Aktion', 'Name'])
             for event_id, event_data in self._event_liste.items():
                 csv_writer.writerow([event_id, event_data[0], event_data[1], event_data[2]])
-    #print(len(self.event_liste)) # debug
 
     @property
     def system_zeit(self) -> dict[str:int]:
