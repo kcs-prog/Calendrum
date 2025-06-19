@@ -16,7 +16,7 @@ Eventman
 +()
 
 """
-from time import localtime, sleep
+from time import sleep
 from datetime import datetime
 from typing import Any
 from csv import writer, reader
