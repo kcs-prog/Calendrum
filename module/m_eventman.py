@@ -65,9 +65,21 @@ class Eventman:
         :return:dict[int: list[dict[str: int]], str, str] #Event-Liste aus CSV im Format {EventID:int: list[dict{Zeitstempel:str:int}, Event-Aktion: str, Event-Name: str]}
         :raises exception: Bei leerer Event-Liste oder Fehler beim Lesen der CSV-Datei.
         """
-        if not self._event_liste:
-            raise exception("Event-Liste ist leer.\n")
-        return self._event_liste
+        try:
+            if not self._event_liste:
+                with open('events.csv', 'r', encoding='utf-8') as f:
+                    import ast
+                    lines = f.readlines()
+                    self._event_liste = {int(line.split(',')[0]):
+                        [ast.literal_eval(line.split(',')[1]),
+                         line.split(',')[2],
+                         line.split(',')[3].strip()]
+                        for line in lines[1:]}  # Skip header
+            return self._event_liste
+        except FileNotFoundError:
+            return {}
+        except Exception as e:
+            raise Exception(f"Fehler beim Lesen der Event-Liste: {str(e)}\n")
 
     @event_liste.setter
     def event_liste(self, new_event_liste:dict[int:list[dict[str,int]],str,str]) -> None:
