@@ -133,7 +133,7 @@ class Eventman:
                 raise Exception("Datum und Uhrzeit des Events unvollständig.\n")
         for v in event_zeit.values():
             if type(v) != int:
-                raise exception("Falsches Zeichen für Zeit-Format.\nNur ganze Nummern.\n")
+                raise Exception("Falsches Zeichen für Zeit-Format.\nNur ganze Nummern.\n")
         return True
 
     def event_erstellen(self,event_zeit:dict[str:int],event_akt:str,event_name:str="") -> None:
