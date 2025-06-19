@@ -14,7 +14,6 @@ Eventman
 """
 import ast
 from time import localtime
-from logging import exception
 from typing import Any
 from csv import writer, reader
 
