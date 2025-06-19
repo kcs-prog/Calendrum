@@ -32,7 +32,7 @@ class Eventman:
         """Initialisiert die Eventman-Klasse und lädt die Events aus der CSV-Datei."""
         self._system_zeit = localtime() # Aktuelle Systemzeit
         self._event_liste: dict[int: list[dict[str, int]], str, str] = {} # Event-Liste im Format {EventID:int: list[dict{Zeitstempel:str:int}, Event-Aktion: str, Event-Name: str]}
-        self._event_aktionen: list[str] = ["klingeln", "erinnern", "email", "sms", "anruf", "alarm", "benachrichtigen","test"] # Liste der verfügbaren Event-Aktionen
+        self._event_aktionen: list[str] = ["klingeln", "email", "sms", "anruf", "alarm", "test"] # Liste der verfügbaren Event-Aktionen
         self.__events_laden() # Lädt die Events aus der CSV-Datei
 
     @property
