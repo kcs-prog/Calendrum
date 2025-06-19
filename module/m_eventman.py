@@ -129,6 +129,27 @@ class Eventman:
             for event_id, event_data in self._event_liste.items():
                 csv_writer.writerow([event_id, event_data[0], event_data[1], event_data[2]])
 
+    def _trigger_event(self, event_zeit: dict[str, int], event_akt: str) -> str:
+        """Diese Methode überprüft, ob die aktuelle Zeit die Event-Zeit erreicht hat
+         und gibt die zugehörige Aktion als String zurück.
+        :param event_zeit:dict[str: int] #Datumzeit-Format.
+        :param event_akt:str #Aktion, die mit dem Event verknüpft werden soll, aus vordefinierter Liste.
+        :return:str #Gibt die Aktion des Events zurück, wenn die Zeit erreicht ist.
+        :raises exception: Bei ungültiger Event-Zeit oder Aktion."""
+        if not self.__chk_event_zeit(event_zeit):
+            raise Exception("Event time is in the wrong format.\n")
+        if not isinstance(event_akt, str) or event_akt not in self._event_aktionen:
+            raise Exception("Invalid event action.\n")
+        event_zeit = datetime( # Wandelt die Event-Zeit in ein datetime-Objekt um
+            event_zeit["J"], event_zeit["M"], event_zeit["T"],
+            event_zeit["h"], event_zeit["m"], event_zeit["s"]
+        )
+        while True:
+            jetzt = datetime.now()
+            if jetzt >= event_zeit:# Überprüft, ob die aktuelle Zeit die Event-Zeit erreicht hat
+                return event_akt
+            sleep(0.5)# Kurze Pause, um die CPU nicht zu überlasten
+
     def event_erstellen(self, event_zeit: dict[str:int], event_akt: str, event_name: str = "") -> None:
         """Fügt ein Event der Liste hinzu und speichert es in der CSV-Datei.
         :param event_zeit:dict[str: int] #Datumzeit-Format.
