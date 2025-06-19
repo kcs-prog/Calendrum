@@ -151,7 +151,7 @@ if __name__ == "__main__":
     EM.event_erstellen(EM.system_zeit,"klingeln","Test-Event Event erstellen") # debug
     for key in EM.event_liste.keys():
         print(f"EventID:{key}\n") # ID des beispielevents
-    for value in EM.event_liste.values():
+    for value in EM.event_liste.values(): #values sind die events
         print(f"Eventzeit:{value[0]}\n") #zeitstempel des beispielevents
         print(f"Aktion:{value[1]}\n") #aktion des beispielevents
         print(f"Name:{value[2]}\n") #name des beispielevents
