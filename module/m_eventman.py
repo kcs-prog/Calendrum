@@ -74,7 +74,8 @@ class Eventman:
                 return self.event_liste[k]
         return None
 
-    def __chk_event_zeit(self,event_zeit:dict[str:int]) -> bool:
+    @staticmethod
+    def __chk_event_zeit(event_zeit: dict[str:int]) -> bool:
         """Überprüft die angegebene Event-Zeit auf das richtige Format für die Event-Manager-Methoden.
         :param event_zeit:dict[str:int] #Datumzeit-Format.
         """
