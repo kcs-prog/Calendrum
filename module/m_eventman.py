@@ -6,11 +6,13 @@ Eventman
 #Event-Aktionen:list[str] #Liste der verfügbaren Event-Aktionen.
 ————————————
 -init() -> None
+-parse_event_row(row) -> list[Any]
 -events_laden() -> None
 -events_speichern() -> None
 +event_erstellen(event_zeit: dict[str:int], event_akt: str, event_name: str = "") -> None
 +event_aufrufen(event_id: int) -> Any | None
 +event_entfernen(event_id: int) -> None
+#trigger_event(event_zeit: dict[str:int], event_akt: str) -> str
 +()
 
 """
@@ -99,7 +101,7 @@ class Eventman:
         return True
 
     @staticmethod
-    def _parse_event_row(row) -> list[Any]:
+    def __parse_event_row(row) -> list[Any]:
         """Hilfsmethode zum Parsen einer Zeile aus der CSV-Datei.
         :param row: list[str]"""
         return [ast.literal_eval(row[1]), row[2], #literal_eval wandelt den Zeitstempel-String in ein Dictionary um
@@ -112,7 +114,7 @@ class Eventman:
                 csv_reader = reader(f)
                 next(csv_reader)
                 self._event_liste = {
-                    int(row[0]): self._parse_event_row(row)
+                    int(row[0]): self.__parse_event_row(row)
                     for row in csv_reader if row
                 }
         except FileNotFoundError:
@@ -121,15 +123,14 @@ class Eventman:
                 csv_writer.writerow(['EventID', 'Zeitstempel', 'Aktion', 'Name'])
 
     def __events_speichern(self) -> None:
-        """Speichert die aktuelle Event-Liste in der CSV-Datei.
-        :raises exception: Bei Fehlern beim Schreiben der CSV-Datei."""
+        """Speichert die aktuelle Event-Liste in der CSV-Datei."""
         with open(self.EVENTS_CSV, 'w', newline='', encoding='utf-8') as f:
             csv_writer = writer(f)
             csv_writer.writerow(['EventID', 'Zeitstempel', 'Aktion', 'Name'])
             for event_id, event_data in self._event_liste.items():
                 csv_writer.writerow([event_id, event_data[0], event_data[1], event_data[2]])
 
-    def _trigger_event(self, event_zeit: dict[str, int], event_akt: str) -> str:
+    def _event_trigger(self, event_zeit: dict[str, int], event_akt: str) -> str:
         """Diese Methode überprüft, ob die aktuelle Zeit die Event-Zeit erreicht hat
          und gibt die zugehörige Aktion als String zurück.
         :param event_zeit:dict[str: int] #Datumzeit-Format.
@@ -214,7 +215,7 @@ class Eventman:
 if __name__ == "__main__":
     """Testcode für die Eventman-Klasse"""
     EM:Eventman = Eventman() # Beispiel-Event-Liste
-    EM.event_erstellen(EM.system_zeit,"test","Test-Event - Event erstellen") #test event erstellen
+    EM.event_erstellen(EM.system_zeit, "test", "Test-Event - Event erstellen")
     letztes_event_id = max(EM.event_liste.keys())
     letztes_event = EM.event_aufrufen(letztes_event_id)
     print(f"Event-Objekt aufgerufen mit Event-ID '{letztes_event_id}' :\n{letztes_event}\n")
@@ -224,3 +225,4 @@ if __name__ == "__main__":
     print(f"Eventliste vor dem Entfernen eines Events:\n{EM.event_liste}\n")
     EM.event_entfernen(letztes_event_id)
     print(f"Eventliste nach dem Entfernen eines Events:\n{EM.event_liste}\n")
+    print(f"Trigger eines Events (bei erfolgreichem Trigger erscheint nächste Zeile 'test'):\n{EM._event_trigger(letztes_event[0], letztes_event[1])}\n")

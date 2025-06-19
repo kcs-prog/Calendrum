@@ -1,0 +1,7 @@
+EventID,Zeitstempel,Aktion,Name
+1,"{'J': 2025, 'M': 6, 'T': 19, 'h': 23, 'm': 41, 's': 17}",test,Test-Event - Event erstellen
+2,"{'J': 2025, 'M': 6, 'T': 19, 'h': 23, 'm': 41, 's': 19}",test,Test-Event - Event erstellen
+3,"{'J': 2025, 'M': 6, 'T': 20, 'h': 0, 'm': 9, 's': 24}",test,Test-Event - Event erstellen
+4,"{'J': 2025, 'M': 6, 'T': 20, 'h': 0, 'm': 9, 's': 35}",test,Test-Event - Event erstellen
+5,"{'J': 2025, 'M': 6, 'T': 20, 'h': 0, 'm': 9, 's': 43}",test,Test-Event - Event erstellen
+6,"{'J': 2025, 'M': 6, 'T': 20, 'h': 0, 'm': 9, 's': 51}",test,Test-Event - Event erstellen
