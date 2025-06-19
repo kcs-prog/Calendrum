@@ -88,7 +88,7 @@ class Eventman:
         :raises exception: Bei falschem Typ der neuen Event-Liste oder Fehler beim Schreiben der CSV-Datei.
         """
         if type(new_event_liste) != dict:
-            raise exception("Neue Event-Liste muss vom Typ 'dict' sein.\n")
+            raise Exception("Neue Event-Liste muss vom Typ 'dict' sein.\n")
         self._event_liste = new_event_liste
 
     @property
