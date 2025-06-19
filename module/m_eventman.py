@@ -154,6 +154,7 @@ class Eventman:
         else:
             new_event_id = 1 # Startet bei 1, wenn keine Events vorhanden sind
         self._event_liste[new_event_id] = [event_zeit, event_akt, event_name] # Fügt das neue Event der Liste hinzu
+        print(f"Event {event_name} wurde erstellt mit ID {new_event_id}.\n")
         try:# Speichert das neue Event in der CSV-Datei
             self.__events_speichern()
         except Exception as e:
