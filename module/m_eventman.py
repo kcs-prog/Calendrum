@@ -72,7 +72,20 @@ class Eventman:
         for k in event_keys:
             if k == event_id:
                 return self.event_liste[k]
-        return None
+        raise exception("Event konnte nicht aufgerufen werden.\n")
+
+    def event_entfernen(self, event_id:int) -> None:
+        """Entfernt ein Event anhand der Event-ID aus der Event-Liste.
+        :param event_id:int # ID-Nummer des Events
+        """
+        event_keys = self.event_liste.keys()
+        if event_id not in event_keys:
+            raise exception("Es existiert kein Event mit dieser ID.\n")
+        for k in event_keys:
+            if k == event_id:
+                del self.event_liste[k]
+                return None
+        raise exception("Event konnte nicht entfernt werden.\n")
 
     @staticmethod
     def __chk_event_zeit(event_zeit: dict[str:int]) -> bool:
