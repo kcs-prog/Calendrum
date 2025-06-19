@@ -4,7 +4,7 @@ Eventman
 +Event-Liste:dict{EventID:Event} #noch im code integriert, wird später lokal von einer Datei geholt wenn vorhanden.
 #EventID:int
 #Event:list[Zeitstempel,Event-Aktion,Event-Name]
-#Zeitstempel:dict{str:int}
+#System-Zeit:dict{str:int}
 #Event-Aktion:str
 #Event-Name:str
 ————————————
