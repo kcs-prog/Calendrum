@@ -118,7 +118,7 @@ class Eventman:
         :raises exception: Bei falschem Typ der neuen Event-Aktionsliste.
         """
         if type(new_event_aktionen) != list:
-            raise exception("Neue Event-Aktionsliste muss vom Typ 'list' sein.\nElemente der Liste müssen vom Typ 'str' sein.\n")
+            raise Exception("Neue Event-Aktionsliste muss vom Typ 'list' sein.\nElemente der Liste müssen vom Typ 'str' sein.\n")
         self._event_aktionen = new_event_aktionen
 
     @staticmethod
