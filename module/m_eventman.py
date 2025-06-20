@@ -132,7 +132,7 @@ class Eventman:
         :param event_name:str #Name des Events zur Darstellung im UI.
         :raises exception: Bei ungültiger Event-Zeit, Aktion oder Name.
         """
-        if not self.__chk_event_zeit(event_zeit):
+        if not isinstance(event_zeit, datetime):
             raise Exception("Event-Zeit muss ein datetime-Objekt sein.\n")
         if event_zeit < self.system_zeit - timedelta(seconds=30):
             raise Exception("Event-Zeit darf nicht in der Vergangenheit liegen.\n")
