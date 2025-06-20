@@ -6,7 +6,6 @@ Eventman
 #Event-Aktionen:list[str] #Liste der verfügbaren Event-Aktionen.
 ————————————
 -init() -> None
--parse_event_row(row) -> list[Any]
 -events_laden() -> None
 -events_speichern() -> None
 +event_erstellen(event_zeit: datetime, event_akt: str, event_name: str = "") -> None
