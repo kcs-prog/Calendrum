@@ -180,7 +180,7 @@ class Eventman:
         :raises exception: bei ungültiger Event-ID oder wenn das Event nicht gefunden wird.
         """
         if event_id not in self._event_liste:
-            raise Exception("Es existiert kein Event mit dieser ID.\n")
+            raise Exception(f"Es existiert kein Event mit der ID '{event_id}'.\n")
         del self._event_liste[event_id]
         print(f"Event mit ID {event_id} wurde entfernt.\n")
         try:
