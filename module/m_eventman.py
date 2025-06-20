@@ -84,7 +84,9 @@ class Eventman:
         return [datetime.fromisoformat(row[1]), row[2], row[3].strip()]  # Zeitstempel als datetime, Event-Aktion als String, Event-Name als String
 
     def __events_laden(self) -> None:
-        """Lädt die Events aus der CSV-Datei in die Event-Liste."""
+        """Lädt die Events aus der CSV-Datei in die Event-Liste.
+        Erstellt die Datei, falls sie nicht existiert.
+        :raises exception: Bei Fehlern beim Laden der Events aus der CSV-Datei."""
         try:
             with open(self.EVENTS_CSV, 'r', encoding='utf-8') as f:
                 csv_reader = reader(f)
