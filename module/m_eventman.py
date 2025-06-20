@@ -85,7 +85,7 @@ class Eventman:
                 csv_reader = reader(f)
                 next(csv_reader)
                 self._event_liste = {
-                    int(row[0]): self.__parse_event_row(row)
+                    int(row[0]): [datetime.fromisoformat(row[1]), row[2], row[3].strip()]
                     for row in csv_reader if row
                 }
         except FileNotFoundError:
