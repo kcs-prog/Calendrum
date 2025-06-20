@@ -170,7 +170,7 @@ class Eventman:
                 for row in csv_reader: # Durchsucht die CSV-Datei nach der Event-ID
                     if int(row[0]) == event_id:
                         return self.__parse_event_row(row) # Gibt das Event-Objekt zurück
-            raise Exception("Es existiert kein Event mit dieser ID.\n")
+            raise Exception(f"Es existiert kein Event mit der ID '{event_id}'.\n")
         except Exception as e:
             raise Exception(f"Event konnte nicht aufgerufen werden: {str(e)}\n")
 
