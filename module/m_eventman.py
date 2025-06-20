@@ -78,7 +78,7 @@ class Eventman:
         self._event_aktionen = new_event_aktionen
 
     @staticmethod
-    def __parse_event_row(row) -> list:
+    def __parse_event_row(row:list) -> list:
         """Hilfsmethode zum Parsen einer Zeile aus der CSV-Datei.
         :param row: list[str]"""
         return [datetime.fromisoformat(row[1]), row[2], row[3].strip()]  # Zeitstempel als datetime, Event-Aktion als String, Event-Name als String
