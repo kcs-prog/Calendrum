@@ -115,8 +115,8 @@ class Eventman:
         :param event_akt:str #Aktion, die mit dem Event verknüpft werden soll, aus vordefinierter Liste.
         :return:str #Gibt die Aktion des Events zurück, wenn die Zeit erreicht ist.
         :raises exception: Bei ungültiger Event-Zeit oder Aktion."""
-        if not self.__chk_event_zeit(event_zeit):
-            raise Exception("Event-Zeit ist kein datetime-Objekt.\n")
+        if not isinstance(event_zeit, datetime):
+            raise Exception("Event-Zeit muss ein datetime-Objekt sein.\n")
         if not isinstance(event_akt, str) or event_akt not in self._event_aktionen:
             raise Exception("Keine gültige Aktion.\n")
         while True:
