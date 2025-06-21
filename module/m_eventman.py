@@ -25,7 +25,7 @@ class Eventman:
     Attribute:
         EVENTS_CSV (str): Pfad zur CSV-Datei, in der die Events gespeichert werden.
         __system_zeit (datetime): Aktuelle Systemzeit.
-        __event_liste (dict[int: list]): Event-Liste im Format {EventID:int: list[datetime, Event-Aktion: str, Event-Name: str]}.
+        __event_liste (dict[int: list]): Event-Liste im Format {Event-ID:int: list[datetime, Event-Aktion: str, Event-Name: str]}.
         __event_aktionen (list[str]): Liste der verfügbaren Event-Aktionen.
     Methoden:
         event_erstellen(event_zeit: datetime, event_akt: str, event_name: str) → None: Fügt ein Event der Liste hinzu und speichert es in der CSV-Datei.
