@@ -8,10 +8,10 @@ Eventman
 -init() -> None
 -events_laden() -> None
 -events_speichern() -> None
+-trigger_event(event_zeit: datetime, event_akt: str) -> str
 +event_erstellen(event_zeit: datetime, event_akt: str, event_name: str = "") -> None
 +event_aufrufen(event_id: int) -> list[datetime, str, str] | None
 +event_entfernen(event_id: int) -> None
-#trigger_event(event_zeit: datetime, event_akt: str) -> str
 
 """
 from time import sleep
@@ -31,7 +31,7 @@ class Eventman:
         self.__event_aktionen: list[str] = ["klingeln", "email", "sms", "anruf", "alarm", "test"] # Liste der verfügbaren Event-Aktionen
         self.__events_laden() # Lädt die Events aus der CSV-Datei
         for event in self.__event_liste.values():
-            print(f"Event-Backlog wird geprüft. Event-Aktion: '{self._event_trigger(event[0], event[1])}'\n")  # Überprüft, ob die Events bereits ausgelöst werden sollten
+            print(f"Event-Backlog wird geprüft. Event-Aktion: '{self.__event_trigger(event[0], event[1])}'\n")  # Überprüft, ob die Events bereits ausgelöst werden sollten
 
     @property
     def system_zeit(self) -> datetime:
@@ -101,7 +101,7 @@ class Eventman:
             for event_id, event_data in self.__event_liste.items():
                 csv_writer.writerow([event_id, event_data[0].isoformat(), event_data[1], event_data[2]])
 
-    def _event_trigger(self, event_zeit: datetime, event_akt: str) -> str:
+    def __event_trigger(self, event_zeit: datetime, event_akt: str) -> str:
         """Diese Methode überprüft, ob die aktuelle Zeit die Event-Zeit erreicht hat
          und gibt die zugehörige Aktion als String zurück.
         :param event_zeit:datetime #Zeitstempel des Events, der erreicht werden muss.
