@@ -24,7 +24,6 @@ class Eventman:
     Diese Klasse ermöglicht das Erstellen, Aufrufen und Entfernen von Events.
     Die Events werden in einer CSV-Datei gespeichert und können über eine Event-ID verwaltet werden.
     _____________Attribute:_____________________
-        EVENTS_CSV (str): Pfad zur CSV-Datei, in der die Events gespeichert werden.
         __system_zeit (datetime): Aktuelle Systemzeit.
         __event_liste (dict[int: list]): Event-Liste im Format {Event-ID:int: list[datetime, Event-Aktion: str, Event-Name: str]}.
         __event_aktionen (list[str]): Liste der verfügbaren Event-Aktionen.
