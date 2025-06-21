@@ -28,9 +28,9 @@ class Eventman:
         __event_liste (dict[int: list]): Event-Liste im Format {EventID:int: list[datetime, Event-Aktion: str, Event-Name: str]}.
         __event_aktionen (list[str]): Liste der verfügbaren Event-Aktionen.
     Methoden:
-        event_erstellen(event_zeit: datetime, event_akt: str, event_name: str) -> None: Fügt ein Event der Liste hinzu und speichert es in der CSV-Datei.
-        event_aufrufen(event_id: int) -> list[datetime, str, str]: Ruft ein Event anhand der Event-ID auf und gibt es zurück.
-        event_entfernen(event_id: int) -> None: Entfernt ein Event anhand der Event-ID aus der Event-Liste und CSV-Datei.
+        event_erstellen(event_zeit: datetime, event_akt: str, event_name: str) → None: Fügt ein Event der Liste hinzu und speichert es in der CSV-Datei.
+        event_aufrufen(event_id: int) → list[datetime, str, str]: Ruft ein Event anhand der Event-ID auf und gibt es zurück.
+        event_entfernen(event_id: int) → None: Entfernt ein Event anhand der Event-ID aus der Event-Liste und CSV-Datei.
     """
     EVENTS_CSV = 'events.csv'  # Pfad zur CSV-Datei, in der die Events gespeichert werden
     def __init__(self) -> None:
