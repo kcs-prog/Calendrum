@@ -63,7 +63,7 @@ class Eventman:
         :raises exception: Bei leerer Event-Aktionsliste.
         """
         if not self._event_aktionen:
-            raise Exception("Event-Aktionsliste ist leer.\n")
+            raise Exception("Aktions-Liste ist leer.\n")
         return self._event_aktionen
 
     @event_aktionen.setter
@@ -73,7 +73,7 @@ class Eventman:
         :raises exception: Bei falschem Typ der neuen Event-Aktionsliste.
         """
         if not isinstance(new_event_aktionen, list) or not all(isinstance(a, str) for a in new_event_aktionen):
-            raise Exception("Event-Aktionsliste muss eine Liste von Strings sein.\n")
+            raise Exception("Aktions-Liste muss eine Liste von Strings sein.\n")
         self._event_aktionen = new_event_aktionen
 
     def __events_laden(self) -> None:
