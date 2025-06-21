@@ -133,10 +133,10 @@ class Eventman:
 
     def event_erstellen(self, event_zeit: datetime, event_akt: str, event_name: str) -> None:
         """Fügt ein Event der Liste hinzu und speichert es in der CSV-Datei.
-        :param event_zeit:datetime #Zeitstempel des Events.
-        :param event_akt:str #Aktion, die mit dem Event verknüpft werden soll, aus vordefinierter Liste.
-        :param event_name:str #Name des Events zur Darstellung im UI.
-        :raises exception: Bei ungültiger Event-Zeit, Aktion oder Name.
+        :param event_zeit:datetime #Zeitstempel des Events.\
+        :param event_akt:str #Aktion, die mit dem Event verknüpft werden soll, aus vordefinierter Liste.\
+        :param event_name:str #Name des Events zur Darstellung im UI.\
+        :raises exception: Bei ungültiger Event-Zeit, Aktion oder Name.\
         """
         if not isinstance(event_zeit, datetime):
             raise Exception("Event-Zeit muss ein datetime-Objekt sein.\n")
