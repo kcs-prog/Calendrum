@@ -162,9 +162,9 @@ class Eventman:
 
     def event_aufrufen(self, event_id: int) -> list:
         """Methode zum Aufrufen eines Events anhand der Event-ID.
-        :param event_id:int # ID-Nummer des Events
-        :return:list[datetime, str, str] # Gibt das Event-Objekt zurück, wenn es existiert, sonst None.
-        :raises exception: Bei ungültiger Event-ID oder wenn das Event nicht gefunden wird.
+        :param event_id:int # ID-Nummer des Events\
+        :return:list[datetime, str, str] # Gibt das Event-Objekt zurück, wenn es existiert, sonst None.\
+        :raises exception: Bei ungültiger Event-ID oder wenn das Event nicht gefunden wird.\
         """
         try:
             if event_id in self.__event_liste:
