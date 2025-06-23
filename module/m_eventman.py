@@ -32,21 +32,18 @@ class Eventman:
         event_aufrufen(event_id: int) → list[datetime, str, str]: Ruft ein Event anhand der Event-ID auf und gibt es zurück.
         event_entfernen(event_id: int) → None: Entfernt ein Event anhand der Event-ID aus der Event-Liste und CSV-Datei.
     """
-    EVENTS_CSV = 'events.csv'  # Pfad zur CSV-Datei, in der die Events gespeichert werden
+    EVENTS_CSV = 'events.csv'  # CSV-Datei, in der die Events gespeichert werden
 
     def __init__(self) -> None:
         """Initialisiert die Eventman-Klasse und lädt die Events aus der CSV-Datei.\
         Setzt die aktuelle Systemzeit und initialisiert die Event-Liste und verfügbaren Event-Aktionen.\
         """
         self.__system_zeit = datetime.now()  # Aktuelle Systemzeit
-        self.__event_liste: dict[
-                            int: list] = {}  # Event-Liste im Format {EventID:int: list[datetime, Event-Aktion: str, Event-Name: str]}
-        self.__event_aktionen: list[str] = ["klingeln", "email", "sms", "anruf", "alarm",
-                                            "test"]  # Liste der verfügbaren Event-Aktionen
+        self.__event_liste: dict[int: list] = {}  # Event-Liste im Format {EventID:int: list[datetime, Event-Aktion: str, Event-Name: str]}
+        self.__event_aktionen: list[str] = ["klingeln", "email", "sms", "anruf", "alarm", "test"]  # Liste der verfügbaren Event-Aktionen
         self.__events_laden()  # Lädt die Events aus der CSV-Datei
         for event in self.__event_liste.values():
-            print(
-                f"Event-Backlog wird geprüft. Event-Aktion: '{self.__event_trigger(event[0], event[1])}'\n")  # Überprüft, ob die Events bereits ausgelöst werden sollten
+            print(f"Event-Backlog wird geprüft. Event-Aktion: '{self.__event_trigger(event[0], event[1])}'\n")  # Überprüft, ob die Events bereits ausgelöst werden sollten
 
     @property
     def system_zeit(self) -> datetime:
