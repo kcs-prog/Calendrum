@@ -152,10 +152,10 @@ class Eventman:
         :return:str | None # Gibt die Aktion des ausgelösten Events zurück, wenn eines gefunden wurde, sonst None.\
         """
         aktionen_temp:list[str] = []
-        for events in self.__event_liste:
-            event_zeit:list[int] = self.__event_liste[events][0]
-            event_akt:str = self.__event_liste[events][1]
-            event_id = events
+        for event in self.__event_liste:
+            event_zeit:list[int] = self.__event_liste[event][0]
+            event_akt:str = self.__event_liste[event][1]
+            event_id = event
             if self.__event_abgelaufen(event_zeit):
                 try:
                     print(f"Event-Backlog - Abgelaufene Events:\nID: '{event_id}'\nName: {event_akt}\nZeit: {event_zeit}.")
