@@ -24,6 +24,7 @@ class Eventman:
     """Eventman-Klasse zur Verwaltung von Events.
     Diese Klasse ermöglicht das Erstellen, Aufrufen und Entfernen von Events.
     Die Events werden in einer CSV-Datei gespeichert und können über eine Event-ID verwaltet werden.
+    Löst automatisch abgelaufene Events aus, wenn die Klasse instanziiert wird.
     _____________Attribute:_____________________
         __zeit (Datumzeit): Datumzeit-Objekt.
         __system_zeit (list[int]): Aktuelle Systemzeit.
