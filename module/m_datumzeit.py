@@ -137,11 +137,12 @@ class Datumzeit:
         self.minute = int(dz_list[4])
         self.sekunde = int(dz_list[5])
 
-dz = Datumzeit(2025,2,17,6,35,00)
-print(dz.minute)
-dz.minute = 6
-print(dz.minute)
-print(dz.wochentag)
-print(dz)
-dz.jetzt()
-print(dz)
+if __name__ == '__main__':
+    dz = Datumzeit(2025,2,17,6,35,00)
+    print(dz.minute)
+    dz.minute = 6
+    print(dz.minute)
+    print(dz.wochentag)
+    print(dz)
+    dz.jetzt()
+    print(dz)
