@@ -41,10 +41,16 @@ class Eventman:
         """
         self.__zeit:Datumzeit = Datumzeit()  # Aktuelle Systemzeit
         self.__zeit.jetzt()
-        self.__system_zeit:list[int] = [self.__zeit.jahr, self.__zeit.monat, self.__zeit.tag, self.__zeit.stunde, self.__zeit.minute, self.__zeit.sekunde]
-        print(f"Systemzeit: {self.__system_zeit}\n")
-        self.__event_liste: dict[int: list] = {}  # Event-Liste im Format {EventID:int: list[list[int], Event-Aktion: str, Event-Name: str]}
-        self.__event_aktionen: list[str] = ["klingeln", "email", "sms", "anruf", "alarm", "test"]  # Liste der verfügbaren Event-Aktionen
+        self.__system_zeit:list[int] = [self.__zeit.jahr,
+                                        self.__zeit.monat,
+                                        self.__zeit.tag,
+                                        self.__zeit.stunde,
+                                        self.__zeit.minute,
+                                        self.__zeit.sekunde] # Zeitstempel der aktuellen Systemzeit
+        # Event-Liste im Format {EventID:int:list[list[int], Event-Aktion:str, Event-Name:str]}
+        self.__event_liste: dict[int: list] = {}
+        # Liste der verfügbaren Event-Aktionen
+        self.__event_aktionen: list[str] = ["klingeln", "email", "sms", "anruf", "alarm", "test"]
         self.__events_laden()  # Lädt die Events aus der CSV-Datei
         self.event_trigger() # Überprüft, ob die Events bereits ausgelöst werden sollten
 
