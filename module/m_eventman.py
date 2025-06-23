@@ -25,11 +25,11 @@ class Eventman:
     Diese Klasse ermöglicht das Erstellen, Aufrufen und Entfernen von Events.
     Die Events werden in einer CSV-Datei gespeichert und können über eine Event-ID verwaltet werden.
     Löst automatisch abgelaufene Events aus, wenn die Klasse instanziiert wird.
-    ————————————Attribute:————————————
+    ————————————Attribute: ————————————
         __system_zeit (list[int]): Aktuelle Systemzeit.
         __event_liste (dict[int: list]): Event-Liste im Format {Event-ID:int: list[list[int], Event-Aktion: str, Event-Name: str]}.
         __event_aktionen (list[str]): Liste der verfügbaren Event-Aktionen.
-    ————————————Methoden:————————————
+    ————————————Methoden: ————————————
         event_erstellen(event_zeit: list[int], event_akt: str, event_name: str) → None: Fügt ein Event der Liste hinzu und speichert es in der CSV-Datei.
         event_aufrufen(event_id: int) → list[list[int], str, str]: Ruft ein Event anhand der Event-ID auf und gibt es zurück.
         event_entfernen(event_id: int) → None: Entfernt ein Event anhand der Event-ID aus der Event-Liste und CSV-Datei.
