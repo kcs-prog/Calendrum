@@ -1,8 +1,8 @@
-from m_datumzeit import Datumzeit
-from m_eventman import Eventman
+from m_datumzeit import Datumzeit 
+from m_eventman import Eventman as em
 
 class Wecker:
-    def __init__(self,dz:Datumzeit,em:Eventman):
+    def __init__(self,dz:Datumzeit,em:em):
         self._datumzeit = dz
         self._eventmanager = em
         pass
@@ -36,7 +36,7 @@ class Wecker:
         self._datumzeit.sekunde = sekunde
 
     def aktivieren(self): 
-        if self._datumzeit == em.triggerX
+        if self._datumzeit == em.event_trigger:
             print("Aktivierung wird ausgeführt!")
 
 
@@ -85,7 +85,7 @@ class Wecker:
 
 
 class Termine(Wecker):
-    def __init__(self,dz:Datumzeit, em:Eventmanager):
+    def __init__(self,dz:Datumzeit, em:em):
         super.__init__(dz,em)
 
 
