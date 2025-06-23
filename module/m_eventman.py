@@ -9,7 +9,7 @@ Eventman
 -events_laden() → None
 -events_speichern() → None
 -event_abgelaufen(event_zeit: list[int]) → bool
-+trigger_event() → str
++trigger_event() → list[str]
 +event_erstellen(event_zeit: list[int], event_akt: str, event_name: str = "") → None
 +event_aufrufen(event_id: int) → list[list[int], str, str] | None
 +event_entfernen(event_id: int) → None
