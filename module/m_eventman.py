@@ -26,7 +26,6 @@ class Eventman:
     Die Events werden in einer CSV-Datei gespeichert und können über eine Event-ID verwaltet werden.
     Löst automatisch abgelaufene Events aus, wenn die Klasse instanziiert wird.
     _____________Attribute:_____________________
-        __zeit (Datumzeit): Datumzeit-Objekt.
         __system_zeit (list[int]): Aktuelle Systemzeit.
         __event_liste (dict[int: list]): Event-Liste im Format {Event-ID:int: list[list[int], Event-Aktion: str, Event-Name: str]}.
         __event_aktionen (list[str]): Liste der verfügbaren Event-Aktionen.
