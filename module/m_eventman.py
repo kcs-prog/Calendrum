@@ -33,6 +33,7 @@ class Eventman:
         event_erstellen(event_zeit: list[int], event_akt: str, event_name: str) → None: Fügt ein Event der Liste hinzu und speichert es in der CSV-Datei.
         event_aufrufen(event_id: int) → list[list[int], str, str]: Ruft ein Event anhand der Event-ID auf und gibt es zurück.
         event_entfernen(event_id: int) → None: Entfernt ein Event anhand der Event-ID aus der Event-Liste und CSV-Datei.
+        trigger_event() → list[str] | None: Überprüft, ob Events abgelaufen sind und löst sie aus.
     """
     EVENTS_CSV = 'events.csv'  # CSV-Datei, in der die Events gespeichert werden
 
