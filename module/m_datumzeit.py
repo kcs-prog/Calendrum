@@ -41,7 +41,7 @@ class Datumzeit:
         if type(J) != int:
             raise exception("Jahr muss int sein")
         elif not 0 < J < 3000:
-            raise exception("Jahr außerhalb des Geltungsbereichs [1,3000[")
+            raise exception("Jahr außerhalb des Geltungsbereichs [1,3000]")
         else:
             return True
     jahr = property(get_jahr, set_jahr)
