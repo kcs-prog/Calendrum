@@ -132,19 +132,19 @@ class Eventman:
             event_zeit:list[int] = self.event_liste[events][0]
             event_akt:str = self.event_liste[events][1]
             event_id = events
-            if event_zeit[0] < self.system_zeit[0]\
-                    and event_zeit[1] < self.system_zeit[1]\
-                    and event_zeit[2] < self.system_zeit[2]\
-                    and event_zeit[3] < self.system_zeit[3]\
-                    and event_zeit[4] < self.system_zeit[4]\
-                    and event_zeit[5] < self.system_zeit[5]\
-                    and event_akt in self.event_aktionen:
-                try:
-                    print(f"Event-Backlog - Abgelaufene Events:\nID: '{event_id}'\nName: {event_akt}.\n")
-                    return event_akt
-                except Exception as e:
-                    print(f"Fehler beim Auslösen des Events: {str(e)}\n")
-                    return None
+            if event_zeit[0] <= self.system_zeit[0]:
+                if event_zeit[1] <= self.system_zeit[1]:
+                    if event_zeit[2] <= self.system_zeit[2]:
+                        if event_zeit[3] <= self.system_zeit[3]:
+                            if event_zeit[4] <= self.system_zeit[4]:
+                                try:
+                                    print(f"Event-Backlog - Abgelaufene Events:\nID: '{event_id}'\nName: {event_akt}\n Zeit: {event_zeit}.\n")
+                                    return event_akt
+                                except Exception as e:
+                                    print(f"Fehler beim Auslösen des Events: {str(e)}\n")
+                                    return None
+
+
         return None
 
     def event_erstellen(self, event_zeit:list[int], event_akt: str, event_name: str) -> None:
