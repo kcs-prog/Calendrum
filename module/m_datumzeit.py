@@ -31,7 +31,7 @@ class Datumzeit:
         self.stunde = h
         self.minute = m
         self.sekunde = s
-        if self.__is_set: self.wochentag = self.__gen_wochentag()
+        self.wochentag = self.__gen_wochentag() if self.__is_set else "None"
 
     def get_jahr(self):
         return self.__jahr if self.__chk_jahr(self.__jahr) else None
@@ -142,7 +142,7 @@ if __name__ == '__main__':
     print(dz.minute)
     dz.minute = 6
     dz2 = Datumzeit()
-
+    print(dz2.wochentag)
     print(dz.minute)
     print(dz.wochentag)
     print(dz)
