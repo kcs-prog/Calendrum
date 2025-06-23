@@ -38,7 +38,9 @@ class Eventman:
         """Initialisiert die Eventman-Klasse und lädt die Events aus der CSV-Datei.\
         Setzt die aktuelle Systemzeit und initialisiert die Event-Liste und verfügbaren Event-Aktionen.\
         """
-        self.__system_zeit:datetime = datetime.now()  # Aktuelle Systemzeit
+        self.__system_zeit:Datumzeit = Datumzeit()  # Aktuelle Systemzeit
+        self.__system_zeit.jetzt()
+        print(f"Systemzeit: {self.__system_zeit}\n")
         self.__event_liste: dict[int: list] = {}  # Event-Liste im Format {EventID:int: list[datetime, Event-Aktion: str, Event-Name: str]}
         self.__event_aktionen: list[str] = ["klingeln", "email", "sms", "anruf", "alarm", "test"]  # Liste der verfügbaren Event-Aktionen
         self.__events_laden()  # Lädt die Events aus der CSV-Datei
