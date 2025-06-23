@@ -71,18 +71,6 @@ class Eventman:
         """
         return self.__event_liste
 
-    @event_liste.setter
-    def event_liste(self, new__event_liste: dict[int:list,str,str]) -> None:
-        """Setzt eine neue Event-Liste und speichert sie in CSV.\
-        :param new__event_liste:dict[int: list[list[int], str, str]]
-        #Neue Event-Liste im Format {EventID:int: list[list[int], Event-Aktion: str, Event-Name: str]}\
-        :raises exception: Bei falschem Typ der neuen Event-Liste.\
-        """
-        if not isinstance(new__event_liste, dict):
-            raise Exception("Neue Event-Liste muss vom Typ 'dict' sein.\n")
-        self.__event_liste = new__event_liste
-        self.__events_speichern()
-
     @property
     def event_aktionen(self) -> list[str]:
         """Gibt die Liste der verfügbaren Event-Aktionen zurück.\
