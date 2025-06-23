@@ -143,7 +143,8 @@ class Eventman:
                 if event_zeit[2] <= self.system_zeit[2]:
                     if event_zeit[3] <= self.system_zeit[3]:
                         if event_zeit[4] <= self.system_zeit[4]:
-                            return True
+                            if event_zeit[5] <= self.system_zeit[5]:
+                                return True
         return False
 
     def event_trigger(self) -> str | None:
