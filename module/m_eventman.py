@@ -132,7 +132,7 @@ class Eventman:
                     return None
         return None
 
-    def event_erstellen(self, event_zeit: datetime, event_akt: str, event_name: str) -> None:
+    def event_erstellen(self, event_zeit: datetime, event_akt: str, event_name: str = "") -> None:
         """Fügt ein Event der Liste hinzu und speichert es in der CSV-Datei.\
         :param event_zeit:datetime #Zeitstempel des Events.\
         :param event_akt:str #Aktion, die mit dem Event verknüpft werden soll, aus vordefinierter Liste.\
