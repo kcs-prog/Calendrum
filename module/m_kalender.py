@@ -73,9 +73,12 @@ class Kalender:
             print(f"Wecker: {dz.jahr}-{dz.monat:02}-{dz.tag:02} {dz.stunde:02}:{dz.minute:02}")
 
 if __name__ == "__main__":
-    # Beispielhafter Test
-    dz = Datumzeit(2025, 6, 23, 8, 0, 0)
+    # Beispielhafter Test: Datum und Zeit werden automatisch gesetzt
+    dz = Datumzeit()
+    dz.jetzt()  # Setzt das Datumzeit-Objekt auf die aktuelle Systemzeit
     em = Eventman()
     kalender = Kalender()
-    kalender.create_termin(dz, "Arzttermin")
+    kalender.create_termin(dz, "Automatisch erzeugter Termin")
     kalender.create_wecker(dz, em)
+    kalender.termine_anzeigen()
+    kalender.wecker_anzeigen()
