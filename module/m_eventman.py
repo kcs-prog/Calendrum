@@ -52,7 +52,6 @@ class Eventman:
                                         self.__zeit.sekunde] # Zeitstempel der aktuellen Systemzeit
         # Event-Liste im Format {EventID:int:list[list[int], Event-Aktion:str, Event-Name:str]}
         self.__event_liste: dict[int: list] = {}
-        # Liste der verfügbaren Event-Aktionen
         self.__event_aktionen: list[str] = ["klingeln", "email", "sms", "anruf", "alarm", "test"]
         self.__events_laden()  # Lädt die Events aus der CSV-Datei
         self.event_trigger() # Überprüft, ob die Events bereits ausgelöst werden sollten
