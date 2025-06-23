@@ -146,10 +146,11 @@ class Eventman:
                                 return True
         return False
 
-    def event_trigger(self) -> str | None:
+    def event_trigger(self) -> list[list[str]] | None:
         """Geht durch die Event-Liste, prüft, ob Events abgelaufen sind und löst sie aus.\
         :return:str | None # Gibt die Aktion des ausgelösten Events zurück, wenn eines gefunden wurde, sonst None.\
         """
+        events_temp:list[str] = []
         for events in self.__event_liste:
             event_zeit:list[int] = self.__event_liste[events][0]
             event_akt:str = self.__event_liste[events][1]
@@ -157,11 +158,11 @@ class Eventman:
             if self.__event_abgelaufen(event_zeit):
                 try:
                     print(f"Event-Backlog - Abgelaufene Events:\nID: '{event_id}'\nName: {event_akt}\nZeit: {event_zeit}.\n")
-                    return event_akt
+                    events_temp.append(event_akt)
                 except Exception as e:
                     print(f"Fehler beim Auslösen des Events: {str(e)}\n")
                     return None
-        return None
+        return events_temp if events_temp else None
 
     def event_erstellen(self, event_zeit:list[int], event_akt: str, event_name: str) -> None:
         """Fügt ein Event der Liste hinzu und speichert es in der CSV-Datei.\
