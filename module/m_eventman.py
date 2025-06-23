@@ -198,7 +198,7 @@ class Eventman:
 
 if __name__ == "__main__":
     """Testcode für die Eventman-Klasse."""
-    EM: Eventman = Eventman()  # Beispiel-Event-Liste
+    EM: Eventman = Eventman()
     EM.event_erstellen(EM.system_zeit, "test", "Test-Event - Event erstellen")
     letztes_event_id = max(EM.event_liste.keys())
     letztes_event = EM.event_aufrufen(letztes_event_id)
