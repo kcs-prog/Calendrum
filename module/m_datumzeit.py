@@ -8,7 +8,7 @@ Datumzeit
 +minute:int
 +sekunde:int
 ————————————
-+inti(J, M, D, h, m, s) #jo wieso ist das Jahr Monat Day ?
++inti(J, M, D, h, m, s)
 +jump(dz:Datumzeit, [richtung:int=+1]):None
 +maxTage(Monat:int):int
 +istSchaltjahr(Jahr:int):bool
@@ -17,13 +17,17 @@ Datumzeit
 
 """
 from logging import exception
+from time import strftime
 
-
-class Datumzeit:
-    def __init__(self, J:int,M:int,D:int,h:int,m:int,s:int):
-        self.jahr = J
-        self.monat = M
-        self.tag = D
+class Datumzeit():
+    def __init__(self, J:int=0, M:int=0, D:int=0, h:int=0, m:int=0, s:int=0):
+        self.__is_set = False if J+M+D+h+m+s == 0 else True
+        if J: self.jahr = J
+        else: self.__jahr = 0
+        if M: self.monat = M
+        else: self.__monat = 0
+        if D: self.tag = D
+        else: self.__tag = 0
         self.stunde = h
         self.minute = m
         self.sekunde = s
@@ -107,6 +111,9 @@ class Datumzeit:
             return True
     sekunde = property(get_sekunde, set_sekunde)
 
+    def __str__(self)->str:
+        return f"{self.jahr:4d}.{self.monat:02d}.{self.tag:02d} {self.stunde:02d}:{self.minute:02d}:{self.sekunde:02d}"
+
     def __gen_wochentag(self)->str:
         y = self.jahr
         m = self.monat
@@ -120,9 +127,21 @@ class Datumzeit:
         # Zuordnung des Wochentags
         return ["Samstag", "Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag"][h]
 
-if __name__ == "__main__":
-    dz = Datumzeit(2025,6,17,6,35,00)
-    print(dz.minute)
-    dz.minute = 6
-    print(dz.minute)
-    print(dz.wochentag)
+    def jetzt(self)->None:
+        """setzt Datum und Zeit auf die jetzige Systemzeit"""
+        dz_list = strftime("%Y,%m,%d,%H,%M,%S").split(sep=",")
+        self.jahr = int(dz_list[0])
+        self.monat = int(dz_list[1])
+        self.tag = int(dz_list[2])
+        self.stunde = int(dz_list[3])
+        self.minute = int(dz_list[4])
+        self.sekunde = int(dz_list[5])
+
+dz = Datumzeit(2025,2,17,6,35,00)
+print(dz.minute)
+dz.minute = 6
+print(dz.minute)
+print(dz.wochentag)
+print(dz)
+dz.jetzt()
+print(dz)
