@@ -150,8 +150,6 @@ class Eventman:
                                 except Exception as e:
                                     print(f"Fehler beim Auslösen des Events: {str(e)}\n")
                                     return None
-
-
         return None
 
     def event_erstellen(self, event_zeit:list[int], event_akt: str, event_name: str) -> None:
