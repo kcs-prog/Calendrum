@@ -8,7 +8,7 @@ Eventman
 -init() → None
 -events_laden() → None
 -events_speichern() → None
--trigger_event(event_zeit: datetime, event_akt: str) → str
++trigger_event() → str
 +event_erstellen(event_zeit: datetime, event_akt: str, event_name: str = "") → None
 +event_aufrufen(event_id: int) → list[datetime, str, str] | None
 +event_entfernen(event_id: int) → None
