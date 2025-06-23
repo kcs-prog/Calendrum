@@ -77,9 +77,7 @@ class Eventman:
         :return:list[str] #Liste der verfügbaren Event-Aktionen.\
         :raises exception: Bei leerer Event-Aktionsliste.\
         """
-        if not self.__event_aktionen:
-            raise Exception("Aktions-Liste ist leer.\n")
-        return self.__event_aktionen
+        return self.__event_aktionen if self.__event_aktionen else Exception("Event-Aktionen-Liste ist leer.\n")
 
     def __events_laden(self) -> None:
         """Lädt die Events aus der CSV-Datei in die Event-Liste.\
