@@ -138,12 +138,11 @@ class Eventman:
         :param event_zeit:list[int] #Zeitstempel des Events.\
         :return:bool # Gibt True zurück, wenn der Event-Zeitstempel abgelaufen ist, sonst False.\
         """
-        if event_zeit[0] <= self.system_zeit[0]:
-            if event_zeit[1] <= self.system_zeit[1]:
-                if event_zeit[2] <= self.system_zeit[2]:
-                    if event_zeit[3] <= self.system_zeit[3]:
-                        if event_zeit[4] <= self.system_zeit[4]:
-                            if event_zeit[5] <= self.system_zeit[5]:
+        if event_zeit[0] <= self.system_zeit[0]: # Jahr
+            if event_zeit[1] <= self.system_zeit[1]: # Monat
+                if event_zeit[2] <= self.system_zeit[2]: # Tag
+                    if event_zeit[3] <= self.system_zeit[3]: # Stunde
+                        if event_zeit[4] <= self.system_zeit[4]: # Minute
                                 return True
         return False
 
