@@ -42,8 +42,7 @@ class Eventman:
         self.__event_liste: dict[int: list] = {}  # Event-Liste im Format {EventID:int: list[datetime, Event-Aktion: str, Event-Name: str]}
         self.__event_aktionen: list[str] = ["klingeln", "email", "sms", "anruf", "alarm", "test"]  # Liste der verfügbaren Event-Aktionen
         self.__events_laden()  # Lädt die Events aus der CSV-Datei
-        for event in self.__event_liste.values():
-            print(f"Event-Backlog wird geprüft. Event-Aktion: '{self.__event_trigger(event[0], event[1])}'\n")  # Überprüft, ob die Events bereits ausgelöst werden sollten
+        self.__event_trigger() # Überprüft, ob die Events bereits ausgelöst werden sollten
 
     @property
     def system_zeit(self) -> datetime:
@@ -117,23 +116,21 @@ class Eventman:
             for event_id, event_data in self.__event_liste.items():
                 csv_writer.writerow([event_id, event_data[0].isoformat(), event_data[1], event_data[2]])
 
-    def __event_trigger(self, event_zeit: datetime, event_akt: str) -> str:
-        """Diese Methode überprüft, ob die aktuelle Zeit die Event-Zeit erreicht hat\
-         und gibt die zugehörige Aktion als String zurück.\
-        :param event_zeit:datetime #Zeitstempel des Events, der erreicht werden muss.\
-        :param event_akt:str #Aktion, die mit dem Event verknüpft werden soll, aus vordefinierter Liste.\
-        :return:str #Gibt die Aktion des Events zurück, wenn die Zeit erreicht ist.\
-        :raises exception: Bei ungültiger Event-Zeit oder Aktion.\
+    def __event_trigger(self) -> str | None:
+        """Geht durch die Event-Liste, prüft, ob Events abgelaufen sind und löst sie aus.\
+        :return:str | None # Gibt die Aktion des ausgelösten Events zurück, wenn eines gefunden wurde, sonst None.\
         """
-        if not isinstance(event_zeit, datetime):
-            raise Exception("Event-Zeit muss ein datetime-Objekt sein.\n")
-        if not isinstance(event_akt, str) or event_akt not in self.__event_aktionen:
-            raise Exception("Keine gültige Aktion.\n")
-        while True:
-            jetzt = datetime.now()
-            if jetzt >= event_zeit:
-                return event_akt
-            sleep(0.5)
+        for events in self.event_liste:
+            event_zeit = self.event_liste[events][0]
+            event_akt = self.event_liste[events][1]
+            if event_zeit <= self.system_zeit:
+                if event_akt in self.event_aktionen:
+                    try:
+                        print(f"Event-Backlog: Abgelaufene Events:\n {event_akt} um {event_zeit}.\n")
+                        return event_akt
+                    except Exception as e:
+                        print(f"Fehler beim Auslösen des Events: {str(e)}\n")
+        return None
 
     def event_erstellen(self, event_zeit: datetime, event_akt: str, event_name: str) -> None:
         """Fügt ein Event der Liste hinzu und speichert es in der CSV-Datei.\
