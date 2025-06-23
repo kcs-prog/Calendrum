@@ -69,7 +69,7 @@ class Eventman:
         :return:dict[int: list[list[int], str, str]]
         #Event-Liste im Format {EventID:int: list[list[int], Event-Aktion: str, Event-Name: str]}\
         """
-        return self.__event_liste
+        return self.__event_liste if self.__event_liste != {} else Exception("Event-Liste ist leer.\n")
 
     @property
     def event_aktionen(self) -> list[str]:
