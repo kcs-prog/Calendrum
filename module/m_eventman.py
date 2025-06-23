@@ -2,7 +2,7 @@
 Eventman
 ————————————
 -Event-Liste:dict{EventID:Event} #Event-Liste im Format {EventID:int - Event:list[list[int], Event-Aktion: str, Event-Name: str]}.
--System-Zeit:list[int] #Aktuelle Systemzeit.
+-Zeit:list[int] #Aktuelle Systemzeit.
 -Event-Aktionen:list[str] #Liste der verfügbaren Event-Aktionen.
 ————————————
 -init() → None
@@ -26,7 +26,7 @@ class Eventman:
     Die Events werden in einer CSV-Datei gespeichert und können über eine Event-ID verwaltet werden.
     Löst automatisch abgelaufene Events aus, wenn die Klasse instanziiert wird.
     ————————————Attribute: ————————————
-        __system_zeit (list[int]): Aktuelle Systemzeit.
+        __zeit (list[int]): Aktuelle Systemzeit.
         __event_liste (dict[int: list]): Event-Liste im Format {Event-ID:int: list[list[int], Event-Aktion: str, Event-Name: str]}.
         __event_aktionen (list[str]): Liste der verfügbaren Event-Aktionen.
     ————————————Methoden: ————————————
@@ -43,12 +43,6 @@ class Eventman:
         """
         self.__zeit:Datumzeit = Datumzeit()  # Aktuelle Systemzeit
         self.__zeit.jetzt()
-        self.__system_zeit:list[int] = [self.__zeit.jahr,
-                                        self.__zeit.monat,
-                                        self.__zeit.tag,
-                                        self.__zeit.stunde,
-                                        self.__zeit.minute,
-                                        self.__zeit.sekunde] # Zeitstempel der aktuellen Systemzeit
         # Event-Liste im Format {EventID:int:list[list[int], Event-Aktion:str, Event-Name:str]}
         self.__event_liste: dict[int: list] = {}
         self.__event_aktionen: list[str] = ["klingeln", "email", "sms", "anruf", "alarm", "test"]
@@ -56,11 +50,11 @@ class Eventman:
         self.event_trigger() # Überprüft, ob die Events bereits ausgelöst werden sollten
 
     @property
-    def system_zeit(self) -> list[int]:
+    def zeit(self) -> Datumzeit:
         """Gibt die aktuelle Systemzeit zurück.\
         :return:list[int] # Aktuelle Systemzeit als list[int]-Objekt.\
         """
-        return self.__system_zeit
+        return self.__zeit
 
     @property
     def event_liste(self) -> dict[int:list]:
@@ -103,24 +97,24 @@ class Eventman:
             csv_writer = writer(f)
             csv_writer.writerow(['EventID', 'Zeitstempel', 'Aktion', 'Name'])
             for event_id, event_data in self.__event_liste.items():
-                csv_writer.writerow([event_id, [self.system_zeit[0],
-                                            self.system_zeit[1],
-                                            self.system_zeit[2],
-                                            self.system_zeit[3],
-                                            self.system_zeit[4],
-                                            self.system_zeit[5]], event_data[1], event_data[2]])
+                csv_writer.writerow([event_id, [self.__zeit.jahr,
+                                            self.__zeit.monat,
+                                            self.__zeit.tag,
+                                            self.__zeit.stunde,
+                                            self.__zeit.minute,
+                                            self.__zeit.sekunde], event_data[1], event_data[2]])
 
     def __event_abgelaufen(self, event_zeit:list[int]) -> bool:
         """Prüft, ob ein Event-Zeitstempel abgelaufen ist.\
         :param event_zeit:list[int] #Zeitstempel des Events.\
         :return:bool # Gibt True zurück, wenn der Event-Zeitstempel abgelaufen ist, sonst False.\
         """
-        if event_zeit[0] <= self.system_zeit[0]: # Jahr
-            if event_zeit[1] <= self.system_zeit[1]: # Monat
-                if event_zeit[2] <= self.system_zeit[2]: # Tag
-                    if event_zeit[3] <= self.system_zeit[3]: # Stunde
-                        if event_zeit[4] <= self.system_zeit[4]: # Minute
-                            if event_zeit[5] <= self.system_zeit[5]: # Sekunde
+        if event_zeit[0] <= self.__zeit.jahr:
+            if event_zeit[1] <= self.__zeit.monat:
+                if event_zeit[2] <= self.__zeit.tag:
+                    if event_zeit[3] <= self.__zeit.stunde:
+                        if event_zeit[4] <= self.__zeit.minute:
+                            if event_zeit[5] <= self.__zeit.sekunde:
                                 return True
         return False
 
@@ -143,15 +137,15 @@ class Eventman:
                     return None
         return set(aktionen_temp) if aktionen_temp else None
 
-    def event_erstellen(self, event_zeit:list[int], event_akt: str, event_name: str) -> None:
+    def event_erstellen(self, event_zeit:Datumzeit, event_akt: str, event_name: str) -> None:
         """Fügt ein Event der Liste hinzu und speichert es in der CSV-Datei.\
         :param event_zeit:list[int] #Zeitstempel des Events.\
         :param event_akt:str #Aktion, die mit dem Event verknüpft werden soll, aus vordefinierter Liste.\
         :param event_name:str #Name des Events zur Darstellung im UI.\
         :raises exception: Bei ungültiger Event-Zeit, Aktion oder Name.\
         """
-        if not isinstance(event_zeit, list) or not all(isinstance(x, int) for x in event_zeit):
-            raise Exception("Event-Zeit muss eine Liste von int sein.\n")
+        if not isinstance(event_zeit, Datumzeit):
+            raise Exception("Event-Zeit muss ein Datumzeit-Objekt sein.\n")
         if not isinstance(event_akt, str) or event_akt not in self.__event_aktionen:
             raise Exception("Ungültige Event-Aktion.\n")
         if not isinstance(event_name, str):
@@ -160,7 +154,14 @@ class Eventman:
             new_event_id = max(self.__event_liste.keys()) + 1  # Neue Event-ID basierend auf der höchsten vorhandenen ID
         else:
             new_event_id = 1  # Startet bei 1, wenn keine Events vorhanden sind
-        self.__event_liste[new_event_id] = [event_zeit, event_akt, event_name]  # Fügt das neue Event der Liste hinzu
+        self.__event_liste[new_event_id] = [
+            [
+            event_zeit.jahr,
+            event_zeit.monat,
+            event_zeit.tag,
+            event_zeit.stunde,
+            event_zeit.minute,
+            event_zeit.sekunde], event_akt, event_name]  # Fügt das neue Event der Liste hinzu
         print(f"Event '{event_name}' wurde erstellt mit ID '{new_event_id}'.\n")
         try:  # Speichert das neue Event in der CSV-Datei
             self.__events_speichern()
@@ -205,7 +206,7 @@ class Eventman:
 if __name__ == "__main__":
     """Testcode für die Eventman-Klasse."""
     EM: Eventman = Eventman()  # Beispiel-Event-Liste
-    EM.event_erstellen(EM.system_zeit, "test", "Test-Event - Event erstellen")
+    EM.event_erstellen(EM.zeit, "test", "Test-Event - Event erstellen")
     letztes_event_id = max(EM.event_liste.keys())
     letztes_event = EM.event_aufrufen(letztes_event_id)
     print(f"Event-Objekt aufgerufen mit Event-ID '{letztes_event_id}' :\n{letztes_event}\n")
