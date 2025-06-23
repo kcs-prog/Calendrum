@@ -144,6 +144,7 @@ class Eventman:
                 if event_zeit[2] <= self.system_zeit[2]: # Tag
                     if event_zeit[3] <= self.system_zeit[3]: # Stunde
                         if event_zeit[4] <= self.system_zeit[4]: # Minute
+                            if event_zeit[5] <= self.system_zeit[5]: # Sekunde
                                 return True
         return False
 
