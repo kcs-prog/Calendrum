@@ -115,7 +115,7 @@ class Eventman:
             for event_id, event_data in self.__event_liste.items():
                 csv_writer.writerow([event_id, event_data[0].isoformat(), event_data[1], event_data[2]])
 
-    def __event_trigger(self) -> str | None:
+    def event_trigger(self) -> str | None:
         """Geht durch die Event-Liste, prüft, ob Events abgelaufen sind und löst sie aus.\
         :return:str | None # Gibt die Aktion des ausgelösten Events zurück, wenn eines gefunden wurde, sonst None.\
         """
@@ -132,7 +132,7 @@ class Eventman:
                     return None
         return None
 
-    def event_erstellen(self, event_zeit: datetime, event_akt: str, event_name: str = "") -> None:
+    def event_erstellen(self, event_zeit: datetime, event_akt: str, event_name: str) -> None:
         """Fügt ein Event der Liste hinzu und speichert es in der CSV-Datei.\
         :param event_zeit:datetime #Zeitstempel des Events.\
         :param event_akt:str #Aktion, die mit dem Event verknüpft werden soll, aus vordefinierter Liste.\
@@ -198,7 +198,7 @@ class Eventman:
 
 if __name__ == "__main__":
     """Testcode für die Eventman-Klasse."""
-    EM: Eventman = Eventman()
+    EM: Eventman = Eventman()  # Beispiel-Event-Liste
     EM.event_erstellen(EM.system_zeit, "test", "Test-Event - Event erstellen")
     letztes_event_id = max(EM.event_liste.keys())
     letztes_event = EM.event_aufrufen(letztes_event_id)
