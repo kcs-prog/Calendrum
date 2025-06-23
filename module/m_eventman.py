@@ -41,7 +41,7 @@ class Eventman:
         self.__event_liste: dict[int: list] = {}  # Event-Liste im Format {EventID:int: list[datetime, Event-Aktion: str, Event-Name: str]}
         self.__event_aktionen: list[str] = ["klingeln", "email", "sms", "anruf", "alarm", "test"]  # Liste der verfügbaren Event-Aktionen
         self.__events_laden()  # Lädt die Events aus der CSV-Datei
-        self.__event_trigger() # Überprüft, ob die Events bereits ausgelöst werden sollten
+        self.event_trigger() # Überprüft, ob die Events bereits ausgelöst werden sollten
 
     @property
     def system_zeit(self) -> datetime:
