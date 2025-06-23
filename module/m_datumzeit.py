@@ -19,7 +19,7 @@ Datumzeit
 from logging import exception
 from time import strftime
 
-class Datumzeit():
+class Datumzeit:
     def __init__(self, J:int=0, M:int=0, D:int=0, h:int=0, m:int=0, s:int=0):
         self.__is_set = False if J+M+D+h+m+s == 0 else True
         if J: self.jahr = J
