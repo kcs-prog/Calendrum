@@ -64,14 +64,16 @@ class Eventman:
     @property
     def event_liste(self) -> dict[int:list]:
         """Gibt die Event-Liste zurück.\
-        :return:dict[int: list[list[int], str, str]] #Event-Liste im Format {EventID:int: list[list[int], Event-Aktion: str, Event-Name: str]}\
+        :return:dict[int: list[list[int], str, str]]
+        #Event-Liste im Format {EventID:int: list[list[int], Event-Aktion: str, Event-Name: str]}\
         """
         return self.__event_liste
 
     @event_liste.setter
-    def event_liste(self, new__event_liste: dict[int:list]) -> None:
+    def event_liste(self, new__event_liste: dict[int:list,str,str]) -> None:
         """Setzt eine neue Event-Liste und speichert sie in CSV.\
-        :param new__event_liste:dict[int: list[list[int], str, str]] #Neue Event-Liste im Format {EventID:int: list[list[int], Event-Aktion: str, Event-Name: str]}\
+        :param new__event_liste:dict[int: list[list[int], str, str]]
+        #Neue Event-Liste im Format {EventID:int: list[list[int], Event-Aktion: str, Event-Name: str]}\
         :raises exception: Bei falschem Typ der neuen Event-Liste.\
         """
         if not isinstance(new__event_liste, dict):
@@ -131,6 +133,19 @@ class Eventman:
                                             self.system_zeit[4],
                                             self.system_zeit[5]], event_data[1], event_data[2]])
 
+    def __event_abgelaufen(self, event_zeit:list[int]) -> bool:
+        """Prüft, ob ein Event-Zeitstempel abgelaufen ist.\
+        :param event_zeit:list[int] #Zeitstempel des Events.\
+        :return:bool # Gibt True zurück, wenn der Event-Zeitstempel abgelaufen ist, sonst False.\
+        """
+        if event_zeit[0] <= self.system_zeit[0]:
+            if event_zeit[1] <= self.system_zeit[1]:
+                if event_zeit[2] <= self.system_zeit[2]:
+                    if event_zeit[3] <= self.system_zeit[3]:
+                        if event_zeit[4] <= self.system_zeit[4]:
+                            return True
+        return False
+
     def event_trigger(self) -> str | None:
         """Geht durch die Event-Liste, prüft, ob Events abgelaufen sind und löst sie aus.\
         :return:str | None # Gibt die Aktion des ausgelösten Events zurück, wenn eines gefunden wurde, sonst None.\
@@ -139,17 +154,13 @@ class Eventman:
             event_zeit:list[int] = self.event_liste[events][0]
             event_akt:str = self.event_liste[events][1]
             event_id = events
-            if event_zeit[0] <= self.system_zeit[0]:
-                if event_zeit[1] <= self.system_zeit[1]:
-                    if event_zeit[2] <= self.system_zeit[2]:
-                        if event_zeit[3] <= self.system_zeit[3]:
-                            if event_zeit[4] <= self.system_zeit[4]:
-                                try:
-                                    print(f"Event-Backlog - Abgelaufene Events:\nID: '{event_id}'\nName: {event_akt}\n Zeit: {event_zeit}.\n")
-                                    return event_akt
-                                except Exception as e:
-                                    print(f"Fehler beim Auslösen des Events: {str(e)}\n")
-                                    return None
+            if self.__event_abgelaufen(event_zeit):
+                try:
+                    print(f"Event-Backlog - Abgelaufene Events:\nID: '{event_id}'\nName: {event_akt}\n Zeit: {event_zeit}.\n")
+                    return event_akt
+                except Exception as e:
+                    print(f"Fehler beim Auslösen des Events: {str(e)}\n")
+                    return None
         return None
 
     def event_erstellen(self, event_zeit:list[int], event_akt: str, event_name: str) -> None:
