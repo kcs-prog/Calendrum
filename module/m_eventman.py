@@ -81,16 +81,6 @@ class Eventman:
             raise Exception("Aktions-Liste ist leer.\n")
         return self.__event_aktionen
 
-    @event_aktionen.setter
-    def event_aktionen(self, _new_event_aktionen: list[str]) -> None:
-        """Setzt eine neue Liste von Event-Aktionen.\
-        :param _new_event_aktionen:list[str] #Neue Liste der verfügbaren Event-Aktionen.\
-        :raises exception: Bei falschem Typ der neuen Event-Aktionsliste.\
-        """
-        if not isinstance(_new_event_aktionen, list) or not all(isinstance(a, str) for a in _new_event_aktionen):
-            raise Exception("Aktions-Liste muss eine Liste von Strings sein.\n")
-        self.__event_aktionen = _new_event_aktionen
-
     def __events_laden(self) -> None:
         """Lädt die Events aus der CSV-Datei in die Event-Liste.\
         Erstellt die Datei, falls sie nicht existiert.\
