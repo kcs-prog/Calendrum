@@ -14,7 +14,6 @@ Eventman
 +event_entfernen(event_id: int) → None
 
 """
-from time import sleep
 from datetime import datetime, timedelta
 from csv import writer, reader
 
