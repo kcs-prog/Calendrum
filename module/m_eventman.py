@@ -222,5 +222,5 @@ if __name__ == "__main__":
     print(f"Eventaktion des Events:\n{letztes_event[1]}\n")
     print(f"Eventname des Events:\n{letztes_event[2]}\n")
     print(f"Eventliste vor dem Entfernen eines Events:\n{EM.event_liste}\n")
-    #EM.event_entfernen(letztes_event_id)
-    #print(f"Eventliste nach dem Entfernen eines Events:\n{EM.event_liste}\n")
+    EM.event_entfernen(letztes_event_id)
+    print(f"Eventliste nach dem Entfernen eines Events:\n{EM.event_liste}\n")
