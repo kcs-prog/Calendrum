@@ -1,7 +1,7 @@
 """
 Eventman
 ————————————
--Event-Liste:dict{EventID:Event} #Event-Liste im Format {EventID:int: list[list[int], Event-Aktion: str, Event-Name: str]}.
+-Event-Liste:dict{EventID:Event} #Event-Liste im Format {EventID:int - Event:list[list[int], Event-Aktion: str, Event-Name: str]}.
 -System-Zeit:list[int] #Aktuelle Systemzeit.
 -Event-Aktionen:list[str] #Liste der verfügbaren Event-Aktionen.
 ————————————
