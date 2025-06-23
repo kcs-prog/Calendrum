@@ -158,7 +158,8 @@ class Eventman:
             event_id = events
             if self.__event_abgelaufen(event_zeit):
                 try:
-                    print(f"Event-Backlog - Abgelaufene Events:\nID: '{event_id}'\nName: {event_akt}\nZeit: {event_zeit}.\n")
+                    print(f"Event-Backlog - Abgelaufene Events:\nID: '{event_id}'\nName: {event_akt}\nZeit: {event_zeit}.")
+                    print("#Event wird später gelöscht, wenn es ausgelöst wurde.\n")
                     aktionen_temp.append(event_akt)
                 except Exception as e:
                     print(f"Fehler beim Auslösen des Events: {str(e)}\n")
