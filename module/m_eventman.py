@@ -150,9 +150,9 @@ class Eventman:
         """Geht durch die Event-Liste, prüft, ob Events abgelaufen sind und löst sie aus.\
         :return:str | None # Gibt die Aktion des ausgelösten Events zurück, wenn eines gefunden wurde, sonst None.\
         """
-        for events in self.event_liste:
-            event_zeit:list[int] = self.event_liste[events][0]
-            event_akt:str = self.event_liste[events][1]
+        for events in self.__event_liste:
+            event_zeit:list[int] = self.__event_liste[events][0]
+            event_akt:str = self.__event_liste[events][1]
             event_id = events
             if self.__event_abgelaufen(event_zeit):
                 try:
