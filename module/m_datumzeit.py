@@ -112,7 +112,7 @@ class Datumzeit:
     sekunde = property(get_sekunde, set_sekunde)
 
     def __str__(self)->str:
-        return f"{self.jahr:4d}.{self.monat:02d}.{self.tag:02d} {self.stunde:02d}:{self.minute:02d}:{self.sekunde:02d}" if self.__is_set else "nicht gesetzt"
+        return f"{self.jahr:4d}.{self.monat:02d}.{self.tag:02d} {self.stunde:02d}:{self.minute:02d}:{self.sekunde:02d}"
 
     def __gen_wochentag(self)->str:
         y = self.jahr
@@ -138,16 +138,6 @@ class Datumzeit:
         self.sekunde = int(dz_list[5])
 
 if __name__ == '__main__':
-    dz = Datumzeit(2025,2,17,6,35,00)
-    print(dz.minute)
-    dz.minute = 6
-    dz2 = Datumzeit()
-    print(dz2.wochentag)
-    dz2.jetzt()
-    print(dz2)
-
-    print(dz.minute)
-    print(dz.wochentag)
-    print(dz)
+    dz = Datumzeit()
     dz.jetzt()
-    print(dz)
+    print(dz.jahr)
