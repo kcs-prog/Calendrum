@@ -120,8 +120,8 @@ class Eventman:
         :return:str | None # Gibt die Aktion des ausgelösten Events zurück, wenn eines gefunden wurde, sonst None.\
         """
         for events in self.event_liste:
-            event_zeit = self.event_liste[events][0]
-            event_akt = self.event_liste[events][1]
+            event_zeit:datetime = self.event_liste[events][0]
+            event_akt:str = self.event_liste[events][1]
             if event_zeit <= self.system_zeit:
                 if event_akt in self.event_aktionen:
                     try:
