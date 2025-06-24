@@ -109,6 +109,7 @@ class Eventman:
         :param event_zeit:list[int] #Zeitstempel des Events.\
         :return:bool # Gibt True zurück, wenn der Event-Zeitstempel abgelaufen ist, sonst False.\
         """
+        self.__zeit.jetzt()
         aktuelle_zeit = [
             self.__zeit.jahr,
             self.__zeit.monat,
@@ -119,20 +120,20 @@ class Eventman:
         ]
         return event_zeit <= aktuelle_zeit
 
-    def event_trigger(self) -> list[list[str]] | None:
+    def event_trigger(self, entfernen:bool=False) -> list[list[str]] | None:
         """Geht durch die Event-Liste, prüft, ob Events abgelaufen sind und löst sie aus.\
         :return:str | None # Gibt die Aktion des ausgelösten Events zurück, wenn eines gefunden wurde, sonst None.\
         """
         aktionen_temp:list[str] = []
-        for event in self.__event_liste:
+        for event in list(self.__event_liste):
             event_zeit:list[int] = self.__event_liste[event][0]
             event_akt:str = self.__event_liste[event][1]
             event_id = event
             if self.__event_abgelaufen(event_zeit):
                 try:
                     print(f"Event-Backlog - Abgelaufene Events:\nID: '{event_id}'\nName: {event_akt}\nZeit: {event_zeit}.")
-                    print("#Hier Event löschen.\n")
                     aktionen_temp.append(event_akt)
+                    self.event_entfernen(event_id) if entfernen else None
                 except Exception as e:
                     print(f"Fehler beim Auslösen des Events: {str(e)}\n")
                     return None
@@ -215,5 +216,5 @@ if __name__ == "__main__":
     print(f"Eventaktion des Events:\n{letztes_event[1]}\n")
     print(f"Eventname des Events:\n{letztes_event[2]}\n")
     print(f"Eventliste vor dem Entfernen eines Events:\n{EM.event_liste}\n")
-    EM.event_entfernen(letztes_event_id)
+    EM.event_trigger(entfernen=True)
     print(f"Eventliste nach dem Entfernen eines Events:\n{EM.event_liste}\n")
