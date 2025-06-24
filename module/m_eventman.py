@@ -109,14 +109,15 @@ class Eventman:
         :param event_zeit:list[int] #Zeitstempel des Events.\
         :return:bool # Gibt True zurück, wenn der Event-Zeitstempel abgelaufen ist, sonst False.\
         """
-        if event_zeit[0] <= self.__zeit.jahr:
-            if event_zeit[1] <= self.__zeit.monat:
-                if event_zeit[2] <= self.__zeit.tag:
-                    if event_zeit[3] <= self.__zeit.stunde:
-                        if event_zeit[4] <= self.__zeit.minute:
-                            if event_zeit[5] <= self.__zeit.sekunde:
-                                return True
-        return False
+        aktuelle_zeit = [
+            self.__zeit.jahr,
+            self.__zeit.monat,
+            self.__zeit.tag,
+            self.__zeit.stunde,
+            self.__zeit.minute,
+            self.__zeit.sekunde
+        ]
+        return event_zeit <= aktuelle_zeit
 
     def event_trigger(self) -> list[list[str]] | None:
         """Geht durch die Event-Liste, prüft, ob Events abgelaufen sind und löst sie aus.\
