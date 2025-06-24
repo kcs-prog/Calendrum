@@ -98,11 +98,11 @@ class Eventman:
             csv_writer.writerow(['EventID', 'Zeitstempel', 'Aktion', 'Name'])
             for event_id, event_data in self.__event_liste.items():
                 csv_writer.writerow([event_id, [self.__zeit.jahr,
-                                            self.__zeit.monat,
-                                            self.__zeit.tag,
-                                            self.__zeit.stunde,
-                                            self.__zeit.minute,
-                                            self.__zeit.sekunde], event_data[1], event_data[2]])
+                                                self.__zeit.monat,
+                                                self.__zeit.tag,
+                                                self.__zeit.stunde,
+                                                self.__zeit.minute,
+                                                self.__zeit.sekunde], event_data[1], event_data[2]])
 
     def __event_abgelaufen(self, event_zeit:list[int]) -> bool:
         """Prüft, ob ein Event-Zeitstempel abgelaufen ist.\
