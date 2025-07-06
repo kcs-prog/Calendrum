@@ -49,14 +49,19 @@ class Datumzeit:
     def get_monat(self):
         return self.__monat if self.__chk_monat(self.__monat) else None
     def set_monat(self, M):
-        if self.__chk_monat(M): self.__monat = M; self.__set_ein()
-    def __chk_monat(self,M)->bool:
-        if type(M) != int:
-            raise exception("Monat muss int sein")
         if M < 1:
             M = 12
         elif M > 12:
             M = 1
+        if not 1 <= M <= 12:
+            raise exception("Monat außerhalb des Geltungsbereichs [1,12]")
+        self.__monat = M
+        self.__set_ein()
+    def __chk_monat(self,M)->bool:
+        if type(M) != int:
+            raise exception("Monat muss int sein")
+        if not 1 < M <= 12:
+            raise Exception("Monat außerhalb des Geltungsbereichs [1,12]")
         else:
             return True
     monat = property(get_monat, set_monat)
