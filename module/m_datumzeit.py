@@ -47,7 +47,7 @@ class Datumzeit:
     jahr = property(get_jahr, set_jahr)
 
     def get_monat(self):
-        return self.__monat if self.__chk_monat(self.__monat) else None
+        return self.__monat if self.__chk_monat(self.__monat) else 0
     def set_monat(self, M):
         if M < 1:
             M = 12
