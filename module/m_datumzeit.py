@@ -53,8 +53,6 @@ class Datumzeit:
             M = 12
         elif M > 12:
             M = 1
-        if not 1 <= M <= 12:
-            raise exception("Monat außerhalb des Geltungsbereichs [1,12]")
         self.__monat = M
         self.__set_ein()
     def __chk_monat(self,M)->bool:
