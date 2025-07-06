@@ -14,7 +14,7 @@
 
         MDLabel:
             id: zeit_label
-            text: "12 uhr oder so"
+            text: app.uhrzeit
             size_hint_y: 0.2
             font_style: "H4"
             pos_hint: {"center_x": 0.5, "center_y": 0.2}
@@ -29,12 +29,14 @@
                 icon: "chevron-left-circle-outline"
                 pos_hint: {"center_y": 0.5}
                 on_release:
-                    app.zeit.set_monat(app.zeit.monat - 1)
+                    app.zeit.set_monat(app.zeit.get_monat() - 1)
+                    print(app.zeit.monat)
                     app.update_monat()
                 line_color: [0,0,1,0]
             MDLabel:
-                id: monat_auswahl
-                text: str(app.zeit.monat)
+                id: monat_anzeige
+                halign: "center"
+                text: app.monate_deutsch[app.zeit.get_monat() - 1]
                 pos_hint: {"center_y": 0.5}
                 line_color: [0,0,1,1]
             MDIconButton:
@@ -42,7 +44,8 @@
                 icon: "chevron-right-circle-outline"
                 pos_hint: {"center_y": 0.5}
                 on_release:
-                    app.zeit.set_monat(app.zeit.monat + 1)
+                    app.zeit.set_monat(app.zeit.get_monat() + 1)
+                    print(app.zeit.get_monat())
                     app.update_monat()
                 line_color: [0,0,1,0]
             MDIconButton:
@@ -50,12 +53,13 @@
                 icon: "chevron-left-circle-outline"
                 pos_hint: {"center_y": 0.5}
                 on_release:
-                    app.zeit.set_jahr(app.zeit.jahr - 1)
+                    app.zeit.set_jahr(app.zeit.get_jahr() - 1)
                     app.update_jahr()
                 line_color: [0,0,1,0]
             MDLabel:
-                id: jahr_auswahl
-                text: str(app.zeit.jahr)
+                id: jahr_anzeige
+                halign: "center"
+                text: str(app.zeit.get_jahr())
                 pos_hint: {"center_y": 0.5}
                 line_color: [0,0,1,1]
             MDIconButton:
@@ -63,7 +67,7 @@
                 icon: "chevron-right-circle-outline"
                 pos_hint: {"center_y": 0.5}
                 on_release:
-                    app.zeit.set_jahr(app.zeit.jahr + 1)
+                    app.zeit.set_jahr(app.zeit.get_jahr() + 1)
                     app.update_jahr()
                 line_color: [0,0,1,0]
 
