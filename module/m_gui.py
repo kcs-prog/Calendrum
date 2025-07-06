@@ -13,8 +13,13 @@ class CalendrumApp(MDApp):
     """
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.zeit = Datumzeit()# Initialisiert die Zeit- und Datumsobjekte
+        self.__zeit = Datumzeit()# Initialisiert die Zeit- und Datumsobjekte.
         self.zeit.jetzt()# Aktuelles Datum und Uhrzeit werden gesetzt
+
+    @property
+    def zeit(self) -> Datumzeit:
+        """Gibt das Datumzeit-Objekt zurück."""
+        return self.__zeit
 
     def build(self) -> MDScreenManager:
         """Wird automatisch aufgerufen, wenn die App gestartet wird.
@@ -27,12 +32,12 @@ class CalendrumApp(MDApp):
         return Manager()
 
     def update_jahr(self) -> None:
-        """Methode zum updaten des Jahres im HomeScreen beim clicken des Buttons."""
+        """Methode zum Updaten des Jahres im HomeScreen beim Klicken des Buttons."""
         home_screen = self.root.get_screen("home")
         home_screen.ids.jahr_auswahl.text = str(self.zeit.jahr)
 
     def update_monat(self) -> None:
-        """Methode zum updaten des Monats im HomeScreen beim clicken des Buttons."""
+        """Methode zum Updaten des Monats im HomeScreen beim Klicken des Buttons."""
         home_screen = self.root.get_screen("home")
         home_screen.ids.monat_auswahl.text = str(self.zeit.monat)
 
