@@ -26,7 +26,7 @@
             line_color: [0,0,1,1]
             MDIconButton:
                 id: monat_links
-                icon: "calendar-arrow-left"
+                icon: "chevron-left-circle-outline"
                 pos_hint: {"center_y": 0.5}
                 on_release:
                     app.zeit.set_monat(app.zeit.monat - 1)
@@ -39,7 +39,7 @@
                 line_color: [0,0,1,1]
             MDIconButton:
                 id: monat_rechts
-                icon: "calendar-arrow-right"
+                icon: "chevron-right-circle-outline"
                 pos_hint: {"center_y": 0.5}
                 on_release:
                     app.zeit.set_monat(app.zeit.monat + 1)
@@ -47,7 +47,7 @@
                 line_color: [0,0,1,0]
             MDIconButton:
                 id: jahr_links
-                icon: "calendar-arrow-left"
+                icon: "chevron-left-circle-outline"
                 pos_hint: {"center_y": 0.5}
                 on_release:
                     app.zeit.set_jahr(app.zeit.jahr - 1)
@@ -60,7 +60,7 @@
                 line_color: [0,0,1,1]
             MDIconButton:
                 id: jahr_rechts
-                icon: "calendar-arrow-right"
+                icon: "chevron-right-circle-outline"
                 pos_hint: {"center_y": 0.5}
                 on_release:
                     app.zeit.set_jahr(app.zeit.jahr + 1)
