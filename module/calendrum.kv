@@ -1,0 +1,62 @@
+#:kivy 2.3.1
+
+<Manager>:
+    id: screen_manager
+    HomeScreen:
+
+<HomeScreen>:
+    id: home_screen
+    name: "home"
+    MDBoxLayout:
+        orientation: "vertical"
+        spacing: dp(5)
+        padding: dp(5)
+
+        MDLabel:
+            id: zeit_label
+            text: "12 uhr oder so"
+            size_hint_y: 0.2
+            font_style: "H4"
+            pos_hint: {"center_x": 0.5, "center_y": 0.2}
+            line_color: [0,0,1,1]
+
+        MDBoxLayout:
+            id: datum_input_box
+            size_hint_y: 0.2
+            line_color: [0,0,1,1]
+            MDIconButton:
+                id: monat_links
+                icon: "calendar-arrow-left"
+                pos_hint: {"center_y": 0.5}
+                line_color: [0,0,1,0]
+            MDLabel:
+                id: monat_auswahl
+                text: "Juli"
+                pos_hint: {"center_y": 0.5}
+                line_color: [0,0,1,1]
+            MDIconButton:
+                id: monat_rechts
+                icon: "calendar-arrow-right"
+                pos_hint: {"center_y": 0.5}
+                line_color: [0,0,1,0]
+            MDIconButton:
+                id: jahr_links
+                icon: "calendar-arrow-left"
+                pos_hint: {"center_y": 0.5}
+                line_color: [0,0,1,0]
+            MDLabel:
+                id: jahr_auswahl
+                text: "2025"
+                pos_hint: {"center_y": 0.5}
+                line_color: [0,0,1,1]
+            MDIconButton:
+                id: jahr_rechts
+                icon: "calendar-arrow-right"
+                pos_hint: {"center_y": 0.5}
+                line_color: [0,0,1,0]
+
+        MDGridLayout:
+            id: kalender_grid
+            cols: 7
+            rows: 6
+            line_color: [0,0,1,1]
