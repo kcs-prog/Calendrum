@@ -28,8 +28,8 @@ class CalendrumApp(MDApp):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.uhrzeit = f"{self.zeit.stunde:02d}:{self.zeit.minute:02d}:{self.zeit.sekunde:02d} Uhr"
-        self.monate_deutsch = ["Januar", "Februar", "März", "April", "Mai", "Juni",
-                        "Juli", "August", "September", "Oktober", "November", "Dezember"]
+        self.monate_deutsch = ["Jan.", "Feb.", "März", "April", "Mai", "Juni",
+                                "Juli", "Aug.", "Sep.", "Okt.", "Nov.", "Dez."]
 
     @property
     def home_screen(self) -> MDScreen:
