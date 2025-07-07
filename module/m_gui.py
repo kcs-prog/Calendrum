@@ -3,6 +3,7 @@ Hauptmodul des GUIs. Hier wird die App gestartet und das Layout des Home-Bildsch
 """
 
 import kivy
+from kivy.core.text import LabelBase
 from kivy.clock import Clock
 from kivy.properties import StringProperty
 from kivymd.app import MDApp
@@ -105,6 +106,26 @@ class CalendrumApp(MDApp):
         """
         self.theme_cls.theme_style = "Dark"
         self.theme_cls.primary_palette = "Gray"
+        LabelBase.register(
+            name="jetbrains",
+            fn_regular="assets/fonts/JetBrainsMono-Regular.ttf",
+        )
+        # change standard font to custom font
+        self.theme_cls.font_styles.update({
+            "H1": ["jetbrains", 90, True, 0.15],
+            "H2": ["jetbrains", 60, False, -0.05],
+            "H3": ["jetbrains", 48, False, 0],
+            "H4": ["jetbrains", 34, False, 0.25],
+            "H5": ["jetbrains", 24, False, 0],
+            "H6": ["jetbrains", 20, False, 0.15],
+            "Subtitle1": ["jetbrains", 16, False, 0.15],
+            "Subtitle2": ["jetbrains", 14, False, 0.1],
+            "Body1": ["jetbrains", 16, False, 0.5],
+            "Body2": ["jetbrains", 14, False, 0.25],
+            "Button": ["jetbrains", 14, True, 1.25],
+            "Caption": ["jetbrains", 12, False, 0.4],
+            "Overline": ["jetbrains", 10, True, 1.5],
+        })
 
         Clock.schedule_interval(self._update_uhrzeit, 1) # Aktualisiert die Zeit jede Sekunde
 
