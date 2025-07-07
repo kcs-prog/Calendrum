@@ -23,56 +23,55 @@
         MDBoxLayout:
             id: datum_input_box
             size_hint_y: 0.2
-            line_color: [0,0,1,1]
+            line_color: [0,0,0,0]
+
             MDIconButton:
-                id: monat_links
+                id: monat_minus_btn
                 icon: "chevron-left-circle-outline"
                 pos_hint: {"center_y": 0.5}
-                on_release:
-                    app.zeit.set_monat(app.zeit.get_monat() - 1)
-                    print(app.zeit.monat)
-                    app.update_monat()
-                line_color: [0,0,1,0]
+                on_release: app.monat_minus()
+                line_color: [0,0,0,0]
             MDLabel:
                 id: monat_anzeige
                 halign: "center"
-                text: app.monate_deutsch[app.zeit.get_monat() - 1]
+                text: app.monate_deutsch[app.monat - 1]
                 pos_hint: {"center_y": 0.5}
-                line_color: [0,0,1,1]
+                line_color: [0,0,0,0]
             MDIconButton:
-                id: monat_rechts
+                id: monat_plus_btn
                 icon: "chevron-right-circle-outline"
                 pos_hint: {"center_y": 0.5}
-                on_release:
-                    app.zeit.set_monat(app.zeit.get_monat() + 1)
-                    print(app.zeit.get_monat())
-                    app.update_monat()
-                line_color: [0,0,1,0]
+                on_release: app.monat_plus()
+                line_color: [0,0,0,0]
+
             MDIconButton:
-                id: jahr_links
+                id: jahr_plus_btn
                 icon: "chevron-left-circle-outline"
                 pos_hint: {"center_y": 0.5}
-                on_release:
-                    app.zeit.set_jahr(app.zeit.get_jahr() - 1)
-                    app.update_jahr()
-                line_color: [0,0,1,0]
+                on_release:app.jahr_minus()
+                line_color: [0,0,0,0]
             MDLabel:
                 id: jahr_anzeige
                 halign: "center"
                 text: str(app.zeit.get_jahr())
                 pos_hint: {"center_y": 0.5}
-                line_color: [0,0,1,1]
+                line_color: [0,0,0,0]
             MDIconButton:
-                id: jahr_rechts
+                id: jahr_minus_btn
                 icon: "chevron-right-circle-outline"
                 pos_hint: {"center_y": 0.5}
-                on_release:
-                    app.zeit.set_jahr(app.zeit.get_jahr() + 1)
-                    app.update_jahr()
-                line_color: [0,0,1,0]
+                on_release:app.jahr_plus()
+                line_color: [0,0,0,0]
 
         MDGridLayout:
             id: kalender_grid
             cols: 7
             rows: 6
             line_color: [0,0,1,1]
+
+        MDIconButton:
+            id: wecker_btn
+            icon: "alarm"
+            pos_hint: {"center_x": 0.5, "center_y": 0.5}
+            on_release: print("alarm menu hier einbinden")
+            line_color: [0,0,0,0]

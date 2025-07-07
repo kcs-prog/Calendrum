@@ -17,30 +17,72 @@ class CalendrumApp(MDApp):
     Ruft beim Aufruf dieses Objekts die eigene "build"-Methode auf,
     die das Layout der App erstellt.
     """
+
     uhrzeit = StringProperty()  # Uhrzeit wird als StringProperty definiert, um sie im KV-Layout zu verwenden.
+    zeit = Datumzeit()
+    zeit.jetzt()
+    monat:int = zeit.monat # Kopie des Monats zum schutz gegen das Update für die Uhrzeit
+    jahr:int = zeit.jahr # Kopie des Jahres zum schutz gegen das Update für die Uhrzeit
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.zeit = Datumzeit()# Initialisiert die Zeit- und Datumsobjekte.
-        self.zeit.jetzt()
         self.uhrzeit = f"{self.zeit.stunde:02d}:{self.zeit.minute:02d}:{self.zeit.sekunde:02d} Uhr"
-        self.monate_deutsch = ["Januar", "Februar", "März", "April", "Mai", "Juni","Juli", "August", "September", "Oktober", "November", "Dezember"]
+        self.monate_deutsch = ["Januar", "Februar", "März", "April", "Mai", "Juni",
+                        "Juli", "August", "September", "Oktober", "November", "Dezember"]
 
     @property
     def home_screen(self) -> MDScreen:
         """Gibt den HomeScreen zurück."""
         return self.root.get_screen("home")
 
-    def update_monat(self) -> None:
-        """Methode zum Updaten des Monats im HomeScreen beim Klicken des Buttons."""
+    def monat_plus(self) -> None:
+        """Methode zum Erhöhen des Monats im HomeScreen beim Klicken des Buttons."""
         try:
-            self.home_screen.ids.monat_anzeige.text = self.monate_deutsch[self.zeit.get_monat() - 1]
+            if self.monat < 12:
+                self.monat += 1
+            else:
+                self.monat = 1
+            self.__update_monat()
         except Exception as e:
             print(f"Error updating month: {e}")
 
-    def update_jahr(self) -> None:
+    def monat_minus(self) -> None:
+        """Methode zum Verringern des Monats im HomeScreen beim Klicken des Buttons."""
+        try:
+            if self.monat > 1:
+                self.monat -= 1
+            else:
+                self.monat = 12
+            self.__update_monat()
+        except Exception as e:
+            print(f"Error updating month: {e}")
+
+    def __update_monat(self) -> None:
+        """Methode zum Updaten des Monats im HomeScreen beim Klicken des Buttons."""
+        try:
+            self.home_screen.ids.monat_anzeige.text = self.monate_deutsch[self.monat - 1]
+        except Exception as e:
+            print(f"Error updating month: {e}")
+
+    def jahr_plus(self) -> None:
+        """Methode zum Erhöhen des Jahres im HomeScreen beim Klicken des Buttons."""
+        try:
+            self.jahr += 1
+            self.__update_jahr()
+        except Exception as e:
+            print(f"Error updating year: {e}")
+
+    def jahr_minus(self) -> None:
+        """Methode zum Verringern des Jahres im HomeScreen beim Klicken des Buttons."""
+        try:
+            self.jahr -= 1
+            self.__update_jahr()
+        except Exception as e:
+            print(f"Error updating year: {e}")
+
+    def __update_jahr(self) -> None:
         """Methode zum Updaten des Jahres im HomeScreen beim Klicken des Buttons."""
         try:
-            current_year = self.zeit.get_jahr()
+            current_year = self.jahr
             if current_year is not None:
                 self.home_screen.ids.jahr_anzeige.text = str(current_year)
         except Exception as e:
