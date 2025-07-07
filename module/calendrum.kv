@@ -8,6 +8,7 @@
     id: home_screen
     name: "home"
     MDBoxLayout:
+        id: home_layout
         orientation: "vertical"
         spacing: dp(5)
         padding: dp(5)
@@ -17,7 +18,7 @@
             text: app.uhrzeit
             size_hint_y: 0.2
             font_style: "H4"
-            pos_hint: {"center_x": 0.5, "center_y": 0.2}
+            pos_hint: {"center_x": 0.5, "center_y": 0.3}
             line_color: [0,0,1,1]
 
         MDBoxLayout:
@@ -35,6 +36,7 @@
                 id: monat_anzeige
                 halign: "center"
                 text: app.monate_deutsch[app.monat - 1]
+                font_style: "H6"
                 pos_hint: {"center_y": 0.5}
                 line_color: [0,0,0,0]
             MDIconButton:
@@ -53,7 +55,8 @@
             MDLabel:
                 id: jahr_anzeige
                 halign: "center"
-                text: str(app.zeit.get_jahr())
+                text: str(app.jahr)
+                font_style: "H6"
                 pos_hint: {"center_y": 0.5}
                 line_color: [0,0,0,0]
             MDIconButton:

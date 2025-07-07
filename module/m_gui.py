@@ -18,8 +18,8 @@ class CalendrumApp(MDApp):
     die das Layout der App erstellt.
     """
 
-    uhrzeit = StringProperty()  # Uhrzeit wird als StringProperty definiert, um sie im KV-Layout zu verwenden.
-    zeit = Datumzeit()
+    uhrzeit:str = StringProperty()  # Uhrzeit wird als StringProperty definiert, um sie im KV-Layout zu verwenden.
+    zeit:Datumzeit = Datumzeit()
     zeit.jetzt()
     monat:int = zeit.monat # Kopie des Monats zum schutz gegen das Update für die Uhrzeit
     jahr:int = zeit.jahr # Kopie des Jahres zum schutz gegen das Update für die Uhrzeit
