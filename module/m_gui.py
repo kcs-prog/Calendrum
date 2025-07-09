@@ -110,7 +110,6 @@ class CalendrumApp(MDApp):
             name="jetbrains",
             fn_regular="assets/fonts/JetBrainsMono-Regular.ttf",
         )
-        # change standard font to custom font
         self.theme_cls.font_styles.update({
             "H1": ["jetbrains", 90, True, 0.15],
             "H2": ["jetbrains", 60, False, -0.05],
