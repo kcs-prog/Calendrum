@@ -7,6 +7,8 @@ from kivy.core.text import LabelBase
 from kivy.clock import Clock
 from kivy.properties import StringProperty
 from kivymd.app import MDApp
+from kivymd.uix.button import MDIconButton
+from kivymd.uix.dialog import MDDialog
 from kivymd.uix.screenmanager import MDScreenManager
 from kivymd.uix.screen import MDScreen
 from m_eventman import Eventman
@@ -29,6 +31,7 @@ class CalendrumApp(MDApp):
     jahr: int = zeit.jahr  # Kopie des Jahres zum schutz gegen das Update für die Uhrzeit
 
     eventman: Eventman = Eventman()  # Instanz der Eventman-Klasse, um Ereignisse zu verwalten
+    dialog:MDDialog = None
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -103,6 +106,25 @@ class CalendrumApp(MDApp):
         """Aktualisiert die Uhrzeit im HomeScreen jede Sekunde."""
         self.zeit.jetzt()
         self.uhrzeit = f"{self.zeit.stunde:02d}:{self.zeit.minute:02d}:{self.zeit.sekunde:02d} Uhr"
+
+    def open_wecker_dialog(self) -> None:
+        """Öffnet den Dialog zum Einstellen des Weckers."""
+        if not self.dialog:
+            self.dialog = MDDialog(
+                text="Wecker einstellen",
+                pos_hint={"center_x": 0.5},
+                buttons=[
+                    MDIconButton(
+                        icon="close-circle",
+                        theme_text_color="Custom",
+                        text_color=self.theme_cls.primary_color,
+                        pos_hint ={"center_x": 0.5},
+                        on_release=lambda x: self.dialog.dismiss()
+                    ),
+
+                ],
+            )
+        self.dialog.open()
 
     def build(self) -> MDScreenManager:
         """Wird automatisch aufgerufen, wenn die App gestartet wird.
