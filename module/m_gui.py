@@ -121,7 +121,6 @@ class CalendrumApp(MDApp):
                         pos_hint ={"center_x": 0.5},
                         on_release=lambda x: self.dialog.dismiss()
                     ),
-
                 ],
             )
         self.dialog.open()
@@ -137,7 +136,7 @@ class CalendrumApp(MDApp):
         # Hier werden die Schriftarten für die App definiert.
         LabelBase.register(
             name="jetbrains",
-            fn_regular="assets/fonts/JetBrainsMono-Regular.ttf",
+            fn_regular="assets/fonts/JetBrainsMono-Regular.ttf", # ist open-source free to use
         )
         self.theme_cls.font_styles.update({
             "H1": ["jetbrains", 90, True, 0.15],
@@ -185,6 +184,9 @@ class Main:
     Test-Code kann hier eingefügt werden."""
     App:CalendrumApp = CalendrumApp()
     App.run()
+    #run() startet die App und ruft build() auf.
+    #Nach build() wird on_start() automatisch aufgerufen.
+    #on_start() kann überschrieben werden, um Aktionen beim Start der App auszuführen.
 
 
 if __name__ == "__main__":
