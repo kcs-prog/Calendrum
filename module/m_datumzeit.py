@@ -145,6 +145,18 @@ class Datumzeit:
         self.minute = int(dz_list[4])
         self.sekunde = int(dz_list[5])
 
+    def ist_schaltjahr(self,Jahr)->bool:
+        return Jahr % 4 == 0 and not Jahr % 100 == 0 or Jahr % 400 == 0
+
+    def max_tage(self, Monat, Jahr)->int:
+        tage = [0, 31, -1, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][Monat]
+        if tage == -1:
+            tage = 28 + int(self.ist_schaltjahr(Jahr))
+        return tage
+
+
+
+
 if __name__ == '__main__':
     dz = Datumzeit(2025,2,17,6,35,00)
     print(dz.minute)
