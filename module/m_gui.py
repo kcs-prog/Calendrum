@@ -9,10 +9,11 @@ from kivy.properties import StringProperty
 from kivymd.app import MDApp
 from kivymd.uix.screenmanager import MDScreenManager
 from kivymd.uix.screen import MDScreen
-from kivymd.font_definitions import theme_font_styles
+from m_eventman import Eventman
 from m_datumzeit import Datumzeit
 
 kivy.require("2.3.1")
+
 
 class CalendrumApp(MDApp):
     """App zur calendrum.kv.
@@ -20,16 +21,20 @@ class CalendrumApp(MDApp):
     die das Layout der App erstellt.
     """
 
-    uhrzeit:str = StringProperty() # Uhrzeit wird als StringProperty definiert, um sie im KV-Layout zu verwenden.
-    zeit:Datumzeit = Datumzeit()
-    zeit.jetzt()
-    monat:int = zeit.monat # Kopie des Monats zum schutz gegen das Update für die Uhrzeit
-    jahr:int = zeit.jahr # Kopie des Jahres zum schutz gegen das Update für die Uhrzeit
+    uhrzeit: str = StringProperty()  # Uhrzeit wird als StringProperty definiert, um sie im KV-Layout zu verwenden.
+    zeit: Datumzeit = Datumzeit()
+    try: zeit.jetzt()  # Setzt die aktuelle Zeit, wenn die App gestartet wird
+    except Exception as e: print(f"Error initializing time: {e}")
+    monat: int = zeit.monat  # Kopie des Monats zum schutz gegen das Update für die Uhrzeit
+    jahr: int = zeit.jahr  # Kopie des Jahres zum schutz gegen das Update für die Uhrzeit
+
+    eventman: Eventman = Eventman()  # Instanz der Eventman-Klasse, um Ereignisse zu verwalten
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.uhrzeit = f"{self.zeit.stunde:02d}:{self.zeit.minute:02d}:{self.zeit.sekunde:02d} Uhr"
         self.monate_deutsch = ["Jan.", "Feb.", "März", "April", "Mai", "Juni",
-                                "Juli", "Aug.", "Sep.", "Okt.", "Nov.", "Dez."]
+                               "Juli", "Aug.", "Sep.", "Okt.", "Nov.", "Dez."]
 
     @property
     def home_screen(self) -> MDScreen:
@@ -94,7 +99,7 @@ class CalendrumApp(MDApp):
         except Exception as e:
             print(f"Error updating year: {e}")
 
-    def _update_uhrzeit(self, *args) -> None: # *args ist notwendig, da Clock.schedule_interval ein Argument erwartet
+    def _update_uhrzeit(self, *args) -> None:  # *args ist notwendig, da Clock.schedule_interval ein Argument erwartet
         """Aktualisiert die Uhrzeit im HomeScreen jede Sekunde."""
         self.zeit.jetzt()
         self.uhrzeit = f"{self.zeit.stunde:02d}:{self.zeit.minute:02d}:{self.zeit.sekunde:02d} Uhr"
@@ -106,6 +111,8 @@ class CalendrumApp(MDApp):
         """
         self.theme_cls.theme_style = "Dark"
         self.theme_cls.primary_palette = "Gray"
+        self.theme_cls.primary_hue = "500"
+        # Hier werden die Schriftarten für die App definiert.
         LabelBase.register(
             name="jetbrains",
             fn_regular="assets/fonts/JetBrainsMono-Regular.ttf",
@@ -126,7 +133,8 @@ class CalendrumApp(MDApp):
             "Overline": ["jetbrains", 10, True, 1.5],
         })
 
-        Clock.schedule_interval(self._update_uhrzeit, 1) # Aktualisiert die Zeit jede Sekunde
+        Clock.schedule_interval(self._update_uhrzeit, 1)  # Aktualisiert die Zeit jede Sekunde
+        Clock.schedule_interval(self.eventman.event_trigger, 1) # Triggert abgelaufene Events jede Sekunde
 
         return Manager()
 
@@ -135,20 +143,25 @@ class CalendrumApp(MDApp):
 damit sie in der .kv-Datei verwendet werden können.
 Funktioniert auch ohne super()-Konstruktor, vielleicht aber nicht in allen Fällen."""
 
+
 class Manager(MDScreenManager):
     """ScreenManager der App."""
     pass
+
 
 class HomeScreen(MDScreen):
     """Startbildschirm der App."""
     pass
 
+
 """Main Klasse OOP"""
+
 
 class Main:
     """Startet die App.
     Test-Code kann hier eingefügt werden."""
     CalendrumApp().run()
+
 
 if __name__ == "__main__":
     Main()
