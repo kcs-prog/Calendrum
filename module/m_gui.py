@@ -158,7 +158,8 @@ class CalendrumApp(MDApp):
         Clock.schedule_interval(self._update_uhrzeit, 1)  # Aktualisiert die Zeit jede Sekunde
         Clock.schedule_interval(self.eventman.event_trigger, 1) # Triggert abgelaufene Events jede Sekunde
 
-        return Manager()
+        manager:Manager = Manager()
+        return manager
 
 
 """Folgende Klassen müssen in der .py definiert werden, 
@@ -182,7 +183,8 @@ class HomeScreen(MDScreen):
 class Main:
     """Startet die App.
     Test-Code kann hier eingefügt werden."""
-    CalendrumApp().run()
+    App:CalendrumApp = CalendrumApp()
+    App.run()
 
 
 if __name__ == "__main__":
