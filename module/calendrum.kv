@@ -15,10 +15,10 @@
 
         MDLabel:
             id: zeit_label
-            text: app.uhrzeit
+            text: app._uhrzeit
             size_hint_y: 0.2
             font_style: "H4"
-            pos_hint: {"center_x": 0.5, "center_y": 0.3}
+            pos_hint: {"center_x": 0.5, "center_y": 0.5}
             line_color: [1,1,1,1]
 
         MDBoxLayout:
@@ -30,12 +30,12 @@
                 id: monat_minus_btn
                 icon: "chevron-left-circle-outline"
                 pos_hint: {"center_y": 0.5}
-                on_release: app.monat_minus()
+                on_release: app._monat_minus()
                 line_color: [0,0,0,0]
             MDLabel:
                 id: monat_anzeige
                 halign: "center"
-                text: app.monate_deutsch[app.monat - 1]
+                text: app._monate_deutsch[app._monat - 1]
                 font_style: "H6"
                 pos_hint: {"center_y": 0.5}
                 line_color: [0,0,0,0]
@@ -43,19 +43,19 @@
                 id: monat_plus_btn
                 icon: "chevron-right-circle-outline"
                 pos_hint: {"center_y": 0.5}
-                on_release: app.monat_plus()
+                on_release: app._monat_plus()
                 line_color: [0,0,0,0]
 
             MDIconButton:
                 id: jahr_plus_btn
                 icon: "chevron-left-circle-outline"
                 pos_hint: {"center_y": 0.5}
-                on_release:app.jahr_minus()
+                on_release:app._jahr_minus()
                 line_color: [0,0,0,0]
             MDLabel:
                 id: jahr_anzeige
                 halign: "center"
-                text: str(app.jahr)
+                text: str(app._jahr)
                 font_style: "H5"
                 pos_hint: {"center_y": 0.5}
                 line_color: [0,0,0,0]
@@ -63,7 +63,7 @@
                 id: jahr_minus_btn
                 icon: "chevron-right-circle-outline"
                 pos_hint: {"center_y": 0.5}
-                on_release:app.jahr_plus()
+                on_release:app._jahr_plus()
                 line_color: [0,0,0,0]
 
         MDGridLayout:

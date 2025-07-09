@@ -23,20 +23,20 @@ class CalendrumApp(MDApp):
     die das Layout der App erstellt.
     """
 
-    uhrzeit: str = StringProperty()  # Uhrzeit wird als StringProperty definiert, um sie im KV-Layout zu verwenden.
-    zeit: Datumzeit = Datumzeit()
-    try: zeit.jetzt()  # Setzt die aktuelle Zeit, wenn die App gestartet wird
+    _uhrzeit: str = StringProperty()  # Uhrzeit wird als StringProperty definiert, um sie im KV-Layout zu verwenden.
+    _zeit: Datumzeit = Datumzeit()
+    try: _zeit.jetzt()  # Setzt die aktuelle Zeit, wenn die App gestartet wird
     except Exception as e: print(f"Error initializing time: {e}")
-    monat: int = zeit.monat  # Kopie des Monats zum schutz gegen das Update für die Uhrzeit
-    jahr: int = zeit.jahr  # Kopie des Jahres zum schutz gegen das Update für die Uhrzeit
+    _monat: int = _zeit.monat  # Kopie des Monats zum schutz gegen das Update für die Uhrzeit
+    _jahr: int = _zeit.jahr  # Kopie des Jahres zum schutz gegen das Update für die Uhrzeit
 
     eventman: Eventman = Eventman()  # Instanz der Eventman-Klasse, um Ereignisse zu verwalten
     dialog:MDDialog = None
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.uhrzeit = f"{self.zeit.stunde:02d}:{self.zeit.minute:02d}:{self.zeit.sekunde:02d} Uhr"
-        self.monate_deutsch = ["Jan.", "Feb.", "März", "April", "Mai", "Juni",
+        self._uhrzeit = f"{self._zeit.stunde:02d}:{self._zeit.minute:02d}:{self._zeit.sekunde:02d} Uhr"
+        self._monate_deutsch = ["Jan.", "Feb.", "März", "April", "Mai", "Juni",
                                "Juli", "Aug.", "Sep.", "Okt.", "Nov.", "Dez."]
 
     @property
@@ -44,27 +44,27 @@ class CalendrumApp(MDApp):
         """Gibt den HomeScreen zurück."""
         return self.root.get_screen("home")
 
-    def monat_plus(self) -> None:
+    def _monat_plus(self) -> None:
         """Methode zum Erhöhen des Monats im HomeScreen beim Klicken des Buttons."""
         try:
-            if self.monat < 12:
-                self.monat += 1
+            if self._monat < 12:
+                self._monat += 1
             else:
-                self.monat = 1
-                self.jahr += 1
+                self._monat = 1
+                self._jahr += 1
             self.__update_monat()
             self.__update_jahr()
         except Exception as e:
             print(f"Error updating month: {e}")
 
-    def monat_minus(self) -> None:
+    def _monat_minus(self) -> None:
         """Methode zum Verringern des Monats im HomeScreen beim Klicken des Buttons."""
         try:
-            if self.monat > 1:
-                self.monat -= 1
+            if self._monat > 1:
+                self._monat -= 1
             else:
-                self.monat = 12
-                self.jahr -= 1
+                self._monat = 12
+                self._jahr -= 1
             self.__update_monat()
             self.__update_jahr()
         except Exception as e:
@@ -73,22 +73,22 @@ class CalendrumApp(MDApp):
     def __update_monat(self) -> None:
         """Methode zum Updaten des Monats im HomeScreen beim Klicken des Buttons."""
         try:
-            self.home_screen.ids.monat_anzeige.text = self.monate_deutsch[self.monat - 1]
+            self.home_screen.ids.monat_anzeige.text = self._monate_deutsch[self._monat - 1]
         except Exception as e:
             print(f"Error updating month: {e}")
 
-    def jahr_plus(self) -> None:
+    def _jahr_plus(self) -> None:
         """Methode zum Erhöhen des Jahres im HomeScreen beim Klicken des Buttons."""
         try:
-            self.jahr += 1
+            self._jahr += 1
             self.__update_jahr()
         except Exception as e:
             print(f"Error updating year: {e}")
 
-    def jahr_minus(self) -> None:
+    def _jahr_minus(self) -> None:
         """Methode zum Verringern des Jahres im HomeScreen beim Klicken des Buttons."""
         try:
-            self.jahr -= 1
+            self._jahr -= 1
             self.__update_jahr()
         except Exception as e:
             print(f"Error updating year: {e}")
@@ -96,7 +96,7 @@ class CalendrumApp(MDApp):
     def __update_jahr(self) -> None:
         """Methode zum Updaten des Jahres im HomeScreen beim Klicken des Buttons."""
         try:
-            current_year = self.jahr
+            current_year = self._jahr
             if current_year is not None:
                 self.home_screen.ids.jahr_anzeige.text = str(current_year)
         except Exception as e:
@@ -104,8 +104,8 @@ class CalendrumApp(MDApp):
 
     def _update_uhrzeit(self, *args) -> None:  # *args ist notwendig, für Clock.schedule_interval
         """Aktualisiert die Uhrzeit im HomeScreen jede Sekunde."""
-        self.zeit.jetzt()
-        self.uhrzeit = f"{self.zeit.stunde:02d}:{self.zeit.minute:02d}:{self.zeit.sekunde:02d} Uhr"
+        self._zeit.jetzt()
+        self._uhrzeit = f"{self._zeit.stunde:02d}:{self._zeit.minute:02d}:{self._zeit.sekunde:02d} Uhr"
 
     def open_wecker_dialog(self) -> None:
         """Öffnet den Dialog zum Einstellen des Weckers."""
