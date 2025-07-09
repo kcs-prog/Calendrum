@@ -7,8 +7,10 @@ from kivy.core.text import LabelBase
 from kivy.clock import Clock
 from kivy.properties import StringProperty
 from kivymd.app import MDApp
+from kivymd.uix.button import MDFlatButton
 from kivymd.uix.screenmanager import MDScreenManager
 from kivymd.uix.screen import MDScreen
+from kivymd.uix.dialog import MDDialog
 from m_eventman import Eventman
 from m_datumzeit import Datumzeit
 
@@ -30,6 +32,8 @@ class CalendrumApp(MDApp):
 
     eventman: Eventman = Eventman()  # Instanz der Eventman-Klasse, um Ereignisse zu verwalten
 
+    dialog:MDDialog = None
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.uhrzeit = f"{self.zeit.stunde:02d}:{self.zeit.minute:02d}:{self.zeit.sekunde:02d} Uhr"
@@ -41,56 +45,14 @@ class CalendrumApp(MDApp):
         """Gibt den HomeScreen zurück."""
         return self.root.get_screen("home")
 
-    def monat_plus(self) -> None:
-        """Methode zum Erhöhen des Monats im HomeScreen beim Klicken des Buttons."""
-        try:
-            if self.monat < 12:
-                self.monat += 1
-            else:
-                self.monat = 1
-                self.jahr += 1
-            self.__update_monat()
-            self.__update_jahr()
-        except Exception as e:
-            print(f"Error updating month: {e}")
-
-    def monat_minus(self) -> None:
-        """Methode zum Verringern des Monats im HomeScreen beim Klicken des Buttons."""
-        try:
-            if self.monat > 1:
-                self.monat -= 1
-            else:
-                self.monat = 12
-                self.jahr -= 1
-            self.__update_monat()
-            self.__update_jahr()
-        except Exception as e:
-            print(f"Error updating month: {e}")
-
-    def __update_monat(self) -> None:
+    def _update_monat(self) -> None:
         """Methode zum Updaten des Monats im HomeScreen beim Klicken des Buttons."""
         try:
             self.home_screen.ids.monat_anzeige.text = self.monate_deutsch[self.monat - 1]
         except Exception as e:
             print(f"Error updating month: {e}")
 
-    def jahr_plus(self) -> None:
-        """Methode zum Erhöhen des Jahres im HomeScreen beim Klicken des Buttons."""
-        try:
-            self.jahr += 1
-            self.__update_jahr()
-        except Exception as e:
-            print(f"Error updating year: {e}")
-
-    def jahr_minus(self) -> None:
-        """Methode zum Verringern des Jahres im HomeScreen beim Klicken des Buttons."""
-        try:
-            self.jahr -= 1
-            self.__update_jahr()
-        except Exception as e:
-            print(f"Error updating year: {e}")
-
-    def __update_jahr(self) -> None:
+    def _update_jahr(self) -> None:
         """Methode zum Updaten des Jahres im HomeScreen beim Klicken des Buttons."""
         try:
             current_year = self.jahr
@@ -103,6 +65,25 @@ class CalendrumApp(MDApp):
         """Aktualisiert die Uhrzeit im HomeScreen jede Sekunde."""
         self.zeit.jetzt()
         self.uhrzeit = f"{self.zeit.stunde:02d}:{self.zeit.minute:02d}:{self.zeit.sekunde:02d} Uhr"
+
+    def open_dialog_wecker(self) -> None:
+        """Öffnet einen Dialog im HomeScreen.
+        Es kann immer nur ein Dialog geöffnet sein.
+        """
+        if not self.dialog:
+            self.dialog = MDDialog(
+                title="Wecker Platzhalter",
+                text="hier könnte ihr Wecker sein",
+                buttons=[
+                    MDFlatButton(
+                        text="Schliessen",
+                        theme_text_color="Custom",
+                        text_color=self.theme_cls.primary_color,
+                        on_release= lambda x: self.dialog.dismiss()
+                    ),
+                ],
+            )
+        self.dialog.open()
 
     def build(self) -> MDScreenManager:
         """Wird automatisch aufgerufen, wenn die App gestartet wird.
@@ -136,7 +117,8 @@ class CalendrumApp(MDApp):
         Clock.schedule_interval(self._update_uhrzeit, 1)  # Aktualisiert die Zeit jede Sekunde
         Clock.schedule_interval(self.eventman.event_trigger, 1) # Triggert abgelaufene Events jede Sekunde
 
-        return Manager()
+        manager:Manager = Manager()
+        return manager
 
 
 """Folgende Klassen müssen in der .py definiert werden, 

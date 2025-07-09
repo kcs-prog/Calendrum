@@ -30,7 +30,9 @@
                 id: monat_minus_btn
                 icon: "chevron-left-circle-outline"
                 pos_hint: {"center_y": 0.5}
-                on_release: app.monat_minus()
+                on_release:
+                    app.monat -= 1
+                    app._update_monat()
                 line_color: [0,0,0,0]
             MDLabel:
                 id: monat_anzeige
@@ -43,14 +45,18 @@
                 id: monat_plus_btn
                 icon: "chevron-right-circle-outline"
                 pos_hint: {"center_y": 0.5}
-                on_release: app.monat_plus()
+                on_release:
+                    app.monat += 1
+                    app._update_monat()
                 line_color: [0,0,0,0]
 
             MDIconButton:
                 id: jahr_plus_btn
                 icon: "chevron-left-circle-outline"
                 pos_hint: {"center_y": 0.5}
-                on_release:app.jahr_minus()
+                on_release:
+                    app.jahr -= 1
+                    app._update_jahr()
                 line_color: [0,0,0,0]
             MDLabel:
                 id: jahr_anzeige
@@ -63,7 +69,9 @@
                 id: jahr_minus_btn
                 icon: "chevron-right-circle-outline"
                 pos_hint: {"center_y": 0.5}
-                on_release:app.jahr_plus()
+                on_release:
+                    app.jahr += 1
+                    app._update_jahr()
                 line_color: [0,0,0,0]
 
         MDGridLayout:
@@ -76,5 +84,5 @@
             id: wecker_btn
             icon: "alarm"
             pos_hint: {"center_x": 0.5, "center_y": 0.5}
-            on_release: print("alarm menu hier einbinden")
+            on_release: app.open_dialog_wecker()
             line_color: [0,0,0,0]
