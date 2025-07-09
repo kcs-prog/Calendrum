@@ -120,7 +120,7 @@ class Eventman:
         ]
         return event_zeit <= aktuelle_zeit
 
-    def event_trigger(self, entfernen:bool=True) -> list[list[str]] | None:
+    def event_trigger(self, *args, entfernen:bool=True) -> list[list[str]] | None:
         """Geht durch die Event-Liste, prüft, ob Events abgelaufen sind und löst sie aus.\
         :return:str | None # Gibt die Aktion des ausgelösten Events zurück, wenn eines gefunden wurde, sonst None.\
         """
