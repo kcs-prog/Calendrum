@@ -102,7 +102,7 @@ class CalendrumApp(MDApp):
         except Exception as e:
             print(f"Error updating year: {e}")
 
-    def _update_uhrzeit(self, *args) -> None:  # *args ist notwendig, da Clock.schedule_interval ein Argument erwartet
+    def _update_uhrzeit(self, *args) -> None:  # *args ist notwendig, für Clock.schedule_interval
         """Aktualisiert die Uhrzeit im HomeScreen jede Sekunde."""
         self.zeit.jetzt()
         self.uhrzeit = f"{self.zeit.stunde:02d}:{self.zeit.minute:02d}:{self.zeit.sekunde:02d} Uhr"
