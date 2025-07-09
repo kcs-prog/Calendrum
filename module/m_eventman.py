@@ -204,19 +204,6 @@ class Eventman:
         except Exception as e:
             raise Exception(f"Fehler beim speichern der Event-Liste: {str(e)}\n")
 
-class Main:
-    """Testcode für die Eventman-Klasse."""
-    EM: Eventman = Eventman()  # Beispiel-Event-Liste
-    EM.event_erstellen(EM.zeit, "test", "Test-Event - Event erstellen")
-    letztes_event_id = max(EM.event_liste.keys())
-    letztes_event = EM.event_aufrufen(letztes_event_id)
-    print(f"Event-Objekt aufgerufen mit Event-ID '{letztes_event_id}' :\n{letztes_event}\n")
-    print(f"Eventzeit des Events:\n{letztes_event[0]}\n")
-    print(f"Eventaktion des Events:\n{letztes_event[1]}\n")
-    print(f"Eventname des Events:\n{letztes_event[2]}\n")
-    print(f"Eventliste vor dem Entfernen eines Events:\n{EM.event_liste}\n")
-    # EM.event_trigger()
-    # print(f"Eventliste nach dem Entfernen eines Events:\n{EM.event_liste}\n")
 
 
 if __name__ == "__main__":
@@ -230,5 +217,5 @@ if __name__ == "__main__":
     print(f"Eventaktion des Events:\n{letztes_event[1]}\n")
     print(f"Eventname des Events:\n{letztes_event[2]}\n")
     print(f"Eventliste vor dem Entfernen eines Events:\n{EM.event_liste}\n")
-    #EM.event_trigger()
-    #print(f"Eventliste nach dem Entfernen eines Events:\n{EM.event_liste}\n")
+    # EM.event_trigger()
+    # print(f"Eventliste nach dem Entfernen eines Events:\n{EM.event_liste}\n")
