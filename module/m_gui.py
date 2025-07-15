@@ -184,9 +184,9 @@ class Main:
     Test-Code kann hier eingefügt werden."""
     App:CalendrumApp = CalendrumApp()
     App.run()
-    #run() startet die App und ruft build() auf.
-    #Nach build() wird on_start() automatisch aufgerufen.
-    #on_start() kann überschrieben werden, um Aktionen beim Start der App auszuführen.
+    """run() startet die App und ruft automatisch build() auf.
+    Nach build() wird on_start() automatisch aufgerufen.
+    on_start() kann überschrieben werden, um Aktionen beim Start der App auszuführen."""
 
 
 if __name__ == "__main__":
