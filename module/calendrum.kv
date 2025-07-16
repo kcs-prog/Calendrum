@@ -1,5 +1,15 @@
 #:kivy 2.3.1
 
+# Elemente können mit <KlassenName>: hier angesprochen werden, auch vordefinierte von kivy.
+# z.B. <Label>:
+#          text: "1" # ALLE Labels beinhalten nun den text "1"
+# einzelne Elemente können im jeweiligen <Screen> definiert und verändert werden.
+# z.B. <Screen>:
+#           Label:
+#               text: "1" # Dieses Label beinhaltet den Text "1"
+
+
+# Alle Screens müssen im <Manager> hinterlegt werden, sonst kann nicht zum Screen gewechselt werden.
 <Manager>:
     id: screen_manager
     HomeScreen:
@@ -7,6 +17,8 @@
 <HomeScreen>:
     id: home_screen
     name: "home"
+
+    # Box, in der sich alle Elemente des Homescreens befinden
     MDBoxLayout:
         id: home_layout
         orientation: "vertical"
@@ -22,11 +34,13 @@
             pos_hint: {"center_x": 0.5, "center_y": 0.5}
             line_color: [1,1,1,1]
 
+        # Box für die Auswahlfelder für Jahr und Monat & dazugehörige Anzeige
         MDBoxLayout:
             id: datum_input_box
             size_hint_y: 0.2
             line_color: [0,0,0,0]
 
+            # Monatsauswahl
             MDIconButton:
                 id: monat_minus_btn
                 icon: "chevron-left-circle-outline"
@@ -47,6 +61,7 @@
                 on_release: app._monat_plus()
                 line_color: [0,0,0,0]
 
+            # Jahresauswahl
             MDIconButton:
                 id: jahr_plus_btn
                 icon: "chevron-left-circle-outline"
@@ -67,12 +82,14 @@
                 on_release:app._jahr_plus()
                 line_color: [0,0,0,0]
 
+        # Grid, in dem sich die jeweiligen Tage des ausgewählten Monats befinden
         MDGridLayout:
             id: kalender_grid
             cols: 7
             rows: 6
             line_color: [1,1,1,1]
 
+        # Button für die Weckerfunktion
         MDIconButton:
             id: wecker_btn
             icon: "alarm"

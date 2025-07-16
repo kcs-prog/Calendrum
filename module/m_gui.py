@@ -139,6 +139,7 @@ class CalendrumApp(MDApp):
             fn_regular="assets/fonts/JetBrainsMono-Regular.ttf", # ist open-source free to use
         )
         self.theme_cls.font_styles.update({
+        #   Name: [Familie, Größe, fett, Abstand zwischen Buchstaben]
             "H1": ["jetbrains", 90, True, 0.15],
             "H2": ["jetbrains", 60, False, -0.05],
             "H3": ["jetbrains", 48, False, 0],
