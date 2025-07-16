@@ -7,7 +7,7 @@ from kivy.core.text import LabelBase
 from kivy.clock import Clock
 from kivy.properties import StringProperty
 from kivymd.app import MDApp
-from kivymd.uix.button import MDIconButton
+from kivymd.uix.button import MDIconButton, MDFlatButton
 from kivymd.uix.dialog import MDDialog
 from kivymd.uix.screenmanager import MDScreenManager
 from kivymd.uix.screen import MDScreen
@@ -159,6 +159,21 @@ class CalendrumApp(MDApp):
 
         manager:Manager = Manager()
         return manager
+
+    def on_start(self):
+        self.gen_tagegrid()
+
+    def gen_tagegrid(self):
+        container = self.home_screen.ids.kalender_grid
+        for i in range(self._zeit.max_tage(self._zeit.monat, self._zeit.jahr)):
+            self.create_tagebox(container,i+1)
+
+    def create_tagebox(self,container,tag:int):
+        btn = MDFlatButton(
+            text=str(tag),
+            size_hint=(1, 1)
+        )
+        container.add_widget(btn)
 
 
 """Folgende Klassen müssen in der .py definiert werden, 
