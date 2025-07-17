@@ -38,8 +38,8 @@ class Eventman:
     EVENTS_CSV = 'events.csv'  # CSV-Datei, in der die Events gespeichert werden
 
     def __init__(self) -> None:
-        """Initialisiert die Eventman-Klasse und lädt die Events aus der CSV-Datei.\
-        Setzt die aktuelle Systemzeit und initialisiert die Event-Liste und verfügbaren Event-Aktionen.\
+        """Initialisiert die Eventman-Klasse und lädt die Events aus der CSV-Datei.
+        Setzt die aktuelle Systemzeit und initialisiert die Event-Liste und verfügbaren Event-Aktionen.
         """
         self.__zeit:Datumzeit = Datumzeit()  # Aktuelle Systemzeit
         self.__zeit.jetzt()
@@ -51,31 +51,31 @@ class Eventman:
 
     @property
     def zeit(self) -> Datumzeit:
-        """Gibt die aktuelle Systemzeit zurück.\
-        :return:list[int] # Aktuelle Systemzeit als list[int]-Objekt.\
+        """Gibt die aktuelle Systemzeit zurück.
+        :return:list[int] # Aktuelle Systemzeit als list[int]-Objekt.
         """
         return self.__zeit
 
     @property
     def event_liste(self) -> dict[int:list]:
-        """Gibt die Event-Liste zurück.\
+        """Gibt die Event-Liste zurück.
         :return:dict[int: list[list[int], str, str]]
-        #Event-Liste im Format {EventID:int: list[list[int], Event-Aktion: str, Event-Name: str]}\
+        #Event-Liste im Format {EventID:int: list[list[int], Event-Aktion: str, Event-Name: str]}
         """
         return self.__event_liste if self.__event_liste != {} else Exception("Event-Liste ist leer.\n")
 
     @property
     def event_aktionen(self) -> list[str]:
-        """Gibt die Liste der verfügbaren Event-Aktionen zurück.\
-        :return:list[str] #Liste der verfügbaren Event-Aktionen.\
-        :raises exception: Bei leerer Event-Aktionsliste.\
+        """Gibt die Liste der verfügbaren Event-Aktionen zurück.
+        :return:list[str] #Liste der verfügbaren Event-Aktionen.
+        :raises exception: Bei leerer Event-Aktionsliste.
         """
         return self.__event_aktionen if self.__event_aktionen else Exception("Event-Aktionen-Liste ist leer.\n")
 
     def __events_laden(self) -> None:
-        """Lädt die Events aus der CSV-Datei in die Event-Liste.\
-        Erstellt die Datei, falls sie nicht existiert.\
-        :raises exception: Bei Fehlern beim Laden der Events aus der CSV-Datei.\
+        """Lädt die Events aus der CSV-Datei in die Event-Liste.
+        Erstellt die Datei, falls sie nicht existiert.
+        :raises exception: Bei Fehlern beim Laden der Events aus der CSV-Datei.
         """
         try:
             with open(self.EVENTS_CSV, 'r', encoding='utf-8') as f:
@@ -105,9 +105,9 @@ class Eventman:
                                                 self.__zeit.sekunde], event_data[1], event_data[2]])
 
     def __event_abgelaufen(self, event_zeit:list[int]) -> bool:
-        """Prüft, ob ein Event-Zeitstempel abgelaufen ist.\
-        :param event_zeit:list[int] #Zeitstempel des Events.\
-        :return:bool # Gibt True zurück, wenn der Event-Zeitstempel abgelaufen ist, sonst False.\
+        """Prüft, ob ein Event-Zeitstempel abgelaufen ist.
+        :param event_zeit:list[int] #Zeitstempel des Events.
+        :return:bool # Gibt True zurück, wenn der Event-Zeitstempel abgelaufen ist, sonst False.
         """
         self.__zeit.jetzt()
         aktuelle_zeit = [
@@ -121,8 +121,9 @@ class Eventman:
         return event_zeit <= aktuelle_zeit
 
     def event_trigger(self, *args, entfernen:bool=True) -> list[list[str]] | None:
-        """Geht durch die Event-Liste, prüft, ob Events abgelaufen sind und löst sie aus.\
-        :return:str | None # Gibt die Aktion des ausgelösten Events zurück, wenn eines gefunden wurde, sonst None.\
+        """Geht durch die Event-Liste, prüft, ob Events abgelaufen sind und löst sie aus.
+        :param args: Wird hier gebraucht um die Methode rekursiv aufzurufen in der App.
+        :return:str | None # Gibt die Aktion des ausgelösten Events zurück, wenn eines gefunden wurde, sonst None.
         """
         aktionen_temp:list[str] = []
         for event in list(self.__event_liste):
@@ -140,11 +141,11 @@ class Eventman:
         return set(aktionen_temp) if aktionen_temp else None
 
     def event_erstellen(self, event_zeit:Datumzeit, event_akt: str, event_name: str) -> None:
-        """Fügt ein Event der Liste hinzu und speichert es in der CSV-Datei.\
-        :param event_zeit:list[int] #Zeitstempel des Events.\
-        :param event_akt:str #Aktion, die mit dem Event verknüpft werden soll, aus vordefinierter Liste.\
-        :param event_name:str #Name des Events zur Darstellung im UI.\
-        :raises exception: Bei ungültiger Event-Zeit, Aktion oder Name.\
+        """Fügt ein Event der Liste hinzu und speichert es in der CSV-Datei.
+        :param event_zeit:list[int] #Zeitstempel des Events.
+        :param event_akt:str #Aktion, die mit dem Event verknüpft werden soll, aus vordefinierter Liste.
+        :param event_name:str #Name des Events zur Darstellung im UI.
+        :raises exception: Bei ungültiger Event-Zeit, Aktion oder Name.
         """
         if not isinstance(event_zeit, Datumzeit):
             raise Exception("Event-Zeit muss ein Datumzeit-Objekt sein.\n")
@@ -172,10 +173,10 @@ class Eventman:
             raise Exception(f"Fehler beim Speichern des Events: {str(e)}\n")
 
     def event_aufrufen(self, event_id:int) -> list:
-        """Methode zum Aufrufen eines Events anhand der Event-ID.\
-        :param event_id:int # ID-Nummer des Events\
-        :return:list[list[int], str, str] # Gibt das Event-Objekt zurück, wenn es existiert, sonst None.\
-        :raises exception: Bei ungültiger Event-ID oder wenn das Event nicht gefunden wird.\
+        """Methode zum Aufrufen eines Events anhand der Event-ID.
+        :param event_id:int # ID-Nummer des Events
+        :return:list[list[int], str, str] # Gibt das Event-Objekt zurück, wenn es existiert, sonst None.
+        :raises exception: Bei ungültiger Event-ID oder wenn das Event nicht gefunden wird.
         """
         try:
             if event_id in self.__event_liste:
@@ -191,9 +192,9 @@ class Eventman:
             raise Exception(f"Event konnte nicht aufgerufen werden: {str(e)}\n")
 
     def event_entfernen(self, event_id: int) -> None:
-        """Entfernt ein Event anhand der Event-ID aus der Event-Liste und CSV-Datei.\
-        :param event_id:int # ID-Nummer des Events\
-        :raises exception: bei ungültiger Event-ID oder wenn das Event nicht gefunden wird.\
+        """Entfernt ein Event anhand der Event-ID aus der Event-Liste und CSV-Datei.
+        :param event_id:int # ID-Nummer des Events
+        :raises exception: bei ungültiger Event-ID oder wenn das Event nicht gefunden wird.
         """
         if event_id not in self.__event_liste:
             raise Exception(f"Es existiert kein Event mit der ID '{event_id}'.\n")
