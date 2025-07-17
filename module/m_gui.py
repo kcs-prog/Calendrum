@@ -162,6 +162,9 @@ class CalendrumApp(MDApp):
         return manager
 
     def on_start(self):
+        """Wird automatisch nach build() aufgerufen.
+        Alle Prozesse und Parameter, die davon abhängen, dass build() fertig ist, können hier gestartet werden.
+        """
         self.gen_tagegrid()
 
     def gen_tagegrid(self):
