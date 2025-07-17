@@ -43,9 +43,10 @@
             # Monatsauswahl
             MDIconButton:
                 id: monat_minus_btn
+                name: "monat_minus"
                 icon: "chevron-left-circle-outline"
                 pos_hint: {"center_y": 0.5}
-                on_release: app._monat_minus()
+                on_release: app._handle_button_input(self.name)
                 line_color: [0,0,0,0]
             MDLabel:
                 id: monat_anzeige
@@ -56,17 +57,19 @@
                 line_color: [0,0,0,0]
             MDIconButton:
                 id: monat_plus_btn
+                name: "monat_plus"
                 icon: "chevron-right-circle-outline"
                 pos_hint: {"center_y": 0.5}
-                on_release: app._monat_plus()
+                on_release: app._handle_button_input(self.name)
                 line_color: [0,0,0,0]
 
             # Jahresauswahl
             MDIconButton:
-                id: jahr_plus_btn
+                id: jahr_minus_btn
+                name: "jahr_minus"
                 icon: "chevron-left-circle-outline"
                 pos_hint: {"center_y": 0.5}
-                on_release:app._jahr_minus()
+                on_release: app._handle_button_input(self.name)
                 line_color: [0,0,0,0]
             MDLabel:
                 id: jahr_anzeige
@@ -76,10 +79,11 @@
                 pos_hint: {"center_y": 0.5}
                 line_color: [0,0,0,0]
             MDIconButton:
-                id: jahr_minus_btn
+                id: jahr_plus_btn
+                name: "jahr_plus"
                 icon: "chevron-right-circle-outline"
                 pos_hint: {"center_y": 0.5}
-                on_release:app._jahr_plus()
+                on_release: app._handle_button_input(self.name)
                 line_color: [0,0,0,0]
 
         # Grid, in dem sich die jeweiligen Tage des ausgewählten Monats befinden

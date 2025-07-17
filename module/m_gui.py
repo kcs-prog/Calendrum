@@ -44,31 +44,43 @@ class CalendrumApp(MDApp):
         """Gibt den HomeScreen zurück."""
         return self.root.get_screen("home")
 
-    def _monat_plus(self) -> None:
-        """Methode zum Erhöhen des Monats im HomeScreen beim Klicken des Buttons."""
-        try:
-            if self._monat < 12:
-                self._monat += 1
-            else:
-                self._monat = 1
-                self._jahr += 1
-            self.__update_monat()
-            self.__update_jahr()
-        except Exception as e:
-            print(f"Error updating month: {e}")
-
-    def _monat_minus(self) -> None:
-        """Methode zum Verringern des Monats im HomeScreen beim Klicken des Buttons."""
-        try:
-            if self._monat > 1:
-                self._monat -= 1
-            else:
-                self._monat = 12
-                self._jahr -= 1
-            self.__update_monat()
-            self.__update_jahr()
-        except Exception as e:
-            print(f"Error updating month: {e}")
+    def _handle_button_input(self, button_name:str) -> None:
+        match button_name:
+            case "monat_plus":
+                try:
+                    if self._monat < 12:
+                        self._monat += 1
+                    else:
+                        self._monat = 1
+                        self._jahr += 1
+                    self.__update_monat()
+                    self.__update_jahr()
+                except Exception as e:
+                    print(f"Error updating month: {e}")
+            case "monat_minus":
+                try:
+                    if self._monat > 1:
+                        self._monat -= 1
+                    else:
+                        self._monat = 12
+                        self._jahr -= 1
+                    self.__update_monat()
+                    self.__update_jahr()
+                except Exception as e:
+                    print(f"Error updating month: {e}")
+            case "jahr_plus":
+                try:
+                    self._jahr += 1
+                    self.__update_jahr()
+                except Exception as e:
+                    print(f"Error updating year: {e}")
+            case "jahr_minus":
+                try:
+                    self._jahr -= 1
+                    self.__update_jahr()
+                except Exception as e:
+                    print(f"Error updating year: {e}")
+        return None
 
     def __update_monat(self) -> None:
         """Methode zum Updaten des Monats im HomeScreen beim Klicken des Buttons."""
@@ -76,22 +88,6 @@ class CalendrumApp(MDApp):
             self.home_screen.ids.monat_anzeige.text = self._monate_deutsch[self._monat - 1]
         except Exception as e:
             print(f"Error updating month: {e}")
-
-    def _jahr_plus(self) -> None:
-        """Methode zum Erhöhen des Jahres im HomeScreen beim Klicken des Buttons."""
-        try:
-            self._jahr += 1
-            self.__update_jahr()
-        except Exception as e:
-            print(f"Error updating year: {e}")
-
-    def _jahr_minus(self) -> None:
-        """Methode zum Verringern des Jahres im HomeScreen beim Klicken des Buttons."""
-        try:
-            self._jahr -= 1
-            self.__update_jahr()
-        except Exception as e:
-            print(f"Error updating year: {e}")
 
     def __update_jahr(self) -> None:
         """Methode zum Updaten des Jahres im HomeScreen beim Klicken des Buttons."""
