@@ -36,7 +36,7 @@ class CalendrumApp(MDApp):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self._uhrzeit = f"{self._zeit.stunde:02d}:{self._zeit.minute:02d}:{self._zeit.sekunde:02d} Uhr"
-        self._monate_deutsch = ["Jan.", "Feb.", "März", "April", "Mai", "Juni",
+        self._monate_deutsch = ["Jan.", "Feb.", "März", "Apr.", "Mai", "Juni",
                                "Juli", "Aug.", "Sep.", "Okt.", "Nov.", "Dez."]
 
     @property
@@ -48,50 +48,34 @@ class CalendrumApp(MDApp):
         """ Verarbeitet die Eingaben der Buttons im HomeScreen.
         :param button_name: Name des Buttons, der gedrückt wurde.
         """
+        if not isinstance(button_name, str):
+            raise ValueError("button_name must be a string")
+        if button_name not in ["jahr_plus", "jahr_minus", "monat_plus", "monat_minus"]:
+            raise ValueError(f"Invalid button_name: {button_name}")
         match button_name:
             case "monat_plus":
-                try:
-                    if self._monat < 12:
-                        self._monat += 1
-                    else:
-                        self._monat = 1
-                        self._jahr += 1
-                except Exception as e:
-                    print(f"Error updating month: {e}")
-            case "monat_minus":
-                try:
-                    if self._monat > 1:
-                        self._monat -= 1
-                    else:
-                        self._monat = 12
-                        self._jahr -= 1
-                except Exception as e:
-                    print(f"Error updating month: {e}")
-            case "jahr_plus":
-                try:
+                if self._monat < 12:
+                    self._monat += 1
+                else:
+                    self._monat = 1
                     self._jahr += 1
-                except Exception as e:
-                    print(f"Error updating year: {e}")
-            case "jahr_minus":
-                try:
+            case "monat_minus":
+                if self._monat > 1:
+                    self._monat -= 1
+                else:
+                    self._monat = 12
                     self._jahr -= 1
-                except Exception as e:
-                    print(f"Error updating year: {e}")
+            case "jahr_plus":
+                self._jahr += 1
+            case "jahr_minus":
+                self._jahr -= 1
         self.__update_anzeige()
         return None
 
     def __update_anzeige(self) -> None:
         """Aktualisiert die Anzeige des Monats und des Jahres im HomeScreen."""
-        try:
-            self.home_screen.ids.monat_anzeige.text = self._monate_deutsch[self._monat - 1]
-        except Exception as e:
-            print(f"Error updating month: {e}")
-        try:
-            current_year = self._jahr
-            if current_year is not None:
-                self.home_screen.ids.jahr_anzeige.text = str(current_year)
-        except Exception as e:
-            print(f"Error updating year: {e}")
+        self.home_screen.ids.monat_anzeige.text = self._monate_deutsch[self._monat - 1]
+        self.home_screen.ids.jahr_anzeige.text = str(self._jahr)
 
     def _update_uhrzeit(self, *args) -> None:  # *args ist notwendig, für Clock.schedule_interval
         """Aktualisiert die Uhrzeit im HomeScreen jede Sekunde."""
