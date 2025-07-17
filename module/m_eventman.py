@@ -122,7 +122,8 @@ class Eventman:
 
     def event_trigger(self, *args, entfernen:bool=True) -> list[list[str]] | None:
         """Geht durch die Event-Liste, prüft, ob Events abgelaufen sind und löst sie aus.
-        :param args: Wird hier gebraucht um die Methode rekursiv aufzurufen in der App.
+        :param entfernen: standard True: löscht abgelaufene Events aus der Liste.
+        :param args: Wird hier gebraucht um die Methode rekursiv in der App aufzurufen.
         :return:str | None # Gibt die Aktion des ausgelösten Events zurück, wenn eines gefunden wurde, sonst None.
         """
         aktionen_temp:list[str] = []
