@@ -1,4 +1,4 @@
-from m_datumzeit import Datumzeit 
+from m_datumzeit import Datumzeit
 from m_eventman import Eventman as em
 
 class Wecker:
@@ -13,6 +13,7 @@ class Wecker:
 
     def set_datumzeit(self, jahr, monat, tag, minute, stunde, sekunde) -> None:
         """ Funktion, die das Datum und die Uhrzeit nach Eingabe und Überprüfung einbindet. """
+        
         if not (1 <= jahr <= 2999):
             print("Ungültiges Jahr!")
             return
@@ -37,6 +38,7 @@ class Wecker:
         self._datumzeit.tag = tag
         self._datumzeit.minute = minute
         self._datumzeit.sekunde = sekunde
+        
 
     def aktivieren(self): 
         if self._datumzeit == self._eventmanager.event_trigger():
@@ -75,10 +77,6 @@ class Wecker:
 
         print(f"Wecker in Schlummermodus neuer Alarm um {neue_stunde:02}:{neue_minute:02} Uhr.")
     
-    def del_me(self)-> None:
-        del self._datumzeit
-
-
 
 class Termine(Wecker):
     def __init__(self,dz:Datumzeit, em:em):
@@ -86,7 +84,14 @@ class Termine(Wecker):
 
 
 if __name__ == '__main__':
+    eventmanager = em()
     dz = Datumzeit()
-    eventmanager = em() 
-    einWecker = Wecker(dz, eventmanager)
-    einWecker.set_datumzeit(2025,5,1,23,5,5)
+    dz.set_jahr(2025)
+    dz.set_monat(7)
+    dz.set_tag(17)
+    dz.set_stunde(15)
+    dz.set_minute(00)
+    einWecker = Wecker(dz,eventmanager)
+    eventmanager.event_erstellen(dz,"alarm","Wecker")
+    einWecker.aktivieren()
+
