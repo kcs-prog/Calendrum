@@ -40,9 +40,6 @@ class Wecker:
         self._datumzeit.sekunde = sekunde
         
 
-    def aktivieren(self): 
-        if self._datumzeit == self._eventmanager.event_trigger():
-            print("Aktivierung wird ausgeführt!")
 
 
     def schlummermodus(self, minuten: int, stunden:int) -> None:
@@ -90,8 +87,7 @@ if __name__ == '__main__':
     dz.set_monat(7)
     dz.set_tag(17)
     dz.set_stunde(15)
-    dz.set_minute(00)
+    dz.set_minute(10)
     einWecker = Wecker(dz,eventmanager)
     eventmanager.event_erstellen(dz,"alarm","Wecker")
-    einWecker.aktivieren()
 
