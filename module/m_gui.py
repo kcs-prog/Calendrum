@@ -56,7 +56,6 @@ class CalendrumApp(MDApp):
                     else:
                         self._monat = 1
                         self._jahr += 1
-                    self.__update_anzeige()
                 except Exception as e:
                     print(f"Error updating month: {e}")
             case "monat_minus":
@@ -66,21 +65,19 @@ class CalendrumApp(MDApp):
                     else:
                         self._monat = 12
                         self._jahr -= 1
-                    self.__update_anzeige()
                 except Exception as e:
                     print(f"Error updating month: {e}")
             case "jahr_plus":
                 try:
                     self._jahr += 1
-                    self.__update_anzeige()
                 except Exception as e:
                     print(f"Error updating year: {e}")
             case "jahr_minus":
                 try:
                     self._jahr -= 1
-                    self.__update_anzeige()
                 except Exception as e:
                     print(f"Error updating year: {e}")
+        self.__update_anzeige()
         return None
 
     def __update_anzeige(self) -> None:
