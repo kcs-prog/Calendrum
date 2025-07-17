@@ -45,6 +45,9 @@ class CalendrumApp(MDApp):
         return self.root.get_screen("home")
 
     def _handle_button_input(self, button_name:str) -> None:
+        """ Verarbeitet die Eingaben der Buttons im HomeScreen.
+        :param button_name: Name des Buttons, der gedrückt wurde.
+        """
         match button_name:
             case "monat_plus":
                 try:
@@ -53,8 +56,7 @@ class CalendrumApp(MDApp):
                     else:
                         self._monat = 1
                         self._jahr += 1
-                    self.__update_monat()
-                    self.__update_jahr()
+                    self.__update_anzeige()
                 except Exception as e:
                     print(f"Error updating month: {e}")
             case "monat_minus":
@@ -64,33 +66,29 @@ class CalendrumApp(MDApp):
                     else:
                         self._monat = 12
                         self._jahr -= 1
-                    self.__update_monat()
-                    self.__update_jahr()
+                    self.__update_anzeige()
                 except Exception as e:
                     print(f"Error updating month: {e}")
             case "jahr_plus":
                 try:
                     self._jahr += 1
-                    self.__update_jahr()
+                    self.__update_anzeige()
                 except Exception as e:
                     print(f"Error updating year: {e}")
             case "jahr_minus":
                 try:
                     self._jahr -= 1
-                    self.__update_jahr()
+                    self.__update_anzeige()
                 except Exception as e:
                     print(f"Error updating year: {e}")
         return None
 
-    def __update_monat(self) -> None:
-        """Methode zum Updaten des Monats im HomeScreen beim Klicken des Buttons."""
+    def __update_anzeige(self) -> None:
+        """Aktualisiert die Anzeige des Monats und des Jahres im HomeScreen."""
         try:
             self.home_screen.ids.monat_anzeige.text = self._monate_deutsch[self._monat - 1]
         except Exception as e:
             print(f"Error updating month: {e}")
-
-    def __update_jahr(self) -> None:
-        """Methode zum Updaten des Jahres im HomeScreen beim Klicken des Buttons."""
         try:
             current_year = self._jahr
             if current_year is not None:
