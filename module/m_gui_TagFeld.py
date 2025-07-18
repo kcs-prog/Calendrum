@@ -94,9 +94,9 @@ class TagFeld(ButtonBehavior, MDBoxLayout):
 
     def on_touch_down(self, touch):
         if self.collide_point(*touch.pos):
-            self.on_click()
+            if not touch.is_mouse_scrolling: self.on_click()
             return True
         return super().on_touch_down(touch)
 
     def on_click(self):
-        print(f"TagField {self.text} wurde geklickt")
+        print(f"TagFeld {self.text} wurde geklickt")
