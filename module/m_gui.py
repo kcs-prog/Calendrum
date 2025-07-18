@@ -14,6 +14,7 @@ from kivymd.uix.screenmanager import MDScreenManager
 from kivymd.uix.screen import MDScreen
 from m_eventman import Eventman
 from m_datumzeit import Datumzeit
+from m_gui_TagFeld import TagFeld
 
 kivy.require("2.3.1")
 
@@ -132,14 +133,9 @@ class CalendrumApp(MDApp):
     def gen_tagegrid(self):
         container = self.home_screen.ids.kalender_grid
         for i in range(self._zeit.max_tage(self._zeit.monat, self._zeit.jahr)):
-            self.create_tagebox(container,i+1)
+            tag = TagFeld(str(i+1))
+            container.add_widget(tag)
 
-    def create_tagebox(self,container,tag:int):
-        btn = MDFlatButton(
-            text=str(tag),
-            size_hint=(1, 1)
-        )
-        container.add_widget(btn)
 
 
 """Folgende Klassen müssen in der .py definiert werden, 
