@@ -45,6 +45,10 @@ class CalendrumApp(MDApp):
         """Gibt den HomeScreen zurück."""
         return self.root.get_screen("home")
 
+    @property
+    def wecker_screen(self) -> MDScreen:
+        return self.root.get_screen("wecker")
+
     def _handle_button_input(self, button_name:str) -> None:
         """ Verarbeitet die Eingaben der Buttons im HomeScreen.
         :param button_name: Name des Buttons, der gedrückt wurde.
