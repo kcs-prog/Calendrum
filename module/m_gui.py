@@ -9,6 +9,7 @@ from kivy.properties import StringProperty
 from kivymd.app import MDApp
 from kivymd.uix.button import MDIconButton, MDFlatButton
 from kivymd.uix.dialog import MDDialog
+from kivymd.uix.label import MDLabel
 from kivymd.uix.screenmanager import MDScreenManager
 from kivymd.uix.screen import MDScreen
 from m_eventman import Eventman
@@ -23,7 +24,7 @@ class CalendrumApp(MDApp):
     die das Layout der App erstellt.
     """
 
-    _uhrzeit: str = StringProperty()  # Uhrzeit wird als StringProperty definiert, um sie im KV-Layout zu verwenden.
+    _uhrzeit: str = StringProperty() # Uhrzeit wird als StringProperty definiert, um sie im KV-Layout zu verwenden.
     _zeit: Datumzeit = Datumzeit()
     try: _zeit.jetzt()  # Setzt die aktuelle Zeit, wenn die App gestartet wird
     except Exception as e: print(f"Error initializing time: {e}")
@@ -81,24 +82,6 @@ class CalendrumApp(MDApp):
         """Aktualisiert die Uhrzeit im HomeScreen jede Sekunde."""
         self._zeit.jetzt()
         self._uhrzeit = f"{self._zeit.stunde:02d}:{self._zeit.minute:02d}:{self._zeit.sekunde:02d} Uhr"
-
-    def open_wecker_dialog(self) -> None:
-        """Öffnet den Dialog zum Einstellen des Weckers."""
-        if not self.dialog:
-            self.dialog = MDDialog(
-                text="Wecker einstellen",
-                pos_hint={"center_x": 0.5},
-                buttons=[
-                    MDIconButton(
-                        icon="close-circle",
-                        theme_text_color="Custom",
-                        text_color=self.theme_cls.primary_color,
-                        pos_hint ={"center_x": 0.5},
-                        on_release=lambda x: self.dialog.dismiss()
-                    ),
-                ],
-            )
-        self.dialog.open()
 
     def build(self) -> MDScreenManager:
         """Wird automatisch aufgerufen, wenn die App gestartet wird.
@@ -169,7 +152,9 @@ class HomeScreen(MDScreen):
     """Startbildschirm der App."""
     pass
 
-
+class WeckerScreen(MDScreen):
+    """Screen für das Einstellen des Weckers."""
+    pass
 """Main Klasse OOP"""
 
 
