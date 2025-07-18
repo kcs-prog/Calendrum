@@ -100,4 +100,3 @@ class TagFeld(ButtonBehavior, MDBoxLayout):
 
     def on_click(self):
         print(f"TagField {self.text} wurde geklickt")
-        self.update_rectangles()
