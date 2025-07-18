@@ -120,7 +120,7 @@ class Eventman:
         ]
         return event_zeit <= aktuelle_zeit
 
-    def event_trigger(self, *args, entfernen:bool=True) -> list[list[str]] | None:
+    def event_trigger(self, *args, entfernen:bool=True) -> list[str] | None:
         """Geht durch die Event-Liste, prüft, ob Events abgelaufen sind und löst sie aus.
         :param entfernen: standard True: löscht abgelaufene Events aus der Liste.
         :param args: Wird hier gebraucht für die Timeout-Zeit von schedule_interval() in der App.
