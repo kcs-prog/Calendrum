@@ -37,9 +37,10 @@ class CalendrumApp(MDApp):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self._uhrzeit = f"{self._zeit.stunde:02d}:{self._zeit.minute:02d}:{self._zeit.sekunde:02d} Uhr"
-        self._monate_deutsch = ["Jan.", "Feb.", "März", "Apr.", "Mai", "Juni",
+        self._uhrzeit:str = f"{self._zeit.stunde:02d}:{self._zeit.minute:02d}:{self._zeit.sekunde:02d} Uhr"
+        self._monate_deutsch:list[str] = ["Jan.", "Feb.", "März", "Apr.", "Mai", "Juni",
                                "Juli", "Aug.", "Sep.", "Okt.", "Nov.", "Dez."]
+        self.__button_namen:list[str] = ["jahr_plus", "jahr_minus", "monat_plus", "monat_minus"]
 
     @property
     def home_screen(self) -> MDScreen:
@@ -56,7 +57,7 @@ class CalendrumApp(MDApp):
         """
         if not isinstance(button_name, str):
             raise ValueError("button_name must be a string")
-        if button_name not in ["jahr_plus", "jahr_minus", "monat_plus", "monat_minus"]:
+        if button_name not in self.__button_namen:
             raise ValueError(f"Invalid button_name: {button_name}")
         match button_name:
             case "monat_plus":
