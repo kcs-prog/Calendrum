@@ -10,7 +10,7 @@ Eventman
 -events_speichern() → None
 -event_abgelaufen(event_zeit:list[int]) → bool
 +trigger_event(entfernen:bool=True) → list[str]
-+event_erstellen(event_zeit:list[int], event_akt: str, event_name: str = "", permanent: bool = False) → None
++event_erstellen(event_zeit:list[int], event_akt: str, event_name: str = "", taeglich: bool = False) → None
 +event_aufrufen(event_id:int) → list[list[int], str, str, bool] | None
 +event_entfernen(event_id:int) → None
 
@@ -27,7 +27,7 @@ class Eventman:
     Löst automatisch abgelaufene Events aus, wenn die Klasse instanziiert wird.
     ————————————Attribute: ————————————
         __zeit (Datumzeit): Aktuelle Systemzeit.
-        __event_liste (dict[int: list]): Event-Liste im Format {Event-ID:int: list[list[int], Event-Aktion: str, Event-Name: str, permanent ?: bool]}.
+        __event_liste (dict[int: list]): Event-Liste im Format {Event-ID:int: list[list[int], Event-Aktion: str, Event-Name: str, taeglich ?: bool]}.
         __event_aktionen (list[str]): Liste der verfügbaren Event-Aktionen.
     ————————————Methoden: ————————————
         event_erstellen(event_zeit: list[int], event_akt: str, event_name: str) → None: Fügt ein Event der Liste hinzu und speichert es in der CSV-Datei.
@@ -60,7 +60,7 @@ class Eventman:
     def event_liste(self) -> dict[int:list]:
         """Gibt die Event-Liste zurück.
         :return:dict[int: list[list[int], str, str, bool]]
-        #Event-Liste im Format {EventID:int: list[list[int], Event-Aktion: str, Event-Name: str, permanent:bool = False]}
+        #Event-Liste im Format {EventID:int: list[list[int], Event-Aktion: str, Event-Name: str, taeglich: bool = False]}
         """
         return self.__event_liste if self.__event_liste != {} else Exception("Event-Liste ist leer.\n")
 
@@ -88,14 +88,14 @@ class Eventman:
         except FileNotFoundError:
             with open(self.EVENTS_CSV, 'w', newline='', encoding='utf-8') as f:
                 csv_writer = writer(f)
-                csv_writer.writerow(['EventID', 'Zeitstempel', 'Aktion', 'Name', 'Permanent ?'])
+                csv_writer.writerow(['EventID', 'Zeitstempel', 'Aktion', 'Name', 'Täglich ?'])
 
     def __events_speichern(self) -> None:
         """Speichert die aktuelle Event-Liste in der CSV-Datei.\
         """
         with open(self.EVENTS_CSV, 'w', newline='', encoding='utf-8') as f:
             csv_writer = writer(f)
-            csv_writer.writerow(['EventID', 'Zeitstempel', 'Aktion', 'Name', 'Permanent ?'])
+            csv_writer.writerow(['EventID', 'Zeitstempel', 'Aktion', 'Name', 'Täglich ?'])
             for event_id, event_data in self.__event_liste.items():
                 csv_writer.writerow([event_id, [event_data[0][0],
                                                 event_data[0][1],
@@ -129,25 +129,25 @@ class Eventman:
         for event in list(self.__event_liste):
             event_zeit:list[int] = self.__event_liste[event][0]
             event_akt:str = self.__event_liste[event][1]
-            event_permanent:bool = self.__event_liste[event][3]
+            event_taeglich:bool = self.__event_liste[event][3]
             event_id = event
             if self.__event_abgelaufen(event_zeit):
                 try:
-                    print(f"Event-Backlog - Abgelaufene Events:\nID: '{event_id}'\nName: {event_akt}\nZeit: {event_zeit}\nPermanentes Event ?: {event_permanent}.\n")
+                    print(f"Event-Backlog - Abgelaufene Events:\nID: '{event_id}'\nName: {event_akt}\nZeit: {event_zeit}\nTägliches Event ?: {event_taeglich}.\n")
                     aktionen_temp.append(event_akt)
-                    event_zeit[2] = event_zeit[2] + 1 if event_permanent else 0
-                    self.event_entfernen(event_id) if not event_permanent else None
+                    event_zeit[2] = event_zeit[2] + 1 if event_taeglich else 0 # verschiebt das Event um einen Tag.
+                    self.event_entfernen(event_id) if not event_taeglich else None
                 except Exception as e:
                     print(f"Fehler beim Auslösen des Events: {str(e)}\n")
                     return None
         return set(aktionen_temp) if aktionen_temp else None
 
-    def event_erstellen(self, event_zeit:Datumzeit, event_akt: str, event_name: str, permanent:bool = False) -> None:
+    def event_erstellen(self, event_zeit:Datumzeit, event_akt: str, event_name: str, taeglich:bool = False) -> None:
         """Fügt ein Event der Liste hinzu und speichert es in der CSV-Datei.
         :param event_zeit:list[int] #Zeitstempel des Events.
         :param event_akt:str #Aktion, die mit dem Event verknüpft werden soll, aus vordefinierter Liste.
         :param event_name:str #Name des Events zur Darstellung im UI.
-        :param permanent:bool #bei False wird das Event beim Triggern gelöscht, default False
+        :param taeglich:bool #bei True wird das Event auf den Nächsten Tag verschoben, wenn es getriggert wird. Default False.
         :raises exception: Bei ungültiger Event-Zeit, Aktion oder Name.
         """
         if not isinstance(event_zeit, Datumzeit):
@@ -167,9 +167,9 @@ class Eventman:
             event_zeit.tag,
             event_zeit.stunde,
             event_zeit.minute,
-            event_zeit.sekunde], event_akt, event_name, permanent]  # Fügt das neue Event der Liste hinzu
+            event_zeit.sekunde], event_akt, event_name, taeglich]  # Fügt das neue Event der Liste hinzu
         print(f"Event '{event_name}' wurde erstellt mit ID '{new_event_id}'.\n")
-        print(f"Das event wird{" wiederholt." if permanent else " nicht wiederholt."}")
+        print(f"Das event wird{f" wiederholt.\n" if taeglich else f" nicht wiederholt.\n"}")
         try:  # Speichert das neue Event in der CSV-Datei
             self.__events_speichern()
         except Exception as e:
@@ -179,7 +179,7 @@ class Eventman:
     def event_aufrufen(self, event_id:int) -> list:
         """Methode zum Aufrufen eines Events anhand der Event-ID.
         :param event_id:int # ID-Nummer des Events
-        :return:list[list[int], str, str] # Gibt das Event-Objekt zurück, wenn es existiert, sonst None.
+        :return:list[list[int], str, str, bool] # Gibt das Event-Objekt zurück, wenn es existiert, sonst None.
         :raises exception: Bei ungültiger Event-ID oder wenn das Event nicht gefunden wird.
         """
         try:
@@ -190,7 +190,7 @@ class Eventman:
                 next(csv_reader)  # Überspringt die Header-Zeile
                 for row in csv_reader:  # Durchsucht die CSV-Datei nach der Event-ID
                     if int(row[0]) == event_id:
-                        return [row[1], row[2], row[3].strip()]  # Gibt das Event-Objekt zurück
+                        return [row[1], row[2], row[3].strip(), row[4]]  # Gibt das Event-Objekt zurück
             raise Exception(f"Es existiert kein Event mit der ID '{event_id}'.\n")
         except Exception as e:
             raise Exception(f"Event konnte nicht aufgerufen werden: {str(e)}\n")
@@ -221,6 +221,7 @@ if __name__ == "__main__":
     print(f"Eventzeit des Events:\n{letztes_event[0]}\n")
     print(f"Eventaktion des Events:\n{letztes_event[1]}\n")
     print(f"Eventname des Events:\n{letztes_event[2]}\n")
+    print(f"Event wird täglich wiederholt: {letztes_event[3]}\n")
     print(f"Eventliste vor dem Entfernen eines Events:\n{EM.event_liste}\n")
     EM.event_trigger()
     print(f"Eventliste nach dem Entfernen eines Events:\n{EM.event_liste}\n")
