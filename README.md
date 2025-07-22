@@ -17,4 +17,4 @@
 <ins>**Phone View**</ins>
 > <img width="321" height="597" alt="phone view calendrum" src="https://github.com/user-attachments/assets/cc2e3fcc-e661-41a5-a32d-e99438fccf2d" />
 <ins>**Tablet View**</ins>
-> <img width="902" height="598" alt="tablet view calendrum" src="https://github.com/user-attachments/assets/015017ff-ddbb-47d2-95fc-15d3d3bbacf2" />
+> <img width="801" height="601" alt="tablet view calendrum" src="https://github.com/user-attachments/assets/52f68674-596b-4b75-ac05-69629dc29b0a" />
