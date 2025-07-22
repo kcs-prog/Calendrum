@@ -37,9 +37,10 @@ class CalendrumApp(MDApp):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self._uhrzeit = f"{self._zeit.stunde:02d}:{self._zeit.minute:02d}:{self._zeit.sekunde:02d} Uhr"
-        self._monate_deutsch = ["Jan.", "Feb.", "März", "Apr.", "Mai", "Juni",
+        self._uhrzeit:str = f"{self._zeit.stunde:02d}:{self._zeit.minute:02d}:{self._zeit.sekunde:02d} Uhr"
+        self._monate_deutsch:list[str] = ["Jan.", "Feb.", "März", "Apr.", "Mai", "Juni",
                                "Juli", "Aug.", "Sep.", "Okt.", "Nov.", "Dez."]
+        self.__button_namen:list[str] = ["jahr_plus", "jahr_minus", "monat_plus", "monat_minus"]
 
     @property
     def home_screen(self) -> MDScreen:
@@ -56,7 +57,7 @@ class CalendrumApp(MDApp):
         """
         if not isinstance(button_name, str):
             raise ValueError("button_name must be a string")
-        if button_name not in ["jahr_plus", "jahr_minus", "monat_plus", "monat_minus"]:
+        if button_name not in self.__button_namen:
             raise ValueError(f"Invalid button_name: {button_name}")
         match button_name:
             case "monat_plus":
@@ -82,6 +83,8 @@ class CalendrumApp(MDApp):
         """Aktualisiert die Anzeige des Monats und des Jahres im HomeScreen."""
         self.home_screen.ids.monat_anzeige.text = self._monate_deutsch[self._monat - 1]
         self.home_screen.ids.jahr_anzeige.text = str(self._jahr)
+
+        self.gen_tagegrid()
 
     def _update_uhrzeit(self, *args) -> None:  # *args ist notwendig, für Clock.schedule_interval
         """Aktualisiert die Uhrzeit im HomeScreen jede Sekunde."""
@@ -132,8 +135,34 @@ class CalendrumApp(MDApp):
 
     def gen_tagegrid(self):
         container = self.home_screen.ids.kalender_grid
-        for i in range(self._zeit.max_tage(self._zeit.monat, self._zeit.jahr)):
-            tag = TagFeld(str(i+1))
+        container.clear_widgets()
+
+        # Headerzeile
+        for wd in ["Mo","Di","Mi","Do","Fr","Sa","So"]:
+            tag = TagFeld(wd)
+            container.add_widget(tag)
+        # Leertage setzen um den 1ten am richtigen Platz starten zu lassen
+        # nach Zeller-Formel
+        y,m = self._jahr, self._monat
+        # Monat anpassen: Januar und Februar als Monate 13 und 14 des Vorjahres
+        if m < 3:
+            m += 12
+            y -= 1
+        h = (-1 + ((13 * (m + 1)) // 5) + y + (y // 4) - (y // 100) + (y // 400)) % 7
+        # h: 0:Mo ... 6:So
+        for _ in range(h):
+            tag = TagFeld("")
+            container.add_widget(tag)
+
+        # Eigentliche Kalendertage auffüllen
+        tage = self._zeit.max_tage(self._monat, self._jahr)
+        for i in range(tage):
+            tag = TagFeld(str(i+1),[])
+            container.add_widget(tag)
+
+        # rest auffüllen mit Leertagen
+        for _ in range(42-h-tage):
+            tag = TagFeld("")
             container.add_widget(tag)
 
 

@@ -29,14 +29,23 @@ class TagFeld(ButtonBehavior, MDBoxLayout):
     text = StringProperty("-")
     text_color = ListProperty([0.8, 0.2, 0.2, 1])
     termin_rect_anz = NumericProperty(10)
+    kalendertag:bool = False
 
-    def __init__(self, text, **kwargs):
+    def __init__(self, text, termin_rect_list=None, **kwargs):
         super().__init__(**kwargs)
-        self.text = text
+        self.text = str(text)
         self.orientation = 'horizontal'
         self.padding = 5
         #self.spacing = 10
         self.size_hint = (1, 1)
+
+        # Erscheinungsbild- & Verhaltensanpassung
+        if termin_rect_list is None: # kein Kalendertag
+            text_color = [0.4, 0.4, 0.4, 1]
+            self.kalendertag = False
+        else:
+            text_color = self.text_color
+            self.kalendertag = True
 
         # Canvas für Rahmen
         with self.canvas:
@@ -51,7 +60,7 @@ class TagFeld(ButtonBehavior, MDBoxLayout):
         self.central_text = MDLabel(
             halign='center',
             text=self.text,
-            text_color=self.text_color,
+            text_color=text_color,
             theme_text_color = 'Custom'
         )
         self.main_box.add_widget(self.central_text)
@@ -64,8 +73,17 @@ class TagFeld(ButtonBehavior, MDBoxLayout):
         )
         self.main_box.add_widget(self.right_box)
 
-        # Rechteck-Widgets hinzufügen
-        termine = []
+        # Termin-Rechteck-Widgets hinzufügen
+        if self.kalendertag:
+            self.setup_rectangles(self.gen_termin_rect_list())
+
+        # Bindings für Canvas-Update
+        self.bind(pos=self.update_canvas, size=self.update_canvas)
+
+
+    def gen_termin_rect_list(self):
+        #test data-dummy
+        termin_rect_list = []
         left_h = 24
         for i in range(5):
             r = rndi(2,6)
@@ -74,12 +92,9 @@ class TagFeld(ButtonBehavior, MDBoxLayout):
             else:
                 r = left_h
                 left_h = 0
-            termine.append([r / 24, [rnd(), rnd(), rnd(), 1 * (i % 5)]])
+            termin_rect_list.append([r / 24, [rnd(), rnd(), rnd(), 1 * (i % 5)*rndi(0,1)]])
             if left_h == 0: break
-        self.setup_rectangles(termine)
-
-        # Bindings für Canvas-Update
-        self.bind(pos=self.update_canvas, size=self.update_canvas)
+        return termin_rect_list
 
     def setup_rectangles(self,termin_rect_list):
         """termin_rect_list: [[h_r,color],...] für die Termine, h_r:Dauer in Stunden/24, color: falbliste[4*int]"""
@@ -94,7 +109,8 @@ class TagFeld(ButtonBehavior, MDBoxLayout):
 
     def on_touch_down(self, touch):
         if self.collide_point(*touch.pos):
-            if not touch.is_mouse_scrolling: self.on_click()
+            if not touch.is_mouse_scrolling and self.kalendertag:
+                self.on_click()
             return True
         return super().on_touch_down(touch)
 
