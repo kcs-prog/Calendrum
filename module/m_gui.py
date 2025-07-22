@@ -187,14 +187,9 @@ class WeckerScreen(MDScreen):
 """Main Klasse OOP"""
 
 
-class Main:
-    """Startet die App.
-    Test-Code kann hier eingefügt werden."""
-    App:CalendrumApp = CalendrumApp()
-    App.run()
-    """run() startet die App und ruft automatisch build() auf.
-    Nach build() wird on_start() automatisch aufgerufen."""
-
 
 if __name__ == "__main__":
-    Main()
+    #App: CalendrumApp = CalendrumApp()
+    #App.run()
+    """run() startet die App und ruft automatisch build() auf.
+    Nach build() wird on_start() automatisch aufgerufen."""
