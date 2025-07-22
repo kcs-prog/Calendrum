@@ -7,9 +7,7 @@ from kivy.core.text import LabelBase
 from kivy.clock import Clock
 from kivy.properties import StringProperty
 from kivymd.app import MDApp
-from kivymd.uix.button import MDIconButton, MDFlatButton
 from kivymd.uix.dialog import MDDialog
-from kivymd.uix.label import MDLabel
 from kivymd.uix.screenmanager import MDScreenManager
 from kivymd.uix.screen import MDScreen
 from m_eventman import Eventman
