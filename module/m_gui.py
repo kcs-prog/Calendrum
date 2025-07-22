@@ -181,11 +181,10 @@ class HomeScreen(MDScreen):
     """Startbildschirm der App."""
     pass
 
+
 class WeckerScreen(MDScreen):
     """Screen für das Einstellen des Weckers."""
     pass
-"""Main Klasse OOP"""
-
 
 
 if __name__ == "__main__":
