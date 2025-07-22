@@ -38,9 +38,9 @@ class CalendrumApp(MDApp):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self._uhrzeit:str = f"{self._zeit.stunde:02d}:{self._zeit.minute:02d}:{self._zeit.sekunde:02d} Uhr"
+        self.__button_namen:list[str] = ["jahr_plus", "jahr_minus", "monat_plus", "monat_minus"] # für _handle_button_input()
         self._monate_deutsch:list[str] = ["Jan.", "Feb.", "März", "Apr.", "Mai", "Juni",
-                               "Juli", "Aug.", "Sep.", "Okt.", "Nov.", "Dez."]
-        self.__button_namen:list[str] = ["jahr_plus", "jahr_minus", "monat_plus", "monat_minus"]
+                                        "Juli", "Aug.", "Sep.", "Okt.", "Nov.", "Dez."]
 
     @property
     def home_screen(self) -> MDScreen:
