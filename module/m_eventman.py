@@ -27,7 +27,7 @@ class Eventman:
     Löst automatisch abgelaufene Events aus, wenn die Klasse instanziiert wird.
     ————————————Attribute: ————————————
         __zeit (Datumzeit): Aktuelle Systemzeit.
-        __event_liste (dict[int: list]): Event-Liste im Format {Event-ID:int: list[list[int], Event-Aktion: str, Event-Name: str, taeglich ?: bool]}.
+        __event_liste (dict[int: list]): Event-Liste im Format {Event-ID:int: list[list[int], Event-Aktion: str, Event-Name: str, taeglich ?: bool = False]}.
         __event_aktionen (list[str]): Liste der verfügbaren Event-Aktionen.
     ————————————Methoden: ————————————
         event_erstellen(event_zeit: list[int], event_akt: str, event_name: str) → None: Fügt ein Event der Liste hinzu und speichert es in der CSV-Datei.
@@ -223,5 +223,5 @@ if __name__ == "__main__":
     print(f"Eventname des Events:\n{letztes_event[2]}\n")
     print(f"Event wird täglich wiederholt: {letztes_event[3]}\n")
     print(f"Eventliste vor dem Entfernen eines Events:\n{EM.event_liste}\n")
-    EM.event_trigger()
+    print("Events werden getriggert.\n");EM.event_trigger()
     print(f"Eventliste nach dem Entfernen eines Events:\n{EM.event_liste}\n")
