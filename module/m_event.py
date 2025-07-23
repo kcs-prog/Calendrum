@@ -3,15 +3,16 @@ from m_datumzeit import Datumzeit
 class Event:
     def __init__(
             self,
-            event_id :int,
             event_zeit :Datumzeit,
+            event_liste :list,
             event_akt :str = "",
             event_name :str = "",
             dauer_in_stunden :int = 0,
             taeglich :bool = False,
             monatlich :bool = False,
-            jaehrlich :bool = False ,):
-        self.__id = event_id
+            jaehrlich :bool = False,):
+        self.__liste = event_liste
+        self.__id = max(event_liste) + 1 if event_liste else 0
         self.__zeit = event_zeit
         self.__akt = event_akt
         self.__name = event_name
@@ -21,12 +22,18 @@ class Event:
         self.__jaehrlich = jaehrlich
 
     @property
-    def id(self) -> int:
+    def liste(self) -> list:
+        return self.__liste
+    @liste.setter
+    def liste(self, event_liste:list):
+        if not isinstance(event_liste, list):
+            raise TypeError("event_liste must be a list")
+        else:
+            self.__liste = event_liste
+
+    @property
+    def id(self) -> int: # für id kein setter, da id automatisch generiert wird
         return self.__id
-    @id.setter
-    def id(self, neue_id:int):
-        if not isinstance(neue_id, int):
-            raise TypeError("neue_id must be an instance of integer")
 
     @property
     def zeit(self) -> list[int]:
@@ -101,7 +108,8 @@ class Event:
             self.__jaehrlich = ist_jaehrlich
 
     def __str__(self) -> str:
-        return (f"Event: {self.__name}\n"
+        return (f"EventNr:{self.id}\n"
+                f"Name: {self.__name}\n"
                 f"Zeit: {self.__zeit.jahr}-{self.__zeit.monat:02d}-{self.__zeit.tag:02d} "
                 f"{self.__zeit.stunde:02d}:{self.__zeit.minute:02d}:{self.__zeit.sekunde:02d}\n"
                 f"Dauer: {self.__dauer} Stunden\n"
@@ -114,4 +122,5 @@ class Event:
 if __name__ == "__main__":
     dz = Datumzeit()
     dz.jetzt()
-    print(Event(dz))
+    event1 = Event(event_zeit=dz, event_name="test")
+    print(event1)
