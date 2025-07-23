@@ -100,7 +100,7 @@ class CalendrumApp(MDApp):
         # Hier werden die Schriftarten für die App definiert.
         LabelBase.register(
             name="jetbrains",
-            fn_regular="assets/fonts/JetBrainsMono-Regular.ttf", # ist open-source free to use
+            fn_regular="../assets/fonts/JetBrainsMono-Regular.ttf", # ist open-source free to use
         )
         self.theme_cls.font_styles.update({
         #   Name: [Familie, Größe, fett, Abstand zwischen Buchstaben]
