@@ -1,7 +1,7 @@
 """
 Eventman
 ————————————
--Event-Liste:dict{EventID:Event} #Event-Liste im Format {EventID:int - Event:list[list[int], Event-Aktion: str, Event-Name: str]}.
+-Event-Liste:list[Event] #Events im Format [int, Datumzeit, str, str, bool, bool, bool] gespeichert.
 -Zeit:list[int] #Aktuelle Systemzeit.
 -Event-Aktionen:list[str] #Liste der verfügbaren Event-Aktionen.
 ————————————
@@ -10,12 +10,13 @@ Eventman
 -events_speichern() → None
 -event_abgelaufen(event_zeit:list[int]) → bool
 +trigger_event(entfernen:bool=True) → list[str]
-+event_erstellen(event_zeit:list[int], event_akt: str, event_name: str = "", taeglich: bool = False) → None
++event_erstellen(event_zeit: Datumzeit, event_akt: str, event_name: str = "", taeglich: bool = False, monatlich: bool = False, jaehrlich: bool = False) → None
 +event_aufrufen(event_id:int) → list[list[int], str, str, bool] | None
 +event_entfernen(event_id:int) → None
 
 """
 from m_datumzeit import Datumzeit
+from m_event import Event
 from csv import writer, reader
 import ast
 
@@ -27,13 +28,13 @@ class Eventman:
     Löst automatisch abgelaufene Events aus, wenn die Klasse instanziiert wird.
     ————————————Attribute: ————————————
         __zeit (Datumzeit): Aktuelle Systemzeit.
-        __event_liste (dict[int: list]): Event-Liste im Format {Event-ID:int: list[list[int], Event-Aktion: str, Event-Name: str, taeglich ?: bool = False]}.
+        __event_liste (list[Event]): Format von Event-Objekten kann in der Event-Klasse nachgelesen werden.
         __event_aktionen (list[str]): Liste der verfügbaren Event-Aktionen.
     ————————————Methoden: ————————————
-        event_erstellen(event_zeit: list[int], event_akt: str, event_name: str) → None: Fügt ein Event der Liste hinzu und speichert es in der CSV-Datei.
-        event_aufrufen(event_id: int) → list[list[int], str, str, bool]: Ruft ein Event anhand der Event-ID auf und gibt es zurück.
+        event_erstellen(event_zeit: Datumzeit, event_liste: list[Event], event_akt: str, event_name: str) → None: Fügt ein Event der Liste hinzu und speichert es in der CSV-Datei.
+        event_aufrufen(event_id: int) → Event: Ruft ein Event anhand der Event-ID auf und gibt es zurück.
         event_entfernen(event_id: int) → None: Entfernt ein Event anhand der Event-ID aus der Event-Liste und CSV-Datei.
-        trigger_event(entfernen=True) → list[str] | None: Überprüft, ob Events abgelaufen sind und löst sie aus.
+        trigger_event(entfernen=True) → list[str] | None: Überprüft, ob Events abgelaufen sind und löst sie aus. Gibt die Aktionen der ausgelösten Events zurück.
     """
     EVENTS_CSV = 'events.csv'  # CSV-Datei, in der die Events gespeichert werden
 
@@ -43,8 +44,7 @@ class Eventman:
         """
         self.__zeit:Datumzeit = Datumzeit()  # Aktuelle Systemzeit
         self.__zeit.jetzt()
-        # Event-Liste im Format {EventID:int:list[list[int], Event-Aktion:str, Event-Name:str]}
-        self.__event_liste: dict[int: list] = {}
+        self.__event_liste: list[Event] = []
         self.__event_aktionen: list[str] = ["klingeln", "email", "sms", "anruf", "alarm", "test"]
         self.__events_laden()  # Lädt die Events aus der CSV-Datei
         self.event_trigger() # Überprüft, ob die Events bereits ausgelöst werden sollten
@@ -52,22 +52,21 @@ class Eventman:
     @property
     def zeit(self) -> Datumzeit:
         """Gibt die aktuelle Systemzeit zurück.
-        :return:list[int] # Aktuelle Systemzeit als list[int]-Objekt.
+        :return: # Aktuelle Systemzeit als Datumzeit-Objekt.
         """
         return self.__zeit
 
     @property
-    def event_liste(self) -> dict[int:list]:
+    def event_liste(self) -> list[Event]:
         """Gibt die Event-Liste zurück.
-        :return:dict[int: list[list[int], str, str, bool]]
-        #Event-Liste im Format {EventID:int: list[list[int], Event-Aktion: str, Event-Name: str, taeglich: bool = False]}
+        :return: # Liste der Events als Event-Objekte.
         """
-        return self.__event_liste if self.__event_liste != {} else Exception("Event-Liste ist leer.\n")
+        return self.__event_liste
 
     @property
     def event_aktionen(self) -> list[str]:
         """Gibt die Liste der verfügbaren Event-Aktionen zurück.
-        :return:list[str] #Liste der verfügbaren Event-Aktionen.
+        :return: #Liste der verfügbaren Event-Aktionen.
         :raises exception: Bei leerer Event-Aktionsliste.
         """
         return self.__event_aktionen if self.__event_aktionen else Exception("Event-Aktionen-Liste ist leer.\n")
@@ -81,116 +80,131 @@ class Eventman:
             with open(self.EVENTS_CSV, 'r', encoding='utf-8') as f:
                 csv_reader = reader(f)
                 next(csv_reader)
-                self.__event_liste = {
-                    int(row[0]): [ast.literal_eval(row[1]), row[2], row[3].strip(), ast.literal_eval(row[4])]
-                    for row in csv_reader if row
-                }
+                for row in csv_reader:
+                    if row:
+                        try:
+                            zeitstempel = ast.literal_eval(row[1])  # Konvertiert den Zeitstempel in eine Liste
+                            zeit_objekt = Datumzeit(zeitstempel[0], zeitstempel[1], zeitstempel[2], zeitstempel[3], zeitstempel[4], zeitstempel[5])
+                            aktion = row[2]
+                            name = row[3]
+                            taeglich = ast.literal_eval(row[4])
+                            monatlich = ast.literal_eval(row[5])
+                            jaehrlich = ast.literal_eval(row[6])
+                            neues_event = Event(
+                                event_zeit=zeit_objekt,
+                                event_liste=self.__event_liste,
+                                event_akt=aktion,
+                                event_name=name,
+                                taeglich=taeglich,
+                                monatlich=monatlich,
+                                jaehrlich=jaehrlich)
+                            self.__event_liste.append(neues_event)
+                        except Exception as e:
+                            print(f"Fehler beim Laden des Events: {str(e)}\n")
         except FileNotFoundError:
             with open(self.EVENTS_CSV, 'w', newline='', encoding='utf-8') as f:
                 csv_writer = writer(f)
-                csv_writer.writerow(['EventID', 'Zeitstempel', 'Aktion', 'Name', 'Täglich ?'])
+                csv_writer.writerow(['EventID', 'Zeitstempel', 'Aktion', 'Name', 'Täglich ?', 'Monatlich ?', 'Jährlich ?'])
 
     def __events_speichern(self) -> None:
         """Speichert die aktuelle Event-Liste in der CSV-Datei.\
         """
         with open(self.EVENTS_CSV, 'w', newline='', encoding='utf-8') as f:
             csv_writer = writer(f)
-            csv_writer.writerow(['EventID', 'Zeitstempel', 'Aktion', 'Name', 'Täglich ?'])
-            for event_id, event_data in self.__event_liste.items():
-                csv_writer.writerow([event_id, [event_data[0][0],
-                                                event_data[0][1],
-                                                event_data[0][2],
-                                                event_data[0][3],
-                                                event_data[0][4],
-                                                event_data[0][5]], event_data[1], event_data[2],event_data[3]])
-
-    def __event_abgelaufen(self, event_zeit:list[int]) -> bool:
-        """Prüft, ob ein Event-Zeitstempel abgelaufen ist.
-        :param event_zeit:list[int] #Zeitstempel des Events.
-        :return:bool # Gibt True zurück, wenn der Event-Zeitstempel abgelaufen ist, sonst False.
-        """
-        self.__zeit.jetzt()
-        aktuelle_zeit = [
-            self.__zeit.jahr,
-            self.__zeit.monat,
-            self.__zeit.tag,
-            self.__zeit.stunde,
-            self.__zeit.minute,
-            self.__zeit.sekunde
-        ]
-        return event_zeit <= aktuelle_zeit
+            csv_writer.writerow(['EventID', 'Zeitstempel', 'Aktion', 'Name', 'Täglich ?', 'Monatlich ?', 'Jährlich ?'])
+            for ev in self.__event_liste:
+                csv_writer.writerow([ev.id, str(ev.zeit), ev.akt, ev.name, str(ev.taeglich), str(ev.monatlich), str(ev.jaehrlich)])
 
     def event_trigger(self, *args) -> list[str] | None:
         """Geht durch die Event-Liste, prüft, ob Events abgelaufen sind und löst sie aus.
+        Entfernt das Event aus der Liste, wenn es nicht täglich, monatlich oder jährlich ist.
+        Verschiebt das Event auf den nächsten Tag, Monat oder Jahr, wenn es täglich, monatlich oder jährlich ist.
         :param args: Wird hier gebraucht für die Timeout-Zeit von schedule_interval() in der App.
-        :return:str | None # Gibt die Aktion des ausgelösten Events zurück, wenn eines gefunden wurde, sonst None.
+        :return: | None # Gibt die Aktion des ausgelösten Events als String zurück, wenn eines gefunden wurde, sonst None.
         """
         aktionen_temp:list[str] = []
-        for event in list(self.__event_liste):
-            event_zeit:list[int] = self.__event_liste[event][0]
-            event_akt:str = self.__event_liste[event][1]
-            event_taeglich:bool = self.__event_liste[event][3]
-            event_id = event
-            if self.__event_abgelaufen(event_zeit):
+        for ev in self.__event_liste:
+            if ev.abgelaufen(self.__zeit):
                 try:
-                    print(f"Event-Backlog - Abgelaufene Events:\nID: '{event_id}'\nName: {event_akt}\nZeit: {event_zeit}\nTägliches Event ?: {event_taeglich}.\n")
-                    aktionen_temp.append(event_akt)
-                    event_zeit[2] = event_zeit[2] + 1 if event_taeglich else 0 # verschiebt das Event um einen Tag.
-                    self.event_entfernen(event_id) if not event_taeglich else None
+                    print(f"Event-Backlog - Abgelaufene Events:\nID: '{ev.id}'\nName: {ev.akt}\nZeit: {ev.zeit}\n")
+                    aktionen_temp.append(ev.akt)
+                    # Verschiebt das Event auf den nächsten Tag, Monat oder Jahr, wenn es täglich, monatlich oder jährlich ist.
+                    if ev.taeglich or ev.monatlich or ev.jaehrlich:
+                        neue_zeit = Datumzeit()
+                        neue_zeit.jahr = ev.zeit[0]
+                        neue_zeit.monat = ev.zeit[1]
+                        neue_zeit.tag = ev.zeit[2]
+                        neue_zeit.stunde = ev.zeit[3]
+                        neue_zeit.minute = ev.zeit[4]
+                        neue_zeit.sekunde = ev.zeit[5]
+                        if ev.jaehrlich:
+                            neue_zeit.jahr += 1
+                        elif ev.monatlich:
+                            neue_zeit.monat += 1
+                            if neue_zeit.monat > 12:
+                                neue_zeit.monat = 1
+                                neue_zeit.jahr += 1
+                        elif ev.taeglich:
+                            neue_zeit.tag += 1
+                        ev.zeit = neue_zeit
+                    self.event_entfernen(ev.id) if not ev.taeglich and not ev.monatlich and not ev.jaehrlich else None
+                    self.__events_speichern()
                 except Exception as e:
                     print(f"Fehler beim Auslösen des Events: {str(e)}\n")
                     return None
         return set(aktionen_temp) if aktionen_temp else None
 
-    def event_erstellen(self, event_zeit:Datumzeit, event_akt: str, event_name: str, taeglich:bool = False) -> None:
+    def event_erstellen(
+            self,
+            event_zeit:Datumzeit,
+            event_akt: str,
+            event_name: str,
+            taeglich:bool = False,
+            monatlich:bool = False,
+            jaehrlich:bool = False,) -> None:
         """Fügt ein Event der Liste hinzu und speichert es in der CSV-Datei.
         :param event_zeit:list[int] #Zeitstempel des Events.
         :param event_akt:str #Aktion, die mit dem Event verknüpft werden soll, aus vordefinierter Liste.
         :param event_name:str #Name des Events zur Darstellung im UI.
         :param taeglich:bool #bei True wird das Event auf den Nächsten Tag verschoben, wenn es getriggert wird. Default False.
+        :param monatlich:bool #bei True wird das Event auf den Nächsten Monat verschoben, wenn es getriggert wird. Default False.
+        :param jaehrlich:bool #bei True wird das Event auf das Nächste Jahr verschoben, wenn es getriggert wird. Default False.
         :raises exception: Bei ungültiger Event-Zeit, Aktion oder Name.
         """
         if not isinstance(event_zeit, Datumzeit):
             raise Exception("Event-Zeit muss ein Datumzeit-Objekt sein.\n")
         if not isinstance(event_akt, str) or event_akt not in self.__event_aktionen:
-            raise Exception("Ungültige Event-Aktion.\n")
+            raise Exception(f"Ungültige Event-Aktion.\nGültige Aktionen: {self.__event_aktionen}\n")
         if not isinstance(event_name, str):
-            raise Exception("Event-Name muss aus String bestehen.\n")
-        if self.__event_liste:
-            new_event_id = max(self.__event_liste.keys()) + 1  # Neue Event-ID basierend auf der höchsten vorhandenen ID
-        else:
-            new_event_id = 1  # Startet bei 1, wenn keine Events vorhanden sind
-        self.__event_liste[new_event_id] = [
-            [
-            event_zeit.jahr,
-            event_zeit.monat,
-            event_zeit.tag,
-            event_zeit.stunde,
-            event_zeit.minute,
-            event_zeit.sekunde], event_akt, event_name, taeglich]  # Fügt das neue Event der Liste hinzu
-        print(f"Event '{event_name}' wurde erstellt mit ID '{new_event_id}'.\n")
-        print(f"Das event wird{f" wiederholt.\n" if taeglich else f" nicht wiederholt.\n"}")
+            raise Exception("Event-Name muss ein String sein.\n")
+        neues_event:Event = Event(
+                event_zeit=event_zeit,
+                event_liste=self.__event_liste,
+                event_akt=event_akt,
+                event_name=event_name,
+                taeglich=taeglich,
+                monatlich=monatlich,
+                jaehrlich=jaehrlich)
+        self.__event_liste.append(neues_event)
+        print(f"Event '{neues_event.name}' wurde erstellt mit ID '{neues_event.id}'.\n")
         try:  # Speichert das neue Event in der CSV-Datei
             self.__events_speichern()
         except Exception as e:
-            del self.__event_liste[new_event_id]
+            for ev in self.__event_liste:
+                if ev.id == neues_event.id:
+                    self.__event_liste.remove(ev)
             raise Exception(f"Fehler beim Speichern des Events: {str(e)}\n")
 
-    def event_aufrufen(self, event_id:int) -> list:
+    def event_aufrufen(self, event_id:int) -> Event:
         """Methode zum Aufrufen eines Events anhand der Event-ID.
         :param event_id:int # ID-Nummer des Events
-        :return:list[list[int], str, str, bool] # Gibt das Event-Objekt zurück, wenn es existiert, sonst None.
+        :return: Gibt das Event-Objekt zurück, wenn es existiert, sonst None.
         :raises exception: Bei ungültiger Event-ID oder wenn das Event nicht gefunden wird.
         """
         try:
-            if event_id in self.__event_liste:
-                return self.__event_liste[event_id]
-            with open(self.EVENTS_CSV, 'r', encoding='utf-8') as f:
-                csv_reader = reader(f)
-                next(csv_reader)  # Überspringt die Header-Zeile
-                for row in csv_reader:  # Durchsucht die CSV-Datei nach der Event-ID
-                    if int(row[0]) == event_id:
-                        return [row[1], row[2], row[3].strip(), row[4]]  # Gibt das Event-Objekt zurück
+            for ev in self.__event_liste:
+                if ev.id == event_id:
+                    return ev
             raise Exception(f"Es existiert kein Event mit der ID '{event_id}'.\n")
         except Exception as e:
             raise Exception(f"Event konnte nicht aufgerufen werden: {str(e)}\n")
@@ -200,10 +214,10 @@ class Eventman:
         :param event_id:int # ID-Nummer des Events
         :raises exception: bei ungültiger Event-ID oder wenn das Event nicht gefunden wird.
         """
-        if event_id not in self.__event_liste:
-            raise Exception(f"Es existiert kein Event mit der ID '{event_id}'.\n")
-        del self.__event_liste[event_id]
-        print(f"Event mit ID {event_id} wurde entfernt.\n")
+        for ev in self.__event_liste:
+            if ev.id == event_id:
+                self.__event_liste.remove(ev)
+                print(f"Event mit ID {ev.id} wurde entfernt.\n")
         try:
             self.__events_speichern()
         except Exception as e:
@@ -213,15 +227,15 @@ class Eventman:
 
 if __name__ == "__main__":
     """Testcode für die Eventman-Klasse."""
-    EM: Eventman = Eventman()  # Beispiel-Event-Liste
-    EM.event_erstellen(EM.zeit, "test", "Test-Event - Event erstellen")
-    letztes_event_id = max(EM.event_liste.keys())
+    EM: Eventman = Eventman()
+    EM.event_erstellen(EM.zeit, "test", "Test-Event")
+    letztes_event_id = max(EM.event_liste[-1].id,0)
     letztes_event = EM.event_aufrufen(letztes_event_id)
     print(f"Event-Objekt aufgerufen mit Event-ID '{letztes_event_id}' :\n{letztes_event}\n")
-    print(f"Eventzeit des Events:\n{letztes_event[0]}\n")
-    print(f"Eventaktion des Events:\n{letztes_event[1]}\n")
-    print(f"Eventname des Events:\n{letztes_event[2]}\n")
-    print(f"Event wird täglich wiederholt: {letztes_event[3]}\n")
-    print(f"Eventliste vor dem Entfernen eines Events:\n{EM.event_liste}\n")
+    print(f"Eventliste vor dem Entfernen eines Events:\n")
+    for event in EM.event_liste:
+        print(f"{event}")
     print("Events werden getriggert.\n");EM.event_trigger()
-    print(f"Eventliste nach dem Entfernen eines Events:\n{EM.event_liste}\n")
+    print(f"Eventliste nach dem Entfernen eines Events:\n")
+    for event in EM.event_liste:
+        print(f"{event}")
