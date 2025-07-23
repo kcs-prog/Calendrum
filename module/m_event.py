@@ -43,7 +43,7 @@ class Event:
     @liste.setter
     def liste(self, event_liste:list):
         if not isinstance(event_liste, list):
-            raise TypeError("event_liste must be a list")
+            raise TypeError("event_liste muss eine Liste sein.")
         else:
             self.__liste = event_liste
 
@@ -66,7 +66,7 @@ class Event:
     @zeit.setter
     def zeit(self, neue_event_zeit :Datumzeit):
         if not isinstance(neue_event_zeit, Datumzeit):
-            raise TypeError("neue_event_zeit must be an instance of Datumzeit")
+            raise TypeError("neue_event_zeit muss ein Datumzeit-Objekt sein.")
         else:
             self.__zeit = neue_event_zeit
 
@@ -78,7 +78,7 @@ class Event:
     @akt.setter
     def akt(self, neue_event_aktion :str):
         if not isinstance(neue_event_aktion, str):
-            raise TypeError("neue_event_aktion must be a string")
+            raise TypeError("neue_event_aktion muss ein String sein.")
         else:
             self.__akt = neue_event_aktion
 
@@ -90,7 +90,7 @@ class Event:
     @name.setter
     def name(self, neuer_name:str):
         if not isinstance(neuer_name, str):
-            raise TypeError("neuer_name must be a string")
+            raise TypeError("neuer_name muss ein String sein.")
         else:
             self.__name = neuer_name
 
@@ -102,7 +102,7 @@ class Event:
     @taeglich.setter
     def taeglich(self, ist_taeglich:bool):
         if not isinstance(ist_taeglich, bool):
-            raise TypeError("ist_taeglich must be a boolean")
+            raise TypeError("ist_taeglich muss ein boolean sein.")
         else:
             self.__taeglich = ist_taeglich
 
@@ -123,7 +123,7 @@ class Event:
     @jaehrlich.setter
     def jaehrlich(self, ist_jaehrlich:bool):
         if not isinstance(ist_jaehrlich, bool):
-            raise TypeError("ist_jaehrlich must be a boolean")
+            raise TypeError("ist_jaehrlich muss ein boolean sein.")
         else:
             self.__jaehrlich = ist_jaehrlich
 
@@ -143,7 +143,7 @@ class Event:
         :param zeitpunkt: Zeitpunkt, zu dem geprüft werden soll, ob das Event abgelaufen ist.
         :return: True, wenn das Event abgelaufen ist, sonst False."""
         if not isinstance(zeitpunkt, Datumzeit):
-            raise TypeError("zeitpunkt must be an instance of Datumzeit")
+            raise TypeError("zeitpunkt muss ein Datumzeit-Objekt sein.")
         event_zeit = [
             self.__zeit.jahr,
             self.__zeit.monat,

@@ -66,10 +66,19 @@ class Eventman:
     @property
     def event_aktionen(self) -> list[str]:
         """Gibt die Liste der verfügbaren Event-Aktionen zurück.
-        :return: #Liste der verfügbaren Event-Aktionen.
-        :raises exception: Bei leerer Event-Aktionsliste.
+        :return: #Liste der verfügbaren Event-Aktionen falls vorhanden, sonst eine leere Liste.
         """
-        return self.__event_aktionen if self.__event_aktionen else Exception("Event-Aktionen-Liste ist leer.\n")
+        return self.__event_aktionen if self.__event_aktionen else []
+
+    def __iter__(self) -> iter:
+        """Ermöglicht die Iteration über die Event-Liste."""
+        yield from self.__event_liste
+
+    def __len__(self) -> int:
+        """Gibt die Anzahl der Events in der Event-Liste zurück.
+        :return: #Anzahl der Events als int.
+        """
+        return len(self.__event_liste)
 
     def __events_laden(self) -> None:
         """Lädt die Events aus der CSV-Datei in die Event-Liste.
@@ -115,7 +124,7 @@ class Eventman:
             for ev in self.__event_liste:
                 csv_writer.writerow([ev.id, str(ev.zeit), ev.akt, ev.name, str(ev.taeglich), str(ev.monatlich), str(ev.jaehrlich)])
 
-    def event_trigger(self, *args) -> list[str] | None:
+    def event_trigger(self, *args) -> list[str]:
         """Geht durch die Event-Liste, prüft, ob Events abgelaufen sind und löst sie aus.
         Entfernt das Event aus der Liste, wenn es nicht täglich, monatlich oder jährlich ist.
         Verschiebt das Event auf den nächsten Tag, Monat oder Jahr, wenn es täglich, monatlich oder jährlich ist.
@@ -150,9 +159,8 @@ class Eventman:
                     self.event_entfernen(ev.id) if not ev.taeglich and not ev.monatlich and not ev.jaehrlich else None
                     self.__events_speichern()
                 except Exception as e:
-                    print(f"Fehler beim Auslösen des Events: {str(e)}\n")
-                    return None
-        return set(aktionen_temp) if aktionen_temp else None
+                    raise Exception(f"Fehler beim Triggern des Events: {str(e)}\n")
+        return set(aktionen_temp) if aktionen_temp else []
 
     def event_erstellen(
             self,
@@ -172,11 +180,11 @@ class Eventman:
         :raises exception: Bei ungültiger Event-Zeit, Aktion oder Name.
         """
         if not isinstance(event_zeit, Datumzeit):
-            raise Exception("Event-Zeit muss ein Datumzeit-Objekt sein.\n")
+            raise TypeError("Event-Zeit muss ein Datumzeit-Objekt sein.\n")
         if not isinstance(event_akt, str) or event_akt not in self.__event_aktionen:
-            raise Exception(f"Ungültige Event-Aktion.\nGültige Aktionen: {self.__event_aktionen}\n")
+            raise TypeError(f"Ungültige Event-Aktion.\nGültige Aktionen: {self.__event_aktionen}\n")
         if not isinstance(event_name, str):
-            raise Exception("Event-Name muss ein String sein.\n")
+            raise TypeError("Event-Name muss ein String sein.\n")
         neues_event:Event = Event(
                 event_zeit=event_zeit,
                 event_liste=self.__event_liste,
@@ -205,7 +213,7 @@ class Eventman:
             for ev in self.__event_liste:
                 if ev.id == event_id:
                     return ev
-            raise Exception(f"Es existiert kein Event mit der ID '{event_id}'.\n")
+            raise ValueError(f"Es existiert kein Event mit der ID '{event_id}'.\n")
         except Exception as e:
             raise Exception(f"Event konnte nicht aufgerufen werden: {str(e)}\n")
 
@@ -233,9 +241,9 @@ if __name__ == "__main__":
     letztes_event = EM.event_aufrufen(letztes_event_id)
     print(f"Event-Objekt aufgerufen mit Event-ID '{letztes_event_id}' :\n{letztes_event}\n")
     print(f"Eventliste vor dem Entfernen eines Events:\n")
-    for event in EM.event_liste:
-        print(f"{event}")
+    for event in EM:
+        print(f"{event}\n")
     print("Events werden getriggert.\n");EM.event_trigger()
     print(f"Eventliste nach dem Entfernen eines Events:\n")
-    for event in EM.event_liste:
-        print(f"{event}")
+    for event in EM:
+        print(f"{event}\n")
