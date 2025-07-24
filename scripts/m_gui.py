@@ -7,14 +7,12 @@ from kivy.core.text import LabelBase
 from kivy.clock import Clock
 from kivy.properties import StringProperty
 from kivymd.app import MDApp
-from kivymd.uix.button import MDIconButton, MDFlatButton
 from kivymd.uix.dialog import MDDialog
-from kivymd.uix.label import MDLabel
 from kivymd.uix.screenmanager import MDScreenManager
 from kivymd.uix.screen import MDScreen
-from m_eventman import Eventman
-from m_datumzeit import Datumzeit
-from m_gui_TagFeld import TagFeld
+from scripts.m_eventman import Eventman
+from scripts.m_datumzeit import Datumzeit
+from scripts.m_gui_TagFeld import TagFeld
 
 kivy.require("2.3.1")
 
@@ -31,16 +29,15 @@ class CalendrumApp(MDApp):
     except Exception as e: print(f"Error initializing time: {e}")
     _monat: int = _zeit.monat  # Kopie des Monats zum schutz gegen das Update für die Uhrzeit
     _jahr: int = _zeit.jahr  # Kopie des Jahres zum schutz gegen das Update für die Uhrzeit
-
     eventman: Eventman = Eventman()  # Instanz der Eventman-Klasse, um Ereignisse zu verwalten
     dialog:MDDialog = None
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self._uhrzeit:str = f"{self._zeit.stunde:02d}:{self._zeit.minute:02d}:{self._zeit.sekunde:02d} Uhr"
+        self.__button_namen:list[str] = ["jahr_plus", "jahr_minus", "monat_plus", "monat_minus"] # für _handle_button_input()
         self._monate_deutsch:list[str] = ["Jan.", "Feb.", "März", "Apr.", "Mai", "Juni",
-                               "Juli", "Aug.", "Sep.", "Okt.", "Nov.", "Dez."]
-        self.__button_namen:list[str] = ["jahr_plus", "jahr_minus", "monat_plus", "monat_minus"]
+                                        "Juli", "Aug.", "Sep.", "Okt.", "Nov.", "Dez."]
 
     @property
     def home_screen(self) -> MDScreen:
@@ -102,7 +99,7 @@ class CalendrumApp(MDApp):
         # Hier werden die Schriftarten für die App definiert.
         LabelBase.register(
             name="jetbrains",
-            fn_regular="assets/fonts/JetBrainsMono-Regular.ttf", # ist open-source free to use
+            fn_regular="./assets/fonts/JetBrainsMono-Regular.ttf", # ist open-source free to use
         )
         self.theme_cls.font_styles.update({
         #   Name: [Familie, Größe, fett, Abstand zwischen Buchstaben]
@@ -181,20 +178,14 @@ class HomeScreen(MDScreen):
     """Startbildschirm der App."""
     pass
 
+
 class WeckerScreen(MDScreen):
     """Screen für das Einstellen des Weckers."""
     pass
-"""Main Klasse OOP"""
-
-
-class Main:
-    """Startet die App.
-    Test-Code kann hier eingefügt werden."""
-    App:CalendrumApp = CalendrumApp()
-    App.run()
-    """run() startet die App und ruft automatisch build() auf.
-    Nach build() wird on_start() automatisch aufgerufen."""
 
 
 if __name__ == "__main__":
-    Main()
+    #App: CalendrumApp = CalendrumApp()
+    #App.run()
+    """run() startet die App und ruft automatisch build() auf.
+    Nach build() wird on_start() automatisch aufgerufen."""

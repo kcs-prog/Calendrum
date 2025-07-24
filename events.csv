@@ -1,2 +1,1 @@
-EventID,Zeitstempel,Aktion,Name
-1,"[2025, 7, 17, 15, 5, 14]",alarm,Wecker
+EventID,Zeitstempel,Aktion,Name,Täglich ?,Monatlich ?,Jährlich ?
