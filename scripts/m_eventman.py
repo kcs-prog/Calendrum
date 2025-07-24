@@ -237,7 +237,7 @@ if __name__ == "__main__":
     """Testcode für die Eventman-Klasse."""
     EM: Eventman = Eventman()
     EM.event_erstellen(EM.zeit, "test", "Test-Event")
-    letztes_event_id = max(EM.event_liste[-1].id,0)
+    letztes_event_id = EM.event_liste[-1].id
     letztes_event = EM.event_aufrufen(letztes_event_id)
     print(f"Event-Objekt aufgerufen mit Event-ID '{letztes_event_id}' :\n{letztes_event}\n")
     print(f"Eventliste vor dem Entfernen eines Events:\n")
