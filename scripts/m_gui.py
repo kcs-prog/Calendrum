@@ -10,9 +10,9 @@ from kivymd.app import MDApp
 from kivymd.uix.dialog import MDDialog
 from kivymd.uix.screenmanager import MDScreenManager
 from kivymd.uix.screen import MDScreen
-from m_eventman import Eventman
-from m_datumzeit import Datumzeit
-from m_gui_TagFeld import TagFeld
+from scripts.m_eventman import Eventman
+from scripts.m_datumzeit import Datumzeit
+from scripts.m_gui_TagFeld import TagFeld
 
 kivy.require("2.3.1")
 
@@ -29,7 +29,6 @@ class CalendrumApp(MDApp):
     except Exception as e: print(f"Error initializing time: {e}")
     _monat: int = _zeit.monat  # Kopie des Monats zum schutz gegen das Update für die Uhrzeit
     _jahr: int = _zeit.jahr  # Kopie des Jahres zum schutz gegen das Update für die Uhrzeit
-
     eventman: Eventman = Eventman()  # Instanz der Eventman-Klasse, um Ereignisse zu verwalten
     dialog:MDDialog = None
 
@@ -100,7 +99,7 @@ class CalendrumApp(MDApp):
         # Hier werden die Schriftarten für die App definiert.
         LabelBase.register(
             name="jetbrains",
-            fn_regular="../assets/fonts/JetBrainsMono-Regular.ttf", # ist open-source free to use
+            fn_regular="./assets/fonts/JetBrainsMono-Regular.ttf", # ist open-source free to use
         )
         self.theme_cls.font_styles.update({
         #   Name: [Familie, Größe, fett, Abstand zwischen Buchstaben]

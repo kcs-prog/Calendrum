@@ -15,8 +15,8 @@ Eventman
 +event_entfernen(event_id:int) → None
 
 """
-from m_datumzeit import Datumzeit
-from m_event import Event
+from scripts.m_datumzeit import Datumzeit
+from scripts.m_event import Event
 from csv import writer, reader
 import ast
 

@@ -1,4 +1,4 @@
-from m_datumzeit import Datumzeit
+from scripts.m_datumzeit import Datumzeit
 
 class Event:
     """Repräsentiert ein Event mit Zeit, Aktion, Name und Dauer.
