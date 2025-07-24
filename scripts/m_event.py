@@ -127,6 +127,31 @@ class Event:
         else:
             self.__jaehrlich = ist_jaehrlich
 
+
+    def __lt__(self, other) -> bool:
+        """Vergleicht zwei Event-Objekte basierend auf ihrer Zeit.
+        Gibt True zurück, wenn das verglichene Objekt einen späteren Zeitpunkt hat.
+        :return: False, wenn das erste Objekt noch nicht abgelaufen ist
+        """
+        if not isinstance(other, Event):
+            if isinstance(other, Datumzeit):
+                return self.zeit < [other.jahr,other.monat,other.tag,other.stunde,other.minute,other.sekunde]
+            return NotImplemented
+        return self.zeit < other.zeit
+
+    def __repr__(self) -> str:
+        """Gibt eine ausführliche Darstellung des Events zurück.
+        :return: String mit den Attributen des Events in lesbarer Form.
+        """
+        return (f"Event(event_zeit=Datumzeit({self.__zeit.jahr}, {self.__zeit.monat}, {self.__zeit.tag}, "
+                f"{self.__zeit.stunde}, {self.__zeit.minute}, {self.__zeit.sekunde}), "
+                f"event_liste={self.__liste}, "
+                f"event_akt={self.__akt}, "
+                f"event_name={self.__name}, "
+                f"taeglich={self.__taeglich}, "
+                f"monatlich={self.__monatlich}, "
+                f"jaehrlich={self.__jaehrlich})")
+
     def __str__(self) -> str:
         """Gibt eine lesbare Darstellung des Events zurück.
         :return: String mit den Details des Events."""
