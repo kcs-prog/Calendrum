@@ -1,20 +1,3 @@
-"""
-Eventman
-————————————
--Event-Liste:list[Event] #Events im Format [int, Datumzeit, str, str, bool, bool, bool] gespeichert.
--Zeit:list[int] #Aktuelle Systemzeit.
--Event-Aktionen:list[str] #Liste der verfügbaren Event-Aktionen.
-————————————
--init() → None
--events_laden() → None
--events_speichern() → None
--event_abgelaufen(event_zeit:list[int]) → bool
-+trigger_event(entfernen:bool=True) → list[str]
-+event_erstellen(event_zeit: Datumzeit, event_akt: str, event_name: str = "", taeglich: bool = False, monatlich: bool = False, jaehrlich: bool = False) → None
-+event_aufrufen(event_id:int) → list[list[int], str, str, bool] | None
-+event_entfernen(event_id:int) → None
-
-"""
 from scripts.m_datumzeit import Datumzeit
 from scripts.m_event import Event
 from csv import writer, reader
