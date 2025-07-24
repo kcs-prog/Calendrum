@@ -36,7 +36,7 @@ class Eventman:
         event_entfernen(event_id: int) → None: Entfernt ein Event anhand der Event-ID aus der Event-Liste und CSV-Datei.
         trigger_event(entfernen=True) → list[str] | None: Überprüft, ob Events abgelaufen sind und löst sie aus. Gibt die Aktionen der ausgelösten Events zurück.
     """
-    EVENTS_CSV = 'events.csv'  # CSV-Datei, in der die Events gespeichert werden
+    EVENTS_CSV = '../events.csv'  #Pfad zur CSV-Datei, in der die Events gespeichert werden
 
     def __init__(self) -> None:
         """Initialisiert die Eventman-Klasse und lädt die Events aus der CSV-Datei.
