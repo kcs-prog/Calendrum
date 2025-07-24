@@ -192,5 +192,13 @@ class Event:
 if __name__ == "__main__":
     dz = Datumzeit()
     dz.jetzt()
-    event1 = Event(event_zeit=dz, event_name="test", event_liste=[])
-    print(event1)
+    test_liste = []
+    test_liste.append(Event(dz, test_liste,"test", "Test-Event"))
+    time.sleep(1)
+    dz2 = Datumzeit()
+    dz2.jetzt()
+    test_liste.append(Event(dz2, test_liste,"vergleichen","Test-Vergleich"))
+    print(test_liste)
+    print(test_liste[0] < test_liste[1])
+    print(str(test_liste[-1]))
+
