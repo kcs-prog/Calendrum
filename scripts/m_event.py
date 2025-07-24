@@ -1,7 +1,11 @@
+import ast
+import time
+
 from scripts.m_datumzeit import Datumzeit
 
 class Event:
     """Repräsentiert ein Event mit Zeit, Aktion, Name und Dauer.
+    Muss in der Eventmanager-Klasse über event_erstellen() instanziiert werden.
     ————————————Attribute: ————————————
         event_zeit (Datumzeit): Zeitstempel des Events
         event_liste (list[Event]): Liste, in der die Events zwischengespeichert werden, verwaltet durch den Eventmanager.
@@ -21,7 +25,7 @@ class Event:
             event_name :str = "",
             taeglich :bool = False,
             monatlich :bool = False,
-            jaehrlich :bool = False,):
+            jaehrlich :bool = False):
         self.__liste = event_liste
         self.__zeit = event_zeit
         self.__akt = event_akt
@@ -155,13 +159,15 @@ class Event:
     def __str__(self) -> str:
         """Gibt eine lesbare Darstellung des Events zurück.
         :return: String mit den Details des Events."""
-        return (f"EventNr: {self.id}\n"
-                f"Name: {self.__name}\n"
+        return (f"EventNr: {self.__id}\n"
                 f"Zeit: {self.__zeit.jahr}-{self.__zeit.monat:02d}-{self.__zeit.tag:02d} "
                 f"{self.__zeit.stunde:02d}:{self.__zeit.minute:02d}:{self.__zeit.sekunde:02d} Uhr\n"
+                f"Aktion: {self.__akt}\n"
+                f"Name: {self.__name}\n"
                 f"Täglich: {self.__taeglich}\n"
                 f"Monatlich: {self.__monatlich}\n"
                 f"Jährlich: {self.__jaehrlich}\n")
+
 
     def abgelaufen(self, zeitpunkt:Datumzeit) -> bool:
         """Prüft, ob das Event abgelaufen ist.
