@@ -5,7 +5,8 @@ from scripts.m_datumzeit import Datumzeit
 
 class Event:
     """Repräsentiert ein Event mit Zeit, Aktion, Name und Dauer.
-    Muss in der Eventmanager-Klasse über event_erstellen() instanziiert werden.
+    MUSS über die Eventmanager-Klasse durch event_erstellen() instanziiert werden.
+    Events, die nicht über den Eventmanager erstellt wurden, werden nicht gespeichert und können nicht verwaltet werden.
     ————————————Attribute: ————————————
         event_zeit (Datumzeit): Zeitstempel des Events
         event_liste (list[Event]): Liste, in der die Events zwischengespeichert werden, verwaltet durch den Eventmanager.
