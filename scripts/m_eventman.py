@@ -205,7 +205,7 @@ class Eventman:
 
     def event_aufrufen(self, event_id:int) -> Event:
         """Methode zum Aufrufen eines Events anhand der Event-ID.
-        :param event_id:int # ID-Nummer des Events
+        :param event_id: ID-Nummer des Events.
         :return: Gibt das Event-Objekt zurück, wenn es existiert, sonst None.
         :raises exception: Bei ungültiger Event-ID oder wenn das Event nicht gefunden wird.
         """
@@ -219,8 +219,8 @@ class Eventman:
 
     def event_entfernen(self, event_id: int) -> None:
         """Entfernt ein Event anhand der Event-ID aus der Event-Liste und CSV-Datei.
-        :param event_id:int # ID-Nummer des Events
-        :raises exception: bei ungültiger Event-ID oder wenn das Event nicht gefunden wird.
+        :param event_id: ID-Nummer des Events.
+        :raises exception: Bei ungültiger Event-ID oder wenn das Event nicht gefunden wird.
         """
         for ev in self.__event_liste:
             if ev.id == event_id:
