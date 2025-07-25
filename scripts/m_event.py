@@ -1,5 +1,3 @@
-import time
-
 from scripts.m_datumzeit import Datumzeit
 
 class Event:
@@ -200,7 +198,6 @@ if __name__ == "__main__":
     dz.jetzt()
     test_liste = []
     test_liste.append(Event(dz, test_liste,"test", "Test-Event"))
-    time.sleep(1)
     dz2 = Datumzeit()
     dz2.jetzt()
     test_liste.append(Event(dz2, test_liste,"vergleichen","Test-Vergleich"))
