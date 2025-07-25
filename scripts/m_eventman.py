@@ -99,7 +99,7 @@ class Eventman:
                             taeglich = ast.literal_eval(row[4])
                             monatlich = ast.literal_eval(row[5])
                             jaehrlich = ast.literal_eval(row[6])
-                            neues_event = Event(
+                            self.event_erstellen(
                                 event_zeit=zeit_objekt,
                                 event_liste=self.__event_liste,
                                 event_akt=aktion,
@@ -107,8 +107,8 @@ class Eventman:
                                 taeglich=taeglich,
                                 monatlich=monatlich,
                                 jaehrlich=jaehrlich)
-                            self.__event_liste.append(neues_event)
                         except Exception as e:
+                            self.event_entfernen(neues_event.id) #Fehlerhafte Events werden nicht geladen
                             print(f"Fehler beim Laden des Events: {str(e)}\n")
         except FileNotFoundError:
             with open(self.EVENTS_CSV, 'w', newline='', encoding='utf-8') as f:
