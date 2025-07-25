@@ -101,7 +101,6 @@ class Eventman:
                             jaehrlich = ast.literal_eval(row[6])
                             self.event_erstellen(
                                 event_zeit=zeit_objekt,
-                                event_liste=self.__event_liste,
                                 event_akt=aktion,
                                 event_name=name,
                                 taeglich=taeglich,
