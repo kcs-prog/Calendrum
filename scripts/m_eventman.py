@@ -171,12 +171,12 @@ class Eventman:
             monatlich:bool = False,
             jaehrlich:bool = False,) -> None:
         """Fügt ein Event der Liste hinzu und speichert es in der CSV-Datei.
-        :param event_zeit:list[int] #Zeitstempel des Events.
-        :param event_akt:str #Aktion, die mit dem Event verknüpft werden soll, aus vordefinierter Liste.
-        :param event_name:str #Name des Events zur Darstellung im UI.
-        :param taeglich:bool #bei True wird das Event auf den Nächsten Tag verschoben, wenn es getriggert wird. Default False.
-        :param monatlich:bool #bei True wird das Event auf den Nächsten Monat verschoben, wenn es getriggert wird. Default False.
-        :param jaehrlich:bool #bei True wird das Event auf das Nächste Jahr verschoben, wenn es getriggert wird. Default False.
+        :param event_zeit: Zeitstempel des Events.
+        :param event_akt: Aktion, die mit dem Event verknüpft werden soll, aus vordefinierter Liste.
+        :param event_name: Name des Events zur Darstellung im UI.
+        :param taeglich: Bei True wird das Event auf den Nächsten Tag verschoben, wenn es getriggert wird. Default False.
+        :param monatlich: Bei True wird das Event auf den Nächsten Monat verschoben, wenn es getriggert wird. Default False.
+        :param jaehrlich: Bei True wird das Event auf das Nächste Jahr verschoben, wenn es getriggert wird. Default False.
         :raises exception: Bei ungültiger Event-Zeit, Aktion oder Name.
         """
         if not isinstance(event_zeit, Datumzeit):
