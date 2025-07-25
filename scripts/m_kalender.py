@@ -26,12 +26,14 @@ class Kalender:
     Sortieren und zur Monatsberechnung.
     """
 
-    def __init__(self):
-        # Leere Listen initialisieren
-        self.termine: List[Tuple[Datumzeit, str]] = []
-        self.wecker_list: List[Wecker] = []
-        self.feiertage: List[Union[Datumzeit, Tuple[Datumzeit, str], str]] = []
-        self.kalender_array: List[int] = []
+    def __init__(self, termin_liste:list):
+        """
+        Initialisiert einen Kalender mit leeren Listen für Termine, Wecker und Feiertage.
+        """
+        self.termine = termin_liste         # Liste von (Datumzeit, Name)-Tupeln
+        self.wecker_list = []     # Liste von Wecker-Objekten
+        self.feiertage = []       # Liste von Feiertagen (Datumzeit-Objekte oder Strings)
+        self.kalender_array = []  # Monatsdarstellung (z.B. 2D-Array für Tage)
 
     def create_termin(self, datumzeit: Datumzeit, name: str) -> None:
         """
@@ -190,26 +192,24 @@ class Kalender:
         """
         Entfernt alle Termine, Wecker und Feiertage.
         """
-        self.termine.clear()
-        self.wecker_list.clear()
-        self.feiertage.clear()
+        for event in self.termine:
+            print(f"{event.zeit[0]}-{event.zeit[1]}-{event.zeit[2]} {event.zeit[3]}:{event.zeit[4]} - {event.name}")
 
+    def wecker_anzeigen(self):
+        """
+        Gibt alle Wecker im Kalender aus.
+        """
+        for wecker in self.wecker_list:
+            dz = wecker.get_datumzeit()
+            print(f"Wecker: {dz.jahr}-{dz.monat:02}-{dz.tag:02} {dz.stunde:02}:{dz.minute:02}")
 
 if __name__ == "__main__":
     # Kleiner Funktionstest
     dz = Datumzeit()
     dz.jetzt()
     em = Eventman()
-    kal = Kalender()
-
-    kal.create_termin(dz, "Systemstart-Termin")
-    kal.create_wecker(dz, em)
-    kal.add_feiertag((dz, "Mein Ehrentag"))
-    kal.add_feiertag("Neujahr")
-
-    kal.termine_anzeigen()
-    kal.wecker_anzeigen()
-    kal.feiertage_anzeigen()
-
-    print("Ist heute Feiertag?", kal.ist_feiertag(dz))
-    print("Monatsraster Juli 2025:", kal._berechne_kalender(7, 2025))
+    kalender = Kalender([])
+    kalender.create_termin(dz, "Automatisch erzeugter Termin")
+    kalender.create_wecker(dz, em)
+    kalender.termine_anzeigen()
+    kalender.wecker_anzeigen()

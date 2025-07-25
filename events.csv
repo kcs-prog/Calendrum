@@ -1,1 +1,3 @@
 EventID,Zeitstempel,Aktion,Name,Täglich ?,Monatlich ?,Jährlich ?
+1,"[2025, 7, 25, 16, 23, 18]",test,Test-Event,True,False,False
+2,"[2025, 8, 24, 16, 23, 37]",test,Test-Event,False,True,False
