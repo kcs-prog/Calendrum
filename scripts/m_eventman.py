@@ -92,6 +92,7 @@ class Eventman:
                 for row in csv_reader:
                     if row:
                         try:
+                            event_id = int(row[0])
                             zeitstempel = ast.literal_eval(row[1])  # Konvertiert den Zeitstempel in eine Liste
                             zeit_objekt = Datumzeit(zeitstempel[0], zeitstempel[1], zeitstempel[2], zeitstempel[3], zeitstempel[4], zeitstempel[5])
                             aktion = row[2]
