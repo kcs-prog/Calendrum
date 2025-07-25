@@ -7,9 +7,9 @@ sowie zur Erzeugung eines Monatsrasters.
 
 """
 
-from m_datumzeit import Datumzeit
-from m_eventman import Eventman
-from m_wecker_termine import Wecker
+from scripts.m_datumzeit import Datumzeit
+from scripts.m_eventman import Eventman
+from scripts.m_wecker_termine import Wecker
 
 from typing import List, Tuple, Union
 import calendar
