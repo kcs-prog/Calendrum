@@ -13,6 +13,7 @@ from kivymd.uix.screen import MDScreen
 from scripts.m_eventman import Eventman
 from scripts.m_datumzeit import Datumzeit
 from scripts.m_gui_TagFeld import TagFeld
+from scripts.m_kalender import Kalender
 
 kivy.require("2.3.1")
 
@@ -30,6 +31,8 @@ class CalendrumApp(MDApp):
     _monat: int = _zeit.monat  # Kopie des Monats zum schutz gegen das Update für die Uhrzeit
     _jahr: int = _zeit.jahr  # Kopie des Jahres zum schutz gegen das Update für die Uhrzeit
     eventman: Eventman = Eventman()  # Instanz der Eventman-Klasse, um Ereignisse zu verwalten
+    kalender: Kalender = Kalender(eventman.event_liste)
+    kalender.termine_anzeigen()
     dialog:MDDialog = None
 
     def __init__(self, **kwargs):

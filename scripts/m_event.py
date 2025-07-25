@@ -1,4 +1,3 @@
-import ast
 import time
 
 from scripts.m_datumzeit import Datumzeit

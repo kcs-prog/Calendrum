@@ -8,11 +8,11 @@ class Kalender:
     Sie bietet Methoden zum Hinzufügen von Terminen und Weckern sowie zum Wechseln des Monats/Jahres.
     """
 
-    def __init__(self):
+    def __init__(self, termin_liste:list):
         """
         Initialisiert einen Kalender mit leeren Listen für Termine, Wecker und Feiertage.
         """
-        self.termine = []         # Liste von (Datumzeit, Name)-Tupeln
+        self.termine = termin_liste         # Liste von (Datumzeit, Name)-Tupeln
         self.wecker_list = []     # Liste von Wecker-Objekten
         self.feiertage = []       # Liste von Feiertagen (Datumzeit-Objekte oder Strings)
         self.kalender_array = []  # Monatsdarstellung (z.B. 2D-Array für Tage)
@@ -61,8 +61,8 @@ class Kalender:
         """
         Gibt alle Termine im Kalender aus.
         """
-        for dz, name in self.termine:
-            print(f"{dz.jahr}-{dz.monat:02}-{dz.tag:02} {dz.stunde:02}:{dz.minute:02} - {name}")
+        for event in self.termine:
+            print(f"{event.zeit[0]}-{event.zeit[1]}-{event.zeit[2]} {event.zeit[3]}:{event.zeit[4]} - {event.name}")
 
     def wecker_anzeigen(self):
         """
@@ -77,7 +77,7 @@ if __name__ == "__main__":
     dz = Datumzeit()
     dz.jetzt()  # Setzt das Datumzeit-Objekt auf die aktuelle Systemzeit
     em = Eventman()
-    kalender = Kalender()
+    kalender = Kalender([])
     kalender.create_termin(dz, "Automatisch erzeugter Termin")
     kalender.create_wecker(dz, em)
     kalender.termine_anzeigen()
