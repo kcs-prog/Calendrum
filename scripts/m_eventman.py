@@ -75,6 +75,7 @@ class Eventman:
                 for row in csv_reader:
                     if row:
                         try:
+                            event_id = int(row[0])
                             zeitstempel = ast.literal_eval(row[1])  # Konvertiert den Zeitstempel in eine Liste
                             zeit_objekt = Datumzeit(zeitstempel[0], zeitstempel[1], zeitstempel[2], zeitstempel[3], zeitstempel[4], zeitstempel[5])
                             aktion = row[2]
@@ -82,16 +83,15 @@ class Eventman:
                             taeglich = ast.literal_eval(row[4])
                             monatlich = ast.literal_eval(row[5])
                             jaehrlich = ast.literal_eval(row[6])
-                            neues_event = Event(
+                            self.event_erstellen(
                                 event_zeit=zeit_objekt,
-                                event_liste=self.__event_liste,
                                 event_akt=aktion,
                                 event_name=name,
                                 taeglich=taeglich,
                                 monatlich=monatlich,
                                 jaehrlich=jaehrlich)
-                            self.__event_liste.append(neues_event)
                         except Exception as e:
+                            self.event_entfernen(event_id) #Fehlerhafte Events werden gelöscht
                             print(f"Fehler beim Laden des Events: {str(e)}\n")
         except FileNotFoundError:
             with open(self.EVENTS_CSV, 'w', newline='', encoding='utf-8') as f:
@@ -154,12 +154,12 @@ class Eventman:
             monatlich:bool = False,
             jaehrlich:bool = False,) -> None:
         """Fügt ein Event der Liste hinzu und speichert es in der CSV-Datei.
-        :param event_zeit:list[int] #Zeitstempel des Events.
-        :param event_akt:str #Aktion, die mit dem Event verknüpft werden soll, aus vordefinierter Liste.
-        :param event_name:str #Name des Events zur Darstellung im UI.
-        :param taeglich:bool #bei True wird das Event auf den Nächsten Tag verschoben, wenn es getriggert wird. Default False.
-        :param monatlich:bool #bei True wird das Event auf den Nächsten Monat verschoben, wenn es getriggert wird. Default False.
-        :param jaehrlich:bool #bei True wird das Event auf das Nächste Jahr verschoben, wenn es getriggert wird. Default False.
+        :param event_zeit: Zeitstempel des Events.
+        :param event_akt: Aktion, die mit dem Event verknüpft werden soll, aus vordefinierter Liste.
+        :param event_name: Name des Events zur Darstellung im UI.
+        :param taeglich: Bei True wird das Event auf den Nächsten Tag verschoben, wenn es getriggert wird. Default False.
+        :param monatlich: Bei True wird das Event auf den Nächsten Monat verschoben, wenn es getriggert wird. Default False.
+        :param jaehrlich: Bei True wird das Event auf das Nächste Jahr verschoben, wenn es getriggert wird. Default False.
         :raises exception: Bei ungültiger Event-Zeit, Aktion oder Name.
         """
         if not isinstance(event_zeit, Datumzeit):
@@ -188,7 +188,7 @@ class Eventman:
 
     def event_aufrufen(self, event_id:int) -> Event:
         """Methode zum Aufrufen eines Events anhand der Event-ID.
-        :param event_id:int # ID-Nummer des Events
+        :param event_id: ID-Nummer des Events.
         :return: Gibt das Event-Objekt zurück, wenn es existiert, sonst None.
         :raises exception: Bei ungültiger Event-ID oder wenn das Event nicht gefunden wird.
         """
@@ -202,8 +202,8 @@ class Eventman:
 
     def event_entfernen(self, event_id: int) -> None:
         """Entfernt ein Event anhand der Event-ID aus der Event-Liste und CSV-Datei.
-        :param event_id:int # ID-Nummer des Events
-        :raises exception: bei ungültiger Event-ID oder wenn das Event nicht gefunden wird.
+        :param event_id: ID-Nummer des Events.
+        :raises exception: Bei ungültiger Event-ID oder wenn das Event nicht gefunden wird.
         """
         for ev in self.__event_liste:
             if ev.id == event_id:
@@ -220,7 +220,7 @@ if __name__ == "__main__":
     """Testcode für die Eventman-Klasse."""
     EM: Eventman = Eventman()
     EM.event_erstellen(EM.zeit, "test", "Test-Event")
-    letztes_event_id = max(EM.event_liste[-1].id,0)
+    letztes_event_id = EM.event_liste[-1].id
     letztes_event = EM.event_aufrufen(letztes_event_id)
     print(f"Event-Objekt aufgerufen mit Event-ID '{letztes_event_id}' :\n{letztes_event}\n")
     print(f"Eventliste vor dem Entfernen eines Events:\n")

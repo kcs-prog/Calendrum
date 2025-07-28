@@ -2,9 +2,8 @@ from scripts.m_datumzeit import Datumzeit
 
 class Event:
     """Repräsentiert ein Event mit Zeit, Aktion, Name und Dauer.
-    Darf nur über die event_erstellen() Methode des Eventmanagers instanziiert werden.
-    Notwendige Attribute beim instanziieren mit Eventmanager ist event_zeit: Datumzeit.
-    Alle weiteren Attribute der Klasse sind optional. (Name & Aktion sind empfehlenswert).
+    MUSS über die Eventmanager-Klasse durch event_erstellen() instanziiert werden.
+    Events, die nicht über den Eventmanager erstellt wurden, werden nicht gespeichert und können nicht verwaltet werden.
     ————————————Attribute: ————————————
         event_zeit (Datumzeit): Zeitstempel des Events
         event_liste (list[Event]): Liste, in der die Events zwischengespeichert werden, verwaltet durch den Eventmanager.
@@ -24,7 +23,7 @@ class Event:
             event_name :str = "",
             taeglich :bool = False,
             monatlich :bool = False,
-            jaehrlich :bool = False,):
+            jaehrlich :bool = False):
         self.__liste = event_liste
         self.__zeit = event_zeit
         self.__akt = event_akt
@@ -130,16 +129,43 @@ class Event:
         else:
             self.__jaehrlich = ist_jaehrlich
 
+
+    def __lt__(self, other) -> bool:
+        """Vergleicht zwei Event-Objekte basierend auf ihrer Zeit.
+        Gibt True zurück, wenn das verglichene Objekt einen späteren Zeitpunkt hat.
+        :return: False, wenn das erste Objekt noch nicht abgelaufen ist
+        """
+        if not isinstance(other, Event):
+            if isinstance(other, Datumzeit):
+                return self.zeit < [other.jahr,other.monat,other.tag,other.stunde,other.minute,other.sekunde]
+            return NotImplemented
+        return self.zeit < other.zeit
+
+    def __repr__(self) -> str:
+        """Gibt eine ausführliche Darstellung des Events zurück.
+        :return: String mit den Attributen des Events in lesbarer Form.
+        """
+        return (f"Event(event_zeit=Datumzeit({self.__zeit.jahr}, {self.__zeit.monat}, {self.__zeit.tag}, "
+                f"{self.__zeit.stunde}, {self.__zeit.minute}, {self.__zeit.sekunde}), "
+                f"event_liste={self.__liste}, "
+                f"event_akt={self.__akt}, "
+                f"event_name={self.__name}, "
+                f"taeglich={self.__taeglich}, "
+                f"monatlich={self.__monatlich}, "
+                f"jaehrlich={self.__jaehrlich})")
+
     def __str__(self) -> str:
         """Gibt eine lesbare Darstellung des Events zurück.
         :return: String mit den Details des Events."""
-        return (f"EventNr: {self.id}\n"
-                f"Name: {self.__name}\n"
+        return (f"EventNr: {self.__id}\n"
                 f"Zeit: {self.__zeit.jahr}-{self.__zeit.monat:02d}-{self.__zeit.tag:02d} "
                 f"{self.__zeit.stunde:02d}:{self.__zeit.minute:02d}:{self.__zeit.sekunde:02d} Uhr\n"
+                f"Aktion: {self.__akt}\n"
+                f"Name: {self.__name}\n"
                 f"Täglich: {self.__taeglich}\n"
                 f"Monatlich: {self.__monatlich}\n"
                 f"Jährlich: {self.__jaehrlich}\n")
+
 
     def abgelaufen(self, zeitpunkt:Datumzeit) -> bool:
         """Prüft, ob das Event abgelaufen ist.
@@ -170,5 +196,12 @@ class Event:
 if __name__ == "__main__":
     dz = Datumzeit()
     dz.jetzt()
-    event1 = Event(event_zeit=dz, event_name="test", event_liste=[])
-    print(event1)
+    test_liste = []
+    test_liste.append(Event(dz, test_liste,"test", "Test-Event"))
+    dz2 = Datumzeit()
+    dz2.jetzt()
+    test_liste.append(Event(dz2, test_liste,"vergleichen","Test-Vergleich"))
+    print(test_liste)
+    print(test_liste[0] < test_liste[1])
+    print(str(test_liste[-1]))
+

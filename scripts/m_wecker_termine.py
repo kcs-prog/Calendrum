@@ -1,5 +1,5 @@
-from m_datumzeit import Datumzeit
-from m_eventman import Eventman as em
+from scripts.m_datumzeit import Datumzeit
+from scripts.m_eventman import Eventman as em
 
 class Wecker:
     def __init__(self,dz:Datumzeit,em:em):
