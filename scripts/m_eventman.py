@@ -210,14 +210,14 @@ class Eventman:
         :param event_id: ID-Nummer des Events.
         :raises exception: Bei ungültiger Event-ID oder wenn das Event nicht gefunden wird.
         """
-        for ev in self.__event_liste:
-            if ev.id == event_id:
-                self.__event_liste.remove(ev)
-                print(f"Event mit ID {ev.id} wurde entfernt.\n")
         try:
-            self.__events_speichern()
+            for ev in self.__event_liste:
+                if ev.id == event_id:
+                    self.__event_liste.remove(ev)
+                    print(f"Event mit ID {ev.id} wurde entfernt.\n")
         except Exception as e:
-            raise Exception(f"Fehler beim speichern der Event-Liste: {str(e)}\n")
+            raise Exception(f"Kein Event mit der ID '{event_id}'.\n")
+        self.__events_speichern()
 
 
 
