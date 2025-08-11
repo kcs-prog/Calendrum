@@ -136,6 +136,12 @@ class Eventman:
                             neue_zeit.monat += 1
                         elif ev.taeglich:
                             neue_zeit.tag += 1
+                        if neue_zeit.monat > 12:
+                            neue_zeit.monat = 1
+                            neue_zeit.jahr += 1
+                        if neue_zeit.tag > 31:
+                            neue_zeit.tag = 1
+                            neue_zeit.monat += 1
                         ev.zeit = neue_zeit
                     self.event_entfernen(ev.id) if not ev.taeglich and not ev.monatlich and not ev.jaehrlich else None
                     self.__events_speichern()
