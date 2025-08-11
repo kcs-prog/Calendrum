@@ -131,21 +131,17 @@ class Eventman:
                             ev.zeit[4],
                             ev.zeit[5]
                         )
-                        if ev.jaehrlich:
-                            neue_zeit.jahr += 1
+                        if ev.jaehrlich: neue_zeit.jahr += 1
                         elif ev.monatlich:
-                            if not neue_zeit.monat >= 12:
-                                neue_zeit.monat += 1
+                            if not neue_zeit.monat >= 12: neue_zeit.monat += 1
                             else:
                                 neue_zeit.monat = 1
                                 neue_zeit.jahr += 1
                         elif ev.taeglich:
-                            if not neue_zeit.tag >= neue_zeit.max_tage(neue_zeit.monat, neue_zeit.jahr):
-                                neue_zeit.tag += 1
+                            if not neue_zeit.tag >= neue_zeit.max_tage(neue_zeit.monat, neue_zeit.jahr): neue_zeit.tag += 1
                             else:
                                 neue_zeit.tag = 1
-                                if not neue_zeit.monat >= 12:
-                                    neue_zeit.monat += 1
+                                if not neue_zeit.monat >= 12: neue_zeit.monat += 1
                                 else:
                                     neue_zeit.monat = 1
                                     neue_zeit.jahr += 1
