@@ -92,7 +92,7 @@ class Eventman:
                                 jaehrlich=jaehrlich)
                         except Exception as e:
                             self.event_entfernen(event_id) #Fehlerhafte Events werden gelöscht
-                            print(f"Fehler beim Laden des Events: {str(e)}\n")
+                            raise Exception(f"Fehler beim Laden von Events: {e}.\n")
         except FileNotFoundError:
             with open(self.EVENTS_CSV, 'w', newline='', encoding='utf-8') as f:
                 csv_writer = writer(f)
