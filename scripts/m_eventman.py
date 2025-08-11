@@ -9,6 +9,7 @@ class Eventman:
     Diese Klasse ermöglicht das Erstellen, Aufrufen und Entfernen von Events.
     Die Events werden in einer CSV-Datei gespeichert und können über eine Event-ID verwaltet werden.
     Löst automatisch abgelaufene Events aus, wenn die Klasse instanziiert wird.
+    Events müssen mit der event_erstellen() Methode der Event-Manager-Klasse erstellt werden, um sie in der Eventliste wiederzufinden.
     ————————————Attribute: ————————————
         __zeit (Datumzeit): Aktuelle Systemzeit.
         __event_liste (list[Event]): Format von Event-Objekten kann in der Event-Klasse nachgelesen werden.
