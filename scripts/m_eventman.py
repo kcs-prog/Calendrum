@@ -135,7 +135,10 @@ class Eventman:
                         elif ev.monatlich:
                             neue_zeit.monat += 1
                         elif ev.taeglich:
-                            neue_zeit.tag += 1
+                            if neue_zeit.tag > neue_zeit.max_tage(neue_zeit.monat, neue_zeit.jahr):
+                                neue_zeit.tag = 1
+                                neue_zeit.monat += 1
+                            else: neue_zeit.tag += 1
                         if neue_zeit.monat > 12:
                             neue_zeit.monat = 1
                             neue_zeit.jahr += 1
