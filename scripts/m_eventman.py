@@ -150,7 +150,7 @@ class Eventman:
                                     neue_zeit.monat = 1
                                     neue_zeit.jahr += 1
                         ev.zeit = neue_zeit
-                    self.event_entfernen(ev.id) if not ev.taeglich and not ev.monatlich and not ev.jaehrlich else None
+                    else: self.event_entfernen(ev.id)
                     self.__events_speichern()
                 except Exception as e:
                     raise Exception(f"Fehler beim Triggern des Events: {str(e)}\n")
