@@ -122,13 +122,14 @@ class Eventman:
                     aktionen_temp.append(ev.akt)
                     # Verschiebt das Event auf den nächsten Tag, Monat oder Jahr, wenn es täglich, monatlich oder jährlich ist.
                     if ev.taeglich or ev.monatlich or ev.jaehrlich:
-                        neue_zeit = Datumzeit()
-                        neue_zeit.jahr = ev.zeit[0]
-                        neue_zeit.monat = ev.zeit[1]
-                        neue_zeit.tag = ev.zeit[2]
-                        neue_zeit.stunde = ev.zeit[3]
-                        neue_zeit.minute = ev.zeit[4]
-                        neue_zeit.sekunde = ev.zeit[5]
+                        neue_zeit = Datumzeit(
+                            ev.zeit[0],
+                            ev.zeit[1],
+                            ev.zeit[2],
+                            ev.zeit[3],
+                            ev.zeit[4],
+                            ev.zeit[5]
+                        )
                         if ev.jaehrlich:
                             neue_zeit.jahr += 1
                         elif ev.monatlich:
