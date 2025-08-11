@@ -93,7 +93,7 @@ class TagFeld(ButtonBehavior, MDBoxLayout):
                 r = left_h
                 left_h = 0
             termin_rect_list.append([r / 24, [rnd(), rnd(), rnd(), 1 * (i % 5)*rndi(0,1)]])
-            if left_h == 0: break
+            if left_h == 0: break # sollte hier nicht return sein ?
         return termin_rect_list
 
     def setup_rectangles(self,termin_rect_list):
