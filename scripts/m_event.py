@@ -31,11 +31,8 @@ class Event:
         self.__taeglich = taeglich
         self.__monatlich = monatlich
         self.__jaehrlich = jaehrlich
-        if not self.__liste:self.__id = 1
-        else:
-            id_liste = []
-            for event in self.__liste:id_liste.append(event.id)
-            self.__id = max(id_liste) + 1
+        if not self.__liste: self.__id = 1
+        else: self.__id = max(event.id for event in self.__liste) + 1
 
     @property
     def liste(self) -> list:
