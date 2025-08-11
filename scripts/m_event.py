@@ -147,7 +147,6 @@ class Event:
         """
         return (f"Event(event_zeit=Datumzeit({self.__zeit.jahr}, {self.__zeit.monat}, {self.__zeit.tag}, "
                 f"{self.__zeit.stunde}, {self.__zeit.minute}, {self.__zeit.sekunde}), "
-                f"event_liste={self.__liste}, "
                 f"event_akt={self.__akt}, "
                 f"event_name={self.__name}, "
                 f"taeglich={self.__taeglich}, "
