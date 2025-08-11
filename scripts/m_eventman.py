@@ -186,9 +186,7 @@ class Eventman:
         try:  # Speichert das neue Event in der CSV-Datei
             self.__events_speichern()
         except Exception as e:
-            for ev in self.__event_liste:
-                if ev.id == neues_event.id:
-                    self.__event_liste.remove(ev)
+            self.event_entfernen(neues_event.id)
             raise Exception(f"Fehler beim Speichern des Events: {str(e)}\n")
 
     def event_aufrufen(self, event_id:int) -> Event:
