@@ -1,0 +1,93 @@
+from scripts.m_datumzeit import Datumzeit
+from scripts.m_eventman import Eventman as em
+
+class Wecker:
+    def __init__(self,dz:Datumzeit,em:em):
+        self._datumzeit = dz
+        self._eventmanager = em
+        
+
+    def get_datumzeit(self) -> Datumzeit:
+        """ Funktion, die das Datum und die Uhrzeit zurückgibt. """
+        return self._datumzeit
+
+    def set_datumzeit(self, jahr, monat, tag, minute, stunde, sekunde) -> None:
+        """ Funktion, die das Datum und die Uhrzeit nach Eingabe und Überprüfung einbindet. """
+        
+        if not (1 <= jahr <= 2999):
+            print("Ungültiges Jahr!")
+            return
+        if not (1 <= monat <= 12):
+            print("Ungültiger Monat!")
+            return
+        if not (1 <= tag <= 31):
+            print("Ungültiger Tag!")
+            return
+        if not (0 <= stunde < 60):
+            print("Ungültige Stunde!")
+            return
+        if not (0 <= minute < 60):
+            print("Ungültige Minute!")
+            return
+        if not (0 <= sekunde < 60):
+            print("Ungültige Sekunde!")
+            return
+
+        self._datumzeit.jahr = jahr
+        self._datumzeit.monat = monat
+        self._datumzeit.tag = tag
+        self._datumzeit.minute = minute
+        self._datumzeit.sekunde = sekunde
+        
+
+
+
+    def schlummermodus(self, minuten: int, stunden:int) -> None:
+        """ Funktion, die es erlaubt, die Uhrzeit des Weckers neu einzustellen, so dass er später erneut aktiviert wird. """
+        # Holt aktuelle Zeit
+        aktuelle_zeit = self._datumzeit
+
+        # Neue Zeit berechnen: Alles bleibt gleich, nur Minuten und Stunden werden erhöht
+        neue_minute = self._datumzeit.minute + minuten
+        neue_stunde = self._datumzeit.stunde + stunden
+        neue_tag = self._datumzeit.tag
+        neue_monat = self._datumzeit.monat
+        neue_jahr = self._datumzeit.jahr
+
+
+        # Minutenüberlauf berücksichtigen
+        if neue_minute >= 60:
+            neue_minute -= 60
+            neue_stunde += 1
+
+        # Stundenüberlauf berücksichtigen
+        if neue_stunde >= 24:
+            neue_stunde = 0
+            neue_tag += 1
+
+        self._datumzeit.set_datumzeit(
+            jahr=neue_jahr,
+            monat=neue_monat,
+            tag=neue_tag,
+            minute=neue_minute
+        )
+
+        print(f"Wecker in Schlummermodus neuer Alarm um {neue_stunde:02}:{neue_minute:02} Uhr.")
+    
+
+class Termine(Wecker):
+    def __init__(self,dz:Datumzeit, em:em):
+        super().__init__(dz,em)
+
+
+if __name__ == '__main__':
+    eventmanager = em()
+    dz = Datumzeit()
+    dz.set_jahr(2025)
+    dz.set_monat(7)
+    dz.set_tag(17)
+    dz.set_stunde(15)
+    dz.set_minute(10)
+    einWecker = Wecker(dz,eventmanager)
+    eventmanager.event_erstellen(dz,"alarm","Wecker")
+

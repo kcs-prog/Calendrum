@@ -19,6 +19,7 @@
 > >- [x] weitere Funktionen folgen
 
 <ins>**Phone View**</ins>
-> <img width="321" height="597" alt="phone view calendrum" src="https://github.com/user-attachments/assets/cc2e3fcc-e661-41a5-a32d-e99438fccf2d" />
+> <img width="321" height="597" alt="phone view calendrum" src="https://github.com/user-attachments/assets/945a0754-3401-4046-82dd-f5fe6cef110e" />
 <ins>**Tablet View**</ins>
-> <img width="801" height="601" alt="tablet view calendrum" src="https://github.com/user-attachments/assets/52f68674-596b-4b75-ac05-69629dc29b0a" />
+> <img width="801" height="601" alt="tablet view calendrum" src="https://github.com/user-attachments/assets/2ce22d5f-fe76-4a21-a310-b3401b7aa70a" />
+
