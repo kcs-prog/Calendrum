@@ -36,14 +36,14 @@ class Eventman:
     @property
     def zeit(self) -> Datumzeit:
         """Gibt die aktuelle Systemzeit zurück.
-        :return: # Aktuelle Systemzeit als Datumzeit-Objekt.
+        :return: Aktuelle Systemzeit als Datumzeit-Objekt.
         """
         return self.__zeit
 
     @property
     def event_liste(self) -> list[Event]:
         """Gibt die Event-Liste zurück.
-        :return: # Liste der Events als Event-Objekte.
+        :return: Liste der Events als Event-Objekte.
         """
         return self.__event_liste
 
@@ -60,7 +60,7 @@ class Eventman:
 
     def __len__(self) -> int:
         """Gibt die Anzahl der Events in der Event-Liste zurück.
-        :return: #Anzahl der Events als int.
+        :return: Anzahl der Events als int.
         """
         return len(self.__event_liste)
 
@@ -108,12 +108,12 @@ class Eventman:
             for ev in self.__event_liste:
                 csv_writer.writerow([ev.id, str(ev.zeit), ev.akt, ev.name, str(ev.taeglich), str(ev.monatlich), str(ev.jaehrlich)])
 
-    def event_trigger(self, *args) -> list[str]:
+    def event_trigger(self, *args) -> list[str] | None:
         """Geht durch die Event-Liste, prüft, ob Events abgelaufen sind und löst sie aus.
         Entfernt das Event aus der Liste, wenn es nicht täglich, monatlich oder jährlich ist.
         Verschiebt das Event auf den nächsten Tag, Monat oder Jahr, wenn es täglich, monatlich oder jährlich ist.
         :param args: Wird hier gebraucht für die Timeout-Zeit von schedule_interval() in der App.
-        :return: | None # Gibt die Aktion des ausgelösten Events als String zurück, wenn eines gefunden wurde, sonst None.
+        :return: list[str] | None # Gibt die Aktion des ausgelösten Events als String zurück, wenn eines gefunden wurde, sonst None.
         """
         aktionen_temp:list[str] = []
         for ev in self.__event_liste:
@@ -129,8 +129,7 @@ class Eventman:
                             ev.zeit[2],
                             ev.zeit[3],
                             ev.zeit[4],
-                            ev.zeit[5]
-                        )
+                            ev.zeit[5])
                         if ev.jaehrlich: neue_zeit.jahr += 1
                         elif ev.monatlich:
                             if not neue_zeit.monat >= 12: neue_zeit.monat += 1
