@@ -8,10 +8,10 @@
 > > 
 > >- [x] Darstellung von Tagen in einem jeweiligen Monat
 > >
+> >- [x] Erzeugen von wöchentlichen, monatlichen und jährlichen Events
+> >
 > **In Arbeit:**
 > >- [ ] Erstellung eines Termins beim auswählen eines bestimmten Tages
-> >
-> >- [ ] Erzeugen von wöchentlichen, monatlichen und jährlichen Events
 > > 
 > >- [ ] Alarm- / Weckerfunktion
 > >
